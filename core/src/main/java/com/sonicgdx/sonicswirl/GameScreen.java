@@ -19,9 +19,11 @@ package com.sonicgdx.sonicswirl;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
@@ -61,10 +63,10 @@ public class GameScreen implements Screen {
 
         //TODO AssetManager
         whiteSquare = new Texture(Gdx.files.internal("1x1-ffffffff.png")); blackSquare = new Texture(Gdx.files.internal("1x1-000000ff.png"));
+        final int PLAYER_WIDTH = 20, PLAYER_HEIGHT = 40; //FIXME standardise
+        player = new Player(whiteSquare, PLAYER_WIDTH,PLAYER_HEIGHT);
 
-        player = new Player();
-
-        cameraOffset.x = 0;
+        cameraOffset.x = 0; //TODO adjust view when looking up or down
         cameraOffset.y = camera.position.y - player.yPos;
 
         //frameLog = new FPSLogger();
@@ -112,6 +114,7 @@ public class GameScreen implements Screen {
             //Iterates through every chunk on the y-axis
             for (int chunkY = 0; chunkY<TileMap.map[chunkX].length; chunkY++)
             {
+                //TODO draw tile width batch
                 //Draw the chunk's texture unless the debug drawing mode has been toggled
                 if (drawMode == 0) drawChunkTextureBatch(chunkX,chunkY);
                 else drawChunkBatch(chunkX,chunkY);
@@ -156,6 +159,60 @@ public class GameScreen implements Screen {
         }
         Init.batch.setColor(Color.WHITE); //Resets batch colour
 
+    }
+
+    /**
+     * Draws each Tile using a gradient - for debugging purposes only
+     * @param chunkX the chunk number on the x-axis - not the same as its co-ordinate
+     * @param chunkY the chunk number on the y-axis - not the same as its co-ordinate
+     */
+    public void drawTileWidthBatch(int chunkX, int chunkY) {
+
+        for (int tileX = 0; tileX < TILES_PER_CHUNK; tileX++)
+        {
+            for (int tileY = 0; tileY < TILES_PER_CHUNK; tileY++)
+            {
+                if (TileMap.map[chunkX][chunkY][tileX][tileY].empty) continue;
+                for (int block = TILE_SIZE - 1 ; block >= 0; block--)
+                {
+                    if (block==0) Init.batch.setColor(new Color(0,0,0,1));
+                    else Init.batch.setColor(new Color((1F/TILES_PER_CHUNK) * tileY,0,block,1));
+                    Init.batch.draw(img, block + (tileX*TILE_SIZE)+(chunkX*CHUNK_SIZE),(tileY*TILE_SIZE)+(chunkY*CHUNK_SIZE),1, TileMap.map[chunkX][chunkY][tileX][tileY].getWidth(block));
+
+                    //TODO reversed search order for flipped tiles. e.g. Collections.reverse() or ArrayUtils.reverse(byte[] array)
+
+                }
+            }
+        }
+        Init.batch.setColor(Color.WHITE); //Resets batch colour
+
+
+    }
+
+    /**
+     * Draws each Tile using a gradient - for debugging purposes only
+     * @param chunkX the chunk number on the x-axis - not the same as its co-ordinate
+     * @param chunkY the chunk number on the y-axis - not the same as its co-ordinate
+     */
+    public void drawTileWidthBatch(int chunkX, int chunkY) {
+
+        for (int tileX = 0; tileX < TILES_PER_CHUNK; tileX++)
+        {
+            for (int tileY = 0; tileY < TILES_PER_CHUNK; tileY++)
+            {
+                if (TileMap.map[chunkX][chunkY][tileX][tileY].empty) continue;
+                for (int block = TILE_SIZE - 1 ; block >= 0; block--)
+                {
+                    if (block==0) Init.batch.setColor(new Color(0,0,0,1));
+                    else Init.batch.setColor(new Color((1F/TILES_PER_CHUNK) * tileY,0,block,1));
+                    Init.batch.draw(img, block + (tileX*TILE_SIZE)+(chunkX*CHUNK_SIZE),(tileY*TILE_SIZE)+(chunkY*CHUNK_SIZE),1, TileMap.map[chunkX][chunkY][tileX][tileY].getWidth(block));
+
+                    //TODO reversed search order for flipped tiles. e.g. Collections.reverse() or ArrayUtils.reverse(byte[] array)
+
+                }
+            }
+        }
+        Init.batch.setColor(Color.WHITE); //Resets batch colour
 
     }
 
