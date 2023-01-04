@@ -18,10 +18,13 @@ package com.sonicgdx.sonicswirl;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
+
+import java.util.Optional;
 
 /**
  * This is the class that handles player movement, player collision with the ground as well as player collision
@@ -37,20 +40,23 @@ public final class Player extends Entity {
     // Original values were designed to occur 60 times every second so by multiplying it by 60 you get the amount of pixels moved per second.
     private float speedX = 0, speedY = 0, groundSpeed = 0, groundAngle = 0;
     private final FloorSensor sensorA, sensorB;
-    private final TextureAtlas atlas;
+    private final WallSensor sensorE,sensorF;
 
+    private final TextureAtlas atlas;
     private TextureRegion spriteRegion;
 
-    final int WIDTHRADIUS = 9, HEIGHTRADIUS = 19;
+    final int WIDTHRADIUS= 9, HEIGHTRADIUS = 19;
 
-    Player() {
-        super();
+
+    Player(Texture image, int width, int height) {
+        super(image, width, height);
         atlas = new TextureAtlas(Gdx.files.internal("sprites/SonicGDX.atlas"));
         spriteRegion = atlas.findRegion("sonic-idle",0);
         xPos = 50; yPos = 200; // Player starts at (600,200);
-        sensorA = new FloorSensor();
-        sensorB = new FloorSensor();
-
+        sensorA = new FloorSensor(xPos,yPos);
+        sensorB = new FloorSensor(xPos + (sprite.getWidth() - 1),yPos);
+        sensorE = new WallSensor(xPos,yPos + (sprite.getHeight() - 1));
+        sensorF = new WallSensor(xPos + (sprite.getWidth() - 1),yPos + (sprite.getHeight() - 1));
     }
 
     //TODO Tommy Ettinger's digital extension could be used for faster operations on GWT
@@ -94,6 +100,9 @@ public final class Player extends Entity {
                     else if(sensorB.getActive() && sensorA.getDistance() < sensorB.getDistance()) groundCollision(sensorB);
                     else if(sensorA.getActive() && sensorB.getActive() && sensorA.getDistance() == sensorB.getDistance() && sensorA.getTile() == sensorB.getTile()) groundCollision(sensorA); //TODO comment out this line first if there are physics bugs.
                     else isGrounded = false;
+
+                    sensorE.process();
+                    sensorF.process();
                 }
 
             }
@@ -117,7 +126,9 @@ public final class Player extends Entity {
 
         //FIXME rotation
 
-        //Rotates the sprite first, and THEN changes its co-ordinates (is translated).
+        //Rotates the sprite first, and THEN changes its co-ordinates (-translating it)
+
+        sprite.setPosition(xPos, yPos);
         sprite.setRotation(groundAngle);
 
         //TODO calculate y Position from ground up
