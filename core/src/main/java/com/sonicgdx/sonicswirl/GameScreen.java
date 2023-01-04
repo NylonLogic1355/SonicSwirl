@@ -117,7 +117,7 @@ public class GameScreen implements Screen {
                 //TODO draw tile width batch
                 //Draw the chunk's texture unless the debug drawing mode has been toggled
                 if (drawMode == 0) drawChunkTextureBatch(chunkX,chunkY);
-                else drawChunkBatch(chunkX,chunkY);
+                else drawChunkHeightBatch(chunkX,chunkY);
             }
         }
         player.sprite.draw(Init.batch);
@@ -136,7 +136,7 @@ public class GameScreen implements Screen {
      * @param chunkX the chunk number on the x-axis - not the same as its co-ordinate
      * @param chunkY the chunk number on the y-axis - not the same as its co-ordinate
      */
-    public void drawChunkBatch(int chunkX, int chunkY) {
+    public void drawTileHeightBatch(int chunkX, int chunkY) {
         final int TILES_PER_CHUNK = CHUNK_SIZE / TILE_SIZE;
         //Iterates through every tile in the chunk
         for (int tileX = 0; tileX < TILES_PER_CHUNK; tileX++)
@@ -234,7 +234,7 @@ public class GameScreen implements Screen {
      * @deprecated Superseded by drawChunkBatch as ShapeRenderer uses its own mesh compared to the SpriteBatch and therefore conflicts in the rendering method making it cumbersome to use.
      */
     @Deprecated
-    public void drawChunkShapeRenderer(int chunkX, int chunkY) {
+    public void drawTileHeightShapeRenderer(int chunkX, int chunkY) {
 
         /*//TODO Foreach loop?
         for (int tileX = 0; tileX < TILES_PER_CHUNK; tileX++)
