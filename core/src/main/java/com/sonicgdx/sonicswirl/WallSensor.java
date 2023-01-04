@@ -30,7 +30,7 @@ public class WallSensor extends Sensor{
         float checkDistance = ((chunkX * 128) + (tileX * 16) + width) - yPosition;
 
         tile = TileMap.getTile(chunkX,chunkY,tileX,tileY); distance = checkDistance;
-        Gdx.app.debug("distance",String.valueOf("distance"));
+        Gdx.app.debug("distance",String.valueOf(distance));
     }
 
 

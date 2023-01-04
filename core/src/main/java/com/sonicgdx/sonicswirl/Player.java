@@ -80,6 +80,8 @@ public final class Player extends Entity {
         else {
             //TODO Right now, right movement is prioritised if both directions are pressed at the same time. Consider cancelling them out.
 
+            sensorE.process();
+            sensorF.process();
             if (!isGrounded) {
                 //air state
                 airMove(delta);
@@ -101,8 +103,7 @@ public final class Player extends Entity {
                     else if(sensorA.getActive() && sensorB.getActive() && sensorA.getDistance() == sensorB.getDistance() && sensorA.getTile() == sensorB.getTile()) groundCollision(sensorA); //TODO comment out this line first if there are physics bugs.
                     else isGrounded = false;
 
-                    sensorE.process();
-                    sensorF.process();
+
                 }
 
             }
