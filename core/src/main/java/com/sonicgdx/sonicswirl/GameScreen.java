@@ -177,7 +177,7 @@ public class GameScreen implements Screen {
                 {
                     if (block==0) Init.batch.setColor(new Color(0,0,0,1));
                     else Init.batch.setColor(new Color((1F/TILES_PER_CHUNK) * tileY,0,block,1));
-                    Init.batch.draw(img, (tileX*TILE_SIZE)+(chunkX*CHUNK_SIZE),(tileY*TILE_SIZE)+(chunkY*CHUNK_SIZE) + block,TileMap.map[chunkX][chunkY][tileX][tileY].getWidth(block),1,1,1,1,true,false);
+                    Init.batch.draw(img, (tileX*TILE_SIZE)+(chunkX*CHUNK_SIZE) - TileMap.map[chunkX][chunkY][tileX][tileY].getWidth(block),(tileY*TILE_SIZE)+(chunkY*CHUNK_SIZE) + block,TileMap.map[chunkX][chunkY][tileX][tileY].getWidth(block),1);
 
                     //TODO reversed search order for flipped tiles. e.g. Collections.reverse() or ArrayUtils.reverse(byte[] array)
 
