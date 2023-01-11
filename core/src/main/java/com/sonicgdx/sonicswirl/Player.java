@@ -46,8 +46,6 @@ public final class Player extends Entity {
             toggleDebugMode();
         }
         if (debugMode) {
-            calculateSensorPositions();
-            sensorF.wallProcess(); //DEBUG
             debugMove(delta);
         }
         else {
