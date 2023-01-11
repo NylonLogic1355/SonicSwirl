@@ -39,7 +39,7 @@ public class GameScreen implements Screen {
 
     private final Texture backgroundTexture;
 
-    private int drawMode;
+    private int drawMode = 0;
     public static final int TILE_SIZE = 16;
     public static final int CHUNK_SIZE = 96;
 
@@ -82,10 +82,10 @@ public class GameScreen implements Screen {
 
         ScreenUtils.clear(Color.DARK_GRAY); // clears the screen and sets the background to a certain colour
 
-        //Toggle between one of two draw modes: texture drawing and height array drawing
+        //Toggle between one of three draw modes: texture drawing, height array drawing and width array drawing
         if (Gdx.input.isKeyJustPressed(Input.Keys.Y)) {
             drawMode += 1;
-            if (drawMode == 2) drawMode = 0;
+            if (drawMode == 3) drawMode = 0;
         }
 
         player.move(delta);
@@ -116,8 +116,9 @@ public class GameScreen implements Screen {
             {
                 //TODO draw tile width batch
                 //Draw the chunk's texture unless the debug drawing mode has been toggled
-                if (drawMode == 0) drawChunkTextureBatch(chunkX,chunkY);
-                else drawChunkHeightBatch(chunkX,chunkY);
+                if (drawMode == 1) drawChunkHeightBatch(chunkX,chunkY);
+                else if (drawMode == 2) drawChunkWidthBatch(chunkX,chunkY);
+                else drawChunkTextureBatch(chunkX,chunkY);
             }
         }
         player.sprite.draw(Init.batch);
@@ -136,7 +137,7 @@ public class GameScreen implements Screen {
      * @param chunkX the chunk number on the x-axis - not the same as its co-ordinate
      * @param chunkY the chunk number on the y-axis - not the same as its co-ordinate
      */
-    public void drawTileHeightBatch(int chunkX, int chunkY) {
+    public void drawChunkHeightBatch(int chunkX, int chunkY) {
         final int TILES_PER_CHUNK = CHUNK_SIZE / TILE_SIZE;
         //Iterates through every tile in the chunk
         for (int tileX = 0; tileX < TILES_PER_CHUNK; tileX++)
@@ -166,7 +167,7 @@ public class GameScreen implements Screen {
      * @param chunkX the chunk number on the x-axis - not the same as its co-ordinate
      * @param chunkY the chunk number on the y-axis - not the same as its co-ordinate
      */
-    public void drawTileWidthBatch(int chunkX, int chunkY) {
+    public void drawChunkWidthBatch(int chunkX, int chunkY) {
 
         for (int tileX = 0; tileX < TILES_PER_CHUNK; tileX++)
         {
@@ -176,7 +177,7 @@ public class GameScreen implements Screen {
                 for (int block = 0; block < TILE_SIZE; block++)
                 {
                     if (block==0) Init.batch.setColor(new Color(0,0,0,1));
-                    else Init.batch.setColor(new Color((1F/TILES_PER_CHUNK) * tileY,0,block,1));
+                    else Init.batch.setColor(new Color(0,(1F/TILES_PER_CHUNK) * tileY,block,1));
 
                     int yPosition = (tileY * TILE_SIZE) + (chunkY * CHUNK_SIZE) + block;
                     byte blockHeight = TileMap.map[chunkX][chunkY][tileX][tileY].getWidth(TILE_SIZE - block - 1);
@@ -193,45 +194,6 @@ public class GameScreen implements Screen {
             }
         }
         Init.batch.setColor(Color.WHITE); //Resets batch colour
-
-
-    }
-
-    /**
-     * Draws each Tile using a gradient - for debugging purposes only
-     * @param chunkX the chunk number on the x-axis - not the same as its co-ordinate
-     * @param chunkY the chunk number on the y-axis - not the same as its co-ordinate
-     */
-    public void drawTileWidthBatch(int chunkX, int chunkY) {
-
-        for (int tileX = 0; tileX < TILES_PER_CHUNK; tileX++)
-        {
-            for (int tileY = 0; tileY < TILES_PER_CHUNK; tileY++)
-            {
-                if (TileMap.map[chunkX][chunkY][tileX][tileY].empty) continue;
-                for (int block = TILE_SIZE - 1 ; block >= 0; block--)
-                {
-                    if (block==0) Init.batch.setColor(new Color(0,0,0,1));
-                    else Init.batch.setColor(new Color((1F/TILES_PER_CHUNK) * tileY,0,block,1));
-                    Init.batch.draw(img, block + (tileX*TILE_SIZE)+(chunkX*CHUNK_SIZE),(tileY*TILE_SIZE)+(chunkY*CHUNK_SIZE),1, TileMap.map[chunkX][chunkY][tileX][tileY].getWidth(block));
-
-                    //TODO reversed search order for flipped tiles. e.g. Collections.reverse() or ArrayUtils.reverse(byte[] array)
-
-                }
-            }
-        }
-        Init.batch.setColor(Color.WHITE); //Resets batch colour
-
-    }
-
-    /**
-     * Draws each Chunk's assigned texture at its corresponding location
-     * @param chunkX the chunk number on the x-axis - not the same as its co-ordinate
-     * @param chunkY the chunk number on the y-axis - not the same as its co-ordinate
-     */
-    public void drawChunkTextureBatch(int chunkX, int chunkY) {
-        //If the chunk isn't empty, draw its texture at the chunk's location
-        if (!TileMap.map[chunkX][chunkY].isEmpty()) Init.batch.draw(TileMap.map[chunkX][chunkY].getTexture(), (chunkX* CHUNK_SIZE),(chunkY* CHUNK_SIZE),CHUNK_SIZE, CHUNK_SIZE);
 
     }
 
