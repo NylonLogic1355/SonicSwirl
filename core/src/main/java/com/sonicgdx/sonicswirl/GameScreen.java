@@ -1,5 +1,6 @@
 package com.sonicgdx.sonicswirl;
 
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -16,6 +17,8 @@ public class GameScreen implements Screen {
     //private final FPSLogger frameLog;
     private final OrthographicCamera camera; private final Vector2 cameraOffset = Vector2.Zero; private final ExtendViewport gameViewport;
     private final int TILE_SIZE = 16, CHUNK_SIZE = 128, TILES_PER_CHUNK = CHUNK_SIZE / TILE_SIZE;
+
+    private int debugToggle = 0;
 
     Player player;
 
@@ -57,6 +60,11 @@ public class GameScreen implements Screen {
 
         ScreenUtils.clear(Color.DARK_GRAY); // clears the screen and sets the background to a certain colour
 
+        if (Gdx.input.isKeyJustPressed(Input.Keys.E)) {
+            debugToggle += 1;
+            if (debugToggle == 2) debugToggle = 0;
+        }
+
         player.move(delta);
 
         //TODO check for jumps here
@@ -75,7 +83,8 @@ public class GameScreen implements Screen {
         {
             for (int chunkY = 0; chunkY<TileMap.map[chunkX].length; chunkY++)
             {
-                drawTileWidthBatch(chunkX,chunkY);
+                if (debugToggle == 0) drawTileHeightBatch(chunkX,chunkY);
+                else if (debugToggle == 1) drawTileWidthBatch(chunkX,chunkY);
             }
         }
         player.sprite.draw(Init.batch);
@@ -130,7 +139,7 @@ public class GameScreen implements Screen {
                 for (int block = 0; block < TILE_SIZE; block++)
                 {
                     if (block==0) Init.batch.setColor(new Color(0,0,0,1));
-                    else Init.batch.setColor(new Color((1F/TILES_PER_CHUNK) * tileY,0,block,1));
+                    else Init.batch.setColor(new Color(0,(1F/TILES_PER_CHUNK) * tileY,block,1));
 
                     int yPosition = (tileY * TILE_SIZE) + (chunkY * CHUNK_SIZE) + block;
                     byte blockHeight = TileMap.map[chunkX][chunkY][tileX][tileY].getWidth(TILE_SIZE - block - 1);
