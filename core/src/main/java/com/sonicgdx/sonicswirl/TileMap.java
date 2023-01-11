@@ -45,7 +45,7 @@ public enum TileMap {
     private final Tile EMPTY = new Tile();
     private final Tile ftile = new Tile(full,full,0,(byte) 4,false,false);
     private final Tile stile = new Tile(slope, slope,45,(byte) 1,false,false);
-    private final Tile rvtile = new Tile(rvSlope, rvSlope,-45,(byte) 1,true,false);
+    private final Tile rvtile = new Tile(rvSlope, slope,-45,(byte) 1,true,false);
     private final Tile htile = new Tile(halfh,halfw,0,(byte) 1,false,false);
     private final Tile testtile = new Tile(testh,testw,33.75F,(byte) 1,false,false);
 
