@@ -43,11 +43,11 @@ public enum TileMap {
     private final byte[] tall1 = {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1};
     private final byte[] testh = {0,0,1,2,2,3,4,5,5,6,6,7,8,9,9,9}, testw = {0,0,0,0,0,0,0,3,4,5,7,9,10,11,13,14};
     private final Tile EMPTY = new Tile();
-    private final Tile ftile = new Tile(full,full,0,(byte) 4,false);
-    private final Tile stile = new Tile(slope, slope,45,(byte) 1,false);
-    private final Tile rvtile = new Tile(rvSlope, rvSlope,-45,(byte) 1,false);
-    private final Tile htile = new Tile(halfh,halfw,0,(byte) 1,false);
-    private final Tile testtile = new Tile(testh,testw,33.75F,(byte) 1,false);
+    private final Tile ftile = new Tile(full,full,0,(byte) 4,false,false);
+    private final Tile stile = new Tile(slope, slope,45,(byte) 1,false,false);
+    private final Tile rvtile = new Tile(rvSlope, rvSlope,-45,(byte) 1,false,true);
+    private final Tile htile = new Tile(halfh,halfw,0,(byte) 1,false,false);
+    private final Tile testtile = new Tile(testh,testw,33.75F,(byte) 1,false,false);
 
     private final Chunk fChunk = new Chunk(new Texture(Gdx.files.internal("sprites/AIZ2/95.png")),Collections.nCopies(6,Collections.nCopies(6,ftile).toArray(new Tile[0])).toArray(new Tile[0][0]));
 
