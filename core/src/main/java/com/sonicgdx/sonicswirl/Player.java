@@ -117,6 +117,7 @@ public final class Player extends Entity {
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) jump(delta); //TODO placement different from original, may cause bugs.
 
 
+        //FIXME player momentum functions oddly when landing after jumping downwards from a steep slope
     }
 
     /**
