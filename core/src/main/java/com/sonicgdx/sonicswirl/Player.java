@@ -177,6 +177,7 @@ public final class Player extends Entity {
         if (jumpPressed) jump(delta); //TODO placement different from original, may cause bugs.
 
 
+        //FIXME player momentum functions oddly when landing after jumping downwards from a steep slope
     }
 
     /**

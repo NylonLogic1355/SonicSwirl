@@ -119,7 +119,8 @@ public class Sensor {
 
         byte width = TileMap.getTile(chunkX,chunkY,tileX,tileY).getWidth(block);
 
-        float checkDistance = ((chunkX * 128) + (tileX * 16) + width) - yPosition;
+        //TODO change process if tile is flipped horizontally
+        float checkDistance = ((chunkX * 128) + ((tileX + 1) * 16) - width) - xPosition;
 
         tile = TileMap.getTile(chunkX,chunkY,tileX,tileY); distance = checkDistance;
         Gdx.app.debug("distance",String.valueOf(distance));
