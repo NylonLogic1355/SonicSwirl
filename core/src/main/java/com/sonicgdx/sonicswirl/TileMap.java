@@ -27,6 +27,7 @@ public enum TileMap {
 
     // solid blocks
     //TODO tile ID
+    //TODO add tile textureregion
     //TODO reconsider usage of TileMap class
     //TODO possible GUI chunk editor
 
