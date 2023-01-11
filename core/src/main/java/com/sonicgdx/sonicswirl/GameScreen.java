@@ -58,8 +58,8 @@ public class GameScreen implements Screen {
         gameViewport = new ExtendViewport(1280,720,camera);
         //TODO Update comments
         camera.setToOrtho(false,1280,720); // Even if the device has a scaled resolution, the in game view will still be 1280x720
-        // So for example, one screen won't be in the bottom left corner in 1080p
-        // but would take up the entire view
+        //So for example, one screen won't be in the bottom left corner in 1080p
+        //but would take up the entire view
 
         //TODO AssetManager
         whiteSquare = new Texture(Gdx.files.internal("1x1-ffffffff.png")); blackSquare = new Texture(Gdx.files.internal("1x1-000000ff.png"));
@@ -95,7 +95,7 @@ public class GameScreen implements Screen {
         //Updates the camera position to where the player is but keeps the offset
         camera.position.set(player.xPos + cameraOffset.x,player.yPos + cameraOffset.y,camera.position.z); camera.update(); // recompute matrix for orthographical projection so that the change is responded to in the view
 
-        // tells the SpriteBatch to render in the coordinate system specified by the camera
+        //tells the SpriteBatch to render in the coordinate system specified by the camera
         //viewport.apply();
         Init.batch.setProjectionMatrix(camera.combined);
         Init.batch.begin();

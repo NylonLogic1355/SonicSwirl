@@ -90,16 +90,18 @@ public final class Player extends Entity {
             if (!isGrounded) {
                 //air state
                 airMove(delta);
+                calculateSensorPositions();
                 airSensors();
-
-                xPos += speedX * delta;
-                yPos += speedY * delta;
             }
 
             else {
                 groundMove(delta);
+
+                //Updates player position
                 xPos += speedX * delta;
                 yPos += speedY * delta;
+
+                calculateSensorPositions();
                 if (isGrounded){
                     //checks sensor distances returned to validate the nearby tile to decide if it moves there.
                     sensorA.floorProcess();
@@ -222,6 +224,11 @@ public final class Player extends Entity {
         {
             speedX -= (MathUtils.floor(speedX / 0.125F) / 256F * 60F * delta); //TODO Maybe use 60 * delta in all calculations instead of applying it to variable. For readability
         }
+
+        //Updates player position
+        xPos += speedX * delta;
+        yPos += speedY * delta;
+
         //Gravity - a force pushing the player down when they are in the air
         speedY += GRAVITY_FORCE * delta;
     }
