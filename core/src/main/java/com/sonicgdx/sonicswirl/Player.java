@@ -26,8 +26,8 @@ public final class Player extends Entity {
         xPos = 200; yPos = 200; // Player starts at (600,200);
         sensorA = new Sensor(xPos,yPos);
         sensorB = new Sensor(xPos + (sprite.getWidth() - 1),yPos);
-        sensorE = new Sensor(xPos,yPos + (sprite.getHeight() - 1));
-        sensorF = new Sensor(xPos + (sprite.getWidth() - 1),yPos + (sprite.getHeight() - 1));
+        sensorE = new Sensor(xPos,yPos + (sprite.getHeight() - 1) / 2);
+        sensorF = new Sensor(xPos + (sprite.getWidth() - 1),yPos + (sprite.getHeight() - 1) / 2);
     }
 
     //TODO Tommy Ettinger's digital extension could be used for faster operations on GWT
@@ -46,6 +46,8 @@ public final class Player extends Entity {
             toggleDebugMode();
         }
         if (debugMode) {
+            calculateSensorPositions();
+            sensorF.wallProcess(); //DEBUG
             debugMove(delta);
         }
         else {
@@ -238,6 +240,8 @@ public final class Player extends Entity {
         super.calculateSensorPositions();
         sensorA.setPosition(lSensorX,yPos); //TODO possibly remove these variables
         sensorB.setPosition(rSensorX,yPos);
+        sensorE.setPosition(lSensorX,centreY);
+        sensorF.setPosition(rSensorX,centreY);
     }
 
     private void toggleDebugMode() {
