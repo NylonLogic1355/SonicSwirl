@@ -71,13 +71,21 @@ public final class Player extends Entity {
         //TODO Would be better to implement an InputProcessor. This makes more sense as an interrupt rather than constant polling.
         if (Gdx.input.isKeyJustPressed(Input.Keys.Q))
         {
-            toggleDebugMode();
+            //Toggle debug mode
+            debugMode = !debugMode;
+
+            //Reset movement variables when entering or exiting debug mode to prevent oddities in physics.
+            groundSpeed = 0;
+            speedX = 0;
+            speedY = 0;
+            groundAngle = 0;
+
+            //TODO acceleration in debug mode
         }
         if (debugMode) {
             debugMove(delta);
         }
         else {
-            //TODO Right now, right movement is prioritised if both directions are pressed at the same time. Consider cancelling them out.
 
             sensorE.wallProcess();
             sensorF.wallProcess();
@@ -293,6 +301,11 @@ public final class Player extends Entity {
         }
     }
 
+    /**
+     * Sets the sensor positions relative to the player's position.
+     * sensorA is positioned in the bottom left corner and sensorB in the bottom right corner.
+     * sensorE is positioned at the centre left and sensorF is positioned at the centre right.
+     */
     @Override
     public void calculateSensorPositions(float widthRadius, float heightRadius) {
         super.calculateSensorPositions(widthRadius, heightRadius);
@@ -302,25 +315,6 @@ public final class Player extends Entity {
         //FIXME sensorF.setPosition(rSensorX,centreY);
     }
 
-    /**
-     * Resets movement variables and toggles "debug mode"
-     * @see #debugMove(float)
-     */
-    private void toggleDebugMode() {
-        debugMode = !debugMode;
-        groundSpeed = 0;
-        speedX = 0;
-        speedY = 0;
-        groundAngle = 0;
-        //Gdx.app.debug("debugMode",String.valueOf(debugMode));
-        //TODO acceleration in debug mode
-    }
-
-    /**
-     * Allows the Player to move in all directions free from collision or gravity.
-     * @param delta time since last frame. Used to make physics similar to how they would be at 60FPS
-     * even with higher, lower or varying frame rates.
-     */
     private void debugMove(float delta) {
         final int DEBUG_SPEED = 90;
         if (Gdx.input.isKeyPressed(Input.Keys.D)) xPos += (DEBUG_SPEED * delta);
