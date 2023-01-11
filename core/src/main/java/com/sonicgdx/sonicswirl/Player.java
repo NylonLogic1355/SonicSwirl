@@ -193,7 +193,7 @@ public final class Player extends Entity {
      * even with higher, lower or varying frame rates.
      */
     public void jump(float delta) {
-        //TODO bug when jumping while moving downhill on a slope
+        //FIXME bug when jumping while moving downhill on a slope
         speedX -= JUMP_FORCE * MathUtils.sinDeg(groundAngle);
         speedY += JUMP_FORCE * MathUtils.cosDeg(groundAngle);
         isGrounded = false; isJumping = true;
@@ -207,18 +207,18 @@ public final class Player extends Entity {
         //Air acceleration
         if (Gdx.input.isKeyPressed(Input.Keys.D) || (Gdx.input.isKeyPressed(Input.Keys.RIGHT))) // if moving right
         {
-            if (speedX < MAX_SPEED) speedX += AIR_ACCELERATION * delta;
+            if (speedX < MAX_SPEED) speedX += AIR_ACCELERATION * delta; // accelerates right at twice the speed compared to on ground
         }
         else if (Gdx.input.isKeyPressed(Input.Keys.A) || (Gdx.input.isKeyPressed(Input.Keys.LEFT))) // if moving left
         {
-            if (speedX > -MAX_SPEED) speedX -= AIR_ACCELERATION * delta;
+            if (speedX > -MAX_SPEED) speedX -= AIR_ACCELERATION * delta; // accelerates left at twice the speed compared to on ground
         }
         //Air drag
         if (0 < speedY && speedY < 4)
         {
             speedX -= (MathUtils.floor(speedX / 0.125F) / 256F * 60F * delta); //TODO Maybe use 60 * delta in all calculations instead of applying it to variable. For readability
         }
-        //Gravity
+        //Gravity - a force pushing the player down when they are in the air
         speedY += GRAVITY_FORCE * delta;
     }
 
