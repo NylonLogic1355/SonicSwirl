@@ -60,15 +60,18 @@ public final class Player extends Entity {
         else {
             //FIXME Right now, right movement is prioritised if both directions are pressed at the same time. Consider cancelling them out.
 
-            sensorE.wallProcess();
-            sensorF.wallProcess();
             if (!isGrounded) {
                 airMove(delta);
                 airSensors();
+
+                xPos += speedX * delta;
+                yPos += speedY * delta;
             }
 
             else {
                 groundMove(delta);
+                xPos += speedX * delta;
+                yPos += speedY * delta;
                 if (isGrounded){
                     sensorA.floorProcess();
                     sensorB.floorProcess();
@@ -81,13 +84,14 @@ public final class Player extends Entity {
                     else if(sensorA.getActive() && sensorB.getActive() && sensorA.getDistance() == sensorB.getDistance() && sensorA.getTile() == sensorB.getTile()) groundCollision(sensorA); //TODO comment out this line first if there are physics bugs.
                     else isGrounded = false;
 
-
                 }
 
             }
 
-            xPos += speedX * delta;
-            yPos += speedY * delta;
+            sensorE.wallProcess();
+            sensorF.wallProcess();
+
+
 
             //TODO perhaps add a check if the player is stationary before calculating collision
 
@@ -96,7 +100,6 @@ public final class Player extends Entity {
         }
 
         enforceBoundaries();
-
         calculateSensorPositions();
 
         sprite.setPosition(xPos, yPos);
@@ -200,8 +203,6 @@ public final class Player extends Entity {
      */
     public Sensor floorSensors()
     {
-        calculateSensorPositions();
-        
         sensorA.floorProcess();
         sensorB.floorProcess();
 
