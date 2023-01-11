@@ -53,12 +53,11 @@ public class Sensor {
         int block = Math.floorMod(MathUtils.round(xPosition),16); //Different behaviour for negative numbers compared to using %. For
         // example, -129 % 16 would return -1 which would cause an ArrayIndexOutOfBoundsException. Math.floorMod() would return a positive index in these cases.
 
-        Gdx.app.debug("block check", block + " vs " + ((chunkX * 128) + (tileX * 16) - xPosition));
+        // An alternate expression to calculate block: ((chunkX * 128) + (tileX * 16) - xPosition));
 
         byte height = TileMap.getTile(chunkX,chunkY,tileX,tileY).getHeight(block);
 
         float checkDistance = ((chunkY * 128) + (tileY * 16) + height) - yPosition;
-
 
         if (height == 16)
         {
@@ -119,13 +118,11 @@ public class Sensor {
 
         int block = Math.floorMod(MathUtils.round(yPosition),16); //Different behaviour for negative numbers compared to using %. For
         // example, -129 % 16 would return -1 which would cause an ArrayIndexOutOfBoundsException. Math.floorMod() would return a positive index in these cases.
-        Gdx.app.debug("block check", block + " vs " + ((chunkY * 128) + (tileY * 16) - yPosition));
 
-        byte width = TileMap.getTile(chunkX,chunkY,tileX,tileY).getWidth(15 - block);
+        byte width = TileMap.getTile(chunkX,chunkY,tileX,tileY).getWidth(block);
 
         //TODO change process if tile is flipped horizontally
         float checkDistance = ((chunkX * 128) + ((tileX + 1) * 16) - width) - xPosition;
-        //FIXME Gdx.app.debug("distance check", checkDistance + " vs " + ((chunkX * 128) + (tileX * 16) - xPosition));
 
         tile = TileMap.getTile(chunkX,chunkY,tileX,tileY); distance = checkDistance;
         //Gdx.app.debug("distance",String.valueOf(distance));
