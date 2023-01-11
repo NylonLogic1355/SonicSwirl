@@ -60,6 +60,7 @@ public class GameScreen implements Screen {
 
         ScreenUtils.clear(Color.DARK_GRAY); // clears the screen and sets the background to a certain colour
 
+        // Pressing the E key on the keyboard toggles between (debug) drawing the heightArrays or the widthArrays
         if (Gdx.input.isKeyJustPressed(Input.Keys.E)) {
             debugToggle += 1;
             if (debugToggle == 2) debugToggle = 0;
