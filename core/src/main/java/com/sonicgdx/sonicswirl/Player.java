@@ -87,16 +87,19 @@ public final class Player extends Entity {
         }
         else {
 
-            sensorE.wallProcess();
-            sensorF.wallProcess();
             if (!isGrounded) {
                 //air state
                 airMove(delta);
                 airSensors();
+
+                xPos += speedX * delta;
+                yPos += speedY * delta;
             }
 
             else {
                 groundMove(delta);
+                xPos += speedX * delta;
+                yPos += speedY * delta;
                 if (isGrounded){
                     //checks sensor distances returned to validate the nearby tile to decide if it moves there.
                     sensorA.floorProcess();
@@ -110,13 +113,14 @@ public final class Player extends Entity {
                     else if(sensorA.getActive() && sensorB.getActive() && sensorA.getDistance() == sensorB.getDistance() && sensorA.getTile() == sensorB.getTile()) groundCollision(sensorA); //TODO comment out this line first if there are physics bugs.
                     else isGrounded = false;
 
-
                 }
 
             }
 
-            xPos += speedX * delta;
-            yPos += speedY * delta;
+            sensorE.wallProcess();
+            sensorF.wallProcess();
+
+
 
             //TODO perhaps add a check if the player is stationary before calculating collision
 
