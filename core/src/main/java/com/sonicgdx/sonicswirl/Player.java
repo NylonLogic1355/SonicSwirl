@@ -133,7 +133,7 @@ public final class Player extends Entity {
     }
 
     public void airMove(float delta) {
-        //Reduce height jumped if player releases jump button early
+        //Reduce the height jumped by capping the Y Speed if player releases the jump button (Space) early.
         if (!Gdx.input.isKeyPressed(Input.Keys.SPACE) && speedY > 4 && isJumping) speedY = 4;
 
         //Air acceleration
