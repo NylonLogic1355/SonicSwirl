@@ -39,8 +39,7 @@ public final class Player extends Entity {
     // Original: ACCELERATION = 0.046875F, DECELERATION = 0.5F, DEBUG_SPEED = 1.5F, MAX_SPEED = 6, SLOPE_FACTOR = 0.125, AIR_ACCELERATION = 0.09375F, GRAVITY_FORCE = 0.21875F;
     // Original values were designed to occur 60 times every second so by multiplying it by 60 you get the amount of pixels moved per second.
     private float speedX = 0, speedY = 0, groundSpeed = 0, groundAngle = 0;
-    private final FloorSensor sensorA, sensorB;
-    private final WallSensor sensorE,sensorF;
+    private final Sensor sensorA, sensorB, sensorE,sensorF;
 
     private final TextureAtlas atlas;
     private TextureRegion spriteRegion;
@@ -52,11 +51,11 @@ public final class Player extends Entity {
         super(image, width, height);
         atlas = new TextureAtlas(Gdx.files.internal("sprites/SonicGDX.atlas"));
         spriteRegion = atlas.findRegion("sonic-idle",0);
-        xPos = 50; yPos = 200; // Player starts at (600,200);
-        sensorA = new FloorSensor(xPos,yPos);
-        sensorB = new FloorSensor(xPos + (sprite.getWidth() - 1),yPos);
-        sensorE = new WallSensor(xPos,yPos + (sprite.getHeight() - 1));
-        sensorF = new WallSensor(xPos + (sprite.getWidth() - 1),yPos + (sprite.getHeight() - 1));
+        xPos = 50; yPos = 200; // Player starts at (50,200);
+        sensorA = new Sensor(xPos,yPos);
+        sensorB = new Sensor(xPos + (sprite.getWidth() - 1),yPos);
+        sensorE = new Sensor(xPos,yPos + (sprite.getHeight() - 1));
+        sensorF = new Sensor(xPos + (sprite.getWidth() - 1),yPos + (sprite.getHeight() - 1));
     }
 
     //TODO Tommy Ettinger's digital extension could be used for faster operations on GWT
@@ -80,8 +79,8 @@ public final class Player extends Entity {
         else {
             //TODO Right now, right movement is prioritised if both directions are pressed at the same time. Consider cancelling them out.
 
-            sensorE.process();
-            sensorF.process();
+            sensorE.wallProcess();
+            sensorF.wallProcess();
             if (!isGrounded) {
                 //air state
                 airMove(delta);
@@ -92,8 +91,8 @@ public final class Player extends Entity {
                 groundMove(delta);
                 if (isGrounded){
                     //checks sensor distances returned to validate the nearby tile to decide if it moves there.
-                    sensorA.process();
-                    sensorB.process();
+                    sensorA.floorProcess();
+                    sensorB.floorProcess();
 
                     sensorA.setActive(Math.max(-Math.abs(speedX) - 4, -14) < sensorA.getDistance() && sensorA.getDistance() < 14);
                     sensorB.setActive(Math.max(-Math.abs(speedX) - 4, -14) < sensorB.getDistance() && sensorB.getDistance() < 14);
@@ -221,11 +220,11 @@ public final class Player extends Entity {
     public void airSensors(){
         if (Math.abs(speedX) >= Math.abs(speedY)) {
             if (speedX > 0) { //going mostly right
-                FloorSensor winningSensor = floorSensors();
+                Sensor winningSensor = floorSensors();
                 if (winningSensor != null && winningSensor.getDistance() >= 0 && speedY <= 0) groundCollision(winningSensor);
             }
             else { //going mostly left
-                FloorSensor winningSensor = floorSensors();
+                Sensor winningSensor = floorSensors();
                 if (winningSensor != null && winningSensor.getDistance() >= 0 && speedY <= 0) groundCollision(winningSensor);
             }
         }
@@ -234,7 +233,7 @@ public final class Player extends Entity {
 
             }
             else { //going mostly down
-                FloorSensor winningSensor = floorSensors();
+                Sensor winningSensor = floorSensors();
                 if (winningSensor != null && winningSensor.getDistance() >= 0 && (sensorA.getDistance() <= -(speedY + 8) || sensorB.getDistance() >= -(speedY + 8))) groundCollision(winningSensor);
             }
         }
@@ -249,12 +248,12 @@ public final class Player extends Entity {
      * Applies unique calculation to find minimum value, from Sonic 2 depending on the player's speed.
      * @return "Winning Distance" sensor which could be null in the condition that the sensor distances are equal but their respective returnTiles are different.
      */
-    public FloorSensor floorSensors()
+    public Sensor floorSensors()
     {
         calculateSensorPositions(WIDTHRADIUS,HEIGHTRADIUS);
 
-        sensorA.process();
-        sensorB.process();
+        sensorA.floorProcess();
+        sensorB.floorProcess();
 
         if(sensorA.getDistance() > sensorB.getDistance()) return sensorA;
         else if (sensorB.getDistance() > sensorA.getDistance()) return sensorB;
@@ -263,7 +262,7 @@ public final class Player extends Entity {
 
     }
 
-    public void groundCollision(FloorSensor sensor)
+    public void groundCollision(Sensor sensor)
     {
         yPos += sensor.getDistance();
 
