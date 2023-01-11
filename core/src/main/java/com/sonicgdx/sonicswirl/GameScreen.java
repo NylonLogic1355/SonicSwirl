@@ -54,7 +54,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        //UNCOMMENT For debug
+        //UNCOMMENT for debugging purposes
         //frameLog.log();
         //delta = 0.016666668f;
 
@@ -68,11 +68,7 @@ public class GameScreen implements Screen {
 
         player.move(delta);
 
-        //TODO check for jumps here
-
         camera.position.set(player.xPos + cameraOffset.x,player.yPos + cameraOffset.y,camera.position.z); camera.update(); // recompute matrix for orthographical projection so that the change is responded to in the view
-
-        //TODO Add collision logic
 
         // tells the SpriteBatch to render in the coordinate system specified by the camera
         //viewport.apply();

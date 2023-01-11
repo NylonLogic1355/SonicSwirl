@@ -43,13 +43,22 @@ public final class Player extends Entity {
         //TODO Would be better to implement an InputProcessor. This makes more sense as an interrupt rather than constant polling.
         if (Gdx.input.isKeyJustPressed(Input.Keys.Q))
         {
-            toggleDebugMode();
+            //Toggle debug mode
+            debugMode = !debugMode;
+
+            //Reset movement variables when entering or exiting debug mode to prevent oddities in physics.
+            groundSpeed = 0;
+            speedX = 0;
+            speedY = 0;
+            groundAngle = 0;
+
+            //TODO acceleration in debug mode
         }
         if (debugMode) {
             debugMove(delta);
         }
         else {
-            //TODO Right now, right movement is prioritised if both directions are pressed at the same time. Consider cancelling them out.
+            //FIXME Right now, right movement is prioritised if both directions are pressed at the same time. Consider cancelling them out.
 
             sensorE.wallProcess();
             sensorF.wallProcess();
@@ -233,6 +242,11 @@ public final class Player extends Entity {
         }
     }
 
+    /**
+     * Sets the sensor positions relative to the player's position.
+     * sensorA is positioned in the bottom left corner and sensorB in the bottom right corner.
+     * sensorE is positioned at the centre left and sensorF is positioned at the centre right.
+     */
     @Override
     public void calculateSensorPositions() {
         super.calculateSensorPositions();
@@ -240,16 +254,6 @@ public final class Player extends Entity {
         sensorB.setPosition(rSensorX,yPos);
         sensorE.setPosition(lSensorX,centreY);
         sensorF.setPosition(rSensorX,centreY);
-    }
-
-    private void toggleDebugMode() {
-        debugMode = !debugMode;
-        groundSpeed = 0;
-        speedX = 0;
-        speedY = 0;
-        groundAngle = 0;
-        //Gdx.app.debug("debugMode",String.valueOf(debugMode));
-        //TODO acceleration in debug mode
     }
 
     private void debugMove(float delta) {
