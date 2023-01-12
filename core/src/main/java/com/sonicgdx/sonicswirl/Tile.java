@@ -19,11 +19,11 @@ package com.sonicgdx.sonicswirl;
 public class Tile {
 
     boolean horizontalFlip, verticalFlip, empty;
-    byte[] heightArray, widthArray;
-    byte solidity;
+    int[] heightArray, widthArray;
+    int solidity;
     // 0 = solid from top, 1 = solid from bottom, 2 = solid from left, 3 = solid from right, 4 = solid from all sides
     float angle;
-    Tile(byte[] heightArray, byte[] widthArray, float angle, byte solidity, boolean flippedHorizontally, boolean flippedVertically) {
+    Tile(int[] heightArray, int[] widthArray, float angle, int solidity, boolean flippedHorizontally, boolean flippedVertically) {
         this.empty = false;
 
         if (heightArray.length == 16) this.heightArray = heightArray;
@@ -44,7 +44,7 @@ public class Tile {
         this.angle = 0;
     }
 
-    public byte getHeight(int block)
+    public int getHeight(int block)
     {
         if (empty || block < 0 || block > 15) return 0;
         else {
@@ -52,7 +52,7 @@ public class Tile {
         }
 
     }
-    public byte getWidth(int block)
+    public int getWidth(int block)
     {
         if (empty || block < 0 || block > 15) return 0;
         else {
