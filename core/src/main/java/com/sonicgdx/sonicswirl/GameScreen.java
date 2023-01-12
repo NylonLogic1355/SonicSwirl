@@ -112,7 +112,7 @@ public class GameScreen implements Screen {
                     else Init.batch.setColor(new Color((1F/TILES_PER_CHUNK) * tileY,0,block,1));
                     Init.batch.draw(img, block + (tileX*TILE_SIZE)+(chunkX*CHUNK_SIZE),(tileY*TILE_SIZE)+(chunkY*CHUNK_SIZE),1, TileMap.map[chunkX][chunkY][tileX][tileY].getHeight(block));
 
-                    //TODO reversed search order for flipped tiles. e.g. Collections.reverse() or ArrayUtils.reverse(byte[] array)
+                    //TODO reversed search order for flipped tiles. e.g. Collections.reverse() or ArrayUtils.reverse(int[] array)
 
                 }
             }
@@ -139,7 +139,7 @@ public class GameScreen implements Screen {
                     else Init.batch.setColor(new Color(0,(1F/TILES_PER_CHUNK) * tileY,block,1));
 
                     int yPosition = (tileY * TILE_SIZE) + (chunkY * CHUNK_SIZE) + block;
-                    byte blockHeight = TileMap.map[chunkX][chunkY][tileX][tileY].getWidth(TILE_SIZE - block - 1);
+                    int blockHeight = TileMap.map[chunkX][chunkY][tileX][tileY].getWidth(TILE_SIZE - block - 1);
 
                     if (!TileMap.map[chunkX][chunkY][tileX][tileY].horizontalFlip) {
                         Init.batch.draw(img, (tileX * TILE_SIZE) + (chunkX * CHUNK_SIZE) + (TILE_SIZE - blockHeight), yPosition, blockHeight, 1);
@@ -147,7 +147,7 @@ public class GameScreen implements Screen {
                         Init.batch.draw(img, (tileX * TILE_SIZE) + (chunkX * CHUNK_SIZE), yPosition, blockHeight, 1);
                     }
 
-                    //TODO reversed search order for flipped tiles. e.g. Collections.reverse() or ArrayUtils.reverse(byte[] array)
+                    //TODO reversed search order for flipped tiles. e.g. Collections.reverse() or ArrayUtils.reverse(int[] array)
 
                 }
             }
@@ -180,7 +180,7 @@ public class GameScreen implements Screen {
                     else shapeRenderer.setColor(new Color((1F/TILES_PER_CHUNK) * tileY,0,block,1));
                     shapeRenderer.rect( block + (tileX*TILE_SIZE)+(chunkX*CHUNK_SIZE),(tileY*TILE_SIZE)+(chunkY*CHUNK_SIZE),1,TileMap.map[chunkX][chunkY][tileX][tileY].getHeight(block));
 
-                    //TODO reversed search order for flipped tiles. e.g. Collections.reverse() or ArrayUtils.reverse(byte[] array)
+                    //TODO reversed search order for flipped tiles. e.g. Collections.reverse() or ArrayUtils.reverse(int[] array)
 
                 }
             }
