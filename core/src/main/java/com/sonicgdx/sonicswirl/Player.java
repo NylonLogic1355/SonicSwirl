@@ -30,7 +30,7 @@ public final class Player extends Entity {
     Player() {
         super();
         atlas = new TextureAtlas(Gdx.files.internal("sprites/SonicGDX.atlas"));
-        spriteRegion = atlas.findRegion("sonic-walk",2);
+        spriteRegion = atlas.findRegion("sonic-dash",3);
         xPos = 600; yPos = 200; // Player starts at (600,200);
         sensorA = new FloorSensor();
         sensorB = new FloorSensor();
@@ -106,7 +106,8 @@ public final class Player extends Entity {
 
         //TODO calculate y Position from ground up
         sprite.setBounds(xPos - ((spriteRegion.getRegionWidth() + 1) / 2F),bottomEdgeY, spriteRegion.getRegionWidth(), spriteRegion.getRegionHeight());
-        //Since the xPos and yPos are the centre, you can just subtract the difference between the first pixel and the middle pixel to get the sprite co-ordinates.
+        //Since the xPos is the centre, you can just subtract the difference between the first pixel and the middle pixel to get the sprite co-ordinates.
+        //yPos is also the centre, but bottomEdgeY is used instead since sprites don't have constant height and positioning above the ground can be inconsistent.
         sprite.setOriginCenter();
 
         //FIXME possible approach https://www.reddit.com/r/libgdx/comments/i0plt4/comment/fzrlqqt
