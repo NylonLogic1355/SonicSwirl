@@ -5,8 +5,6 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
 
-import java.util.Optional;
-
 /**
  * This is the class that handles player movement, player collision with the ground as well as player collision
  * with other objects.
@@ -62,8 +60,7 @@ public final class Player extends Entity {
 
             if (!isGrounded) {
                 airMove(delta);
-                calculateSensorPositions();
-                airSensors();
+                setAirSensors();
             }
 
             else {
@@ -76,7 +73,6 @@ public final class Player extends Entity {
                 xPos += speedX * delta;
                 yPos += speedY * delta;
 
-                calculateSensorPositions();
             }
 
             if (sensorA.getActive() && sensorB.getActive()) {
@@ -151,6 +147,56 @@ public final class Player extends Entity {
     }
 
     /**
+     * Collides with the nearest floor within a certain limit by adjusting the player's yPos appropriately.
+     * The positive limit is always 14, but the negative limit only becomes more lenient as the player's speed increases.
+     * Limits of -16<=x<=16 are not used as those distances are likely too far away from the player to matter.
+     * Uses angle for rotation and speed of the player and for player slope physics. TODO
+     * Applies unique calculation to find minimum value, from Sonic 2 depending on the player's speed.
+     * @return "Winning Distance" sensor which could be null in the condition that the sensor distances are equal but their respective returnTiles are different.
+     */
+    public Sensor floorSensors()
+    {
+        sensorA.floorProcess();
+        sensorB.floorProcess();
+
+        if(sensorA.getDistance() > sensorB.getDistance()) return sensorA;
+        else if (sensorA.getDistance() < sensorB.getDistance()) return sensorB;
+        else if (sensorA.getTile() == sensorB.getTile()) return sensorA; //FIXME comment out this line first if there are physics bugs.
+        else return null;
+
+    }
+
+    public void groundCollision(Sensor sensor)
+    {
+        yPos += sensor.getDistance();
+
+        if (groundAngle == 360) {
+            groundAngle = snapToNearest(groundAngle,90);
+        }
+        else groundAngle = sensor.getTile().angle; //TODO possibly apply this to enemies?
+        if (!isGrounded) {
+            if (0 <= groundAngle && groundAngle <= 23) groundSpeed = speedX;
+                //TODO when mirrored... https://info.sonicretro.org/SPG:Slope_Physics#When_Falling_Downward
+            else if (24 <= groundAngle && groundAngle <= 45) {
+                if (Math.abs(speedX) >= Math.abs(speedY)) {
+                    groundSpeed = speedX;
+                } else {
+                    groundSpeed = speedY * 0.5F * -MathUtils.sinDeg(groundAngle);
+                }
+            }
+            else if (46 <= groundAngle && groundAngle <= 90) {
+                if (Math.abs(speedX) >= Math.abs(speedY)) {
+                    groundSpeed = speedX;
+                } else {
+                    groundSpeed = speedY * -MathUtils.sinDeg(groundAngle);
+                }
+            }
+            isGrounded = true;
+            if (isJumping) isJumping = false;
+        }
+    }
+
+    /**
      * @param delta time since last frame. Used to make physics similar to how they would be at 60FPS
      * at different frame rates.
      */
@@ -193,7 +239,7 @@ public final class Player extends Entity {
      * && operator uses short-circuit evaluation (as opposed to &) so will only evaluate the left hand side of the boolean expression is true. This means that
      * if the returned value is null it won't check its distance so won't throw a NullPointerException.
      */
-    public void airSensors(){
+    public void setAirSensors(){
         //TODO insert sensorC and sensorD
         if (Math.abs(speedX) >= Math.abs(speedY)) {
             //In both cases the ground sensors will be checked
@@ -222,57 +268,6 @@ public final class Player extends Entity {
                 sensorA.setActive(true);
                 sensorB.setActive(true);
             }
-        }
-    }
-
-
-    /**
-     * Collides with the nearest floor within a certain limit by adjusting the player's yPos appropriately.
-     * The positive limit is always 14, but the negative limit only becomes more lenient as the player's speed increases.
-     * Limits of -16<=x<=16 are not used as those distances are likely too far away from the player to matter.
-     * Uses angle for rotation and speed of the player and for player slope physics. TODO
-     * Applies unique calculation to find minimum value, from Sonic 2 depending on the player's speed.
-     * @return "Winning Distance" sensor which could be null in the condition that the sensor distances are equal but their respective returnTiles are different.
-     */
-    public Sensor floorSensors()
-    {
-        sensorA.floorProcess();
-        sensorB.floorProcess();
-
-        if(sensorA.getDistance() > sensorB.getDistance()) return sensorA;
-        else if (sensorA.getDistance() < sensorB.getDistance()) return sensorB;
-        else if (sensorA.getTile() == sensorB.getTile()) return sensorA; //FIXME comment out this line first if there are physics bugs.
-        else return null;
-
-    }
-
-    public void groundCollision(Sensor sensor)
-    {
-        yPos += sensor.getDistance();
-
-        if (groundAngle == 360) {
-            groundAngle = snapToNearest(groundAngle,90);
-        }
-        else groundAngle = sensor.getTile().angle; //TODO possibly apply this to enemies?
-        if (!isGrounded) {
-            if (0 <= groundAngle && groundAngle <= 23) groundSpeed = speedX;
-            //TODO when mirrored... https://info.sonicretro.org/SPG:Slope_Physics#When_Falling_Downward
-            else if (24 <= groundAngle && groundAngle <= 45) {
-                if (Math.abs(speedX) >= Math.abs(speedY)) {
-                    groundSpeed = speedX;
-                } else {
-                    groundSpeed = speedY * 0.5F * -MathUtils.sinDeg(groundAngle);
-                }
-            }
-            else if (46 <= groundAngle && groundAngle <= 90) {
-                if (Math.abs(speedX) >= Math.abs(speedY)) {
-                    groundSpeed = speedX;
-                } else {
-                    groundSpeed = speedY * -MathUtils.sinDeg(groundAngle);
-                }
-            }
-            isGrounded = true;
-            if (isJumping) isJumping = false;
         }
     }
 
