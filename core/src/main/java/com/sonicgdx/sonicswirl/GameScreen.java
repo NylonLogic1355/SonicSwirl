@@ -45,14 +45,12 @@ public class GameScreen implements Screen {
 
     public GameScreen(final Init Init) {
 
-        //Have to declare it outside, so it is a global variable?
-
         this.Init = Init;
 
         //TODO implement class with reference to https://gamedev.stackexchange.com/a/133593
 
         //Gdx.app.debug("debugMode",String.valueOf(tile[1][3][15]));
-        //TODO possibly reduce viewport resolution to reduce pixels being missing at lower resolutions or change viewport type
+        //FIXME possibly reduce viewport resolution to reduce pixels being missing at lower resolutions or change viewport type
 
         camera = new OrthographicCamera(); // 3D camera which projects into 2D.
         gameViewport = new ExtendViewport(1280,720,camera);
@@ -90,10 +88,10 @@ public class GameScreen implements Screen {
 
         player.move(delta);
 
-        //TODO check for jumps here
-
         //Updates the camera position to where the player is but keeps the offset
-        camera.position.set(player.xPos + cameraOffset.x,player.yPos + cameraOffset.y,camera.position.z); camera.update(); // recompute matrix for orthographical projection so that the change is responded to in the view
+        camera.position.set(player.xPos + cameraOffset.x,player.yPos + cameraOffset.y,camera.position.z); camera.update();
+        //recompute the orthographical projection matrix
+        //so that the change is responded to in the user's view
 
         //tells the SpriteBatch to render in the coordinate system specified by the camera
         //viewport.apply();
