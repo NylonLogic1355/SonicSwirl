@@ -76,30 +76,26 @@ public final class Player extends Entity {
                 calculateSensorPositions();
 
                 if (sensorA.getActive() && sensorB.getActive()) {
-                    sensorA.floorProcess();
-                    sensorB.floorProcess();
 
-                    sensorA.setActive(Math.max(-Math.abs(speedX) - 4, -14) < sensorA.getDistance() && sensorA.getDistance() < 14);
-                    sensorB.setActive(Math.max(-Math.abs(speedX) - 4, -14) < sensorB.getDistance() && sensorB.getDistance() < 14);
+                    Sensor winningSensor = floorSensors();
 
-                    if(sensorA.getDistance() > sensorB.getDistance() && sensorA.getActive()) groundCollision(sensorA);
-                    else if(sensorB.getActive() && sensorA.getDistance() < sensorB.getDistance()) groundCollision(sensorB);
-                    else if(sensorA.getActive() && sensorB.getActive() && sensorA.getDistance() == sensorB.getDistance() && sensorA.getTile() == sensorB.getTile()) groundCollision(sensorA); //TODO comment out this line first if there are physics bugs.
+                    if (isGrounded)
+                    if (winningSensor != null && Math.max(-Math.abs(speedX) - 4, -14) < winningSensor.getDistance() && winningSensor.getDistance() < 14) groundCollision(winningSensor); //TODO comment out this line first if there are physics bugs.
                     else isGrounded = false;
+
+                    else{
+
+                    }
+
+                    if(aValid && sensorA.getDistance() > sensorB.getDistance()) groundCollision(sensorA);
+                    else if(bValid && sensorA.getDistance() < sensorB.getDistance()) groundCollision(sensorB);
+                    else if(aValid && sensorA.getDistance() == sensorB.getDistance() && sensorA.getTile() == sensorB.getTile()) groundCollision(sensorA); //TODO comment out this line first if there are physics bugs.
+                    else isGrounded = false;
+
                 }
 
-
                 if (isGrounded){
-                    sensorA.floorProcess();
-                    sensorB.floorProcess();
 
-                    sensorA.setActive(Math.max(-Math.abs(speedX) - 4, -14) < sensorA.getDistance() && sensorA.getDistance() < 14);
-                    sensorB.setActive(Math.max(-Math.abs(speedX) - 4, -14) < sensorB.getDistance() && sensorB.getDistance() < 14);
-
-                    if(sensorA.getDistance() > sensorB.getDistance() && sensorA.getActive()) groundCollision(sensorA);
-                    else if(sensorB.getActive() && sensorA.getDistance() < sensorB.getDistance()) groundCollision(sensorB);
-                    else if(sensorA.getActive() && sensorB.getActive() && sensorA.getDistance() == sensorB.getDistance() && sensorA.getTile() == sensorB.getTile()) groundCollision(sensorA); //TODO comment out this line first if there are physics bugs.
-                    else isGrounded = false;
 
                 }
 
@@ -237,7 +233,7 @@ public final class Player extends Entity {
         sensorB.floorProcess();
 
         if(sensorA.getDistance() > sensorB.getDistance()) return sensorA;
-        else if (sensorB.getDistance() > sensorA.getDistance()) return sensorB;
+        else if (sensorA.getDistance() < sensorB.getDistance()) return sensorB;
         else if (sensorA.getTile() == sensorB.getTile()) return sensorA;
         else return null;
 
