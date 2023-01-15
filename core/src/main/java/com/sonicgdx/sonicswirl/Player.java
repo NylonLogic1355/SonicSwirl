@@ -74,6 +74,21 @@ public final class Player extends Entity {
                 yPos += speedY * delta;
 
                 calculateSensorPositions();
+
+                if (sensorA.getActive() && sensorB.getActive()) {
+                    sensorA.floorProcess();
+                    sensorB.floorProcess();
+
+                    sensorA.setActive(Math.max(-Math.abs(speedX) - 4, -14) < sensorA.getDistance() && sensorA.getDistance() < 14);
+                    sensorB.setActive(Math.max(-Math.abs(speedX) - 4, -14) < sensorB.getDistance() && sensorB.getDistance() < 14);
+
+                    if(sensorA.getDistance() > sensorB.getDistance() && sensorA.getActive()) groundCollision(sensorA);
+                    else if(sensorB.getActive() && sensorA.getDistance() < sensorB.getDistance()) groundCollision(sensorB);
+                    else if(sensorA.getActive() && sensorB.getActive() && sensorA.getDistance() == sensorB.getDistance() && sensorA.getTile() == sensorB.getTile()) groundCollision(sensorA); //TODO comment out this line first if there are physics bugs.
+                    else isGrounded = false;
+                }
+
+
                 if (isGrounded){
                     sensorA.floorProcess();
                     sensorB.floorProcess();
@@ -96,8 +111,6 @@ public final class Player extends Entity {
 
 
             //TODO perhaps add a check if the player is stationary before calculating collision
-
-
 
         }
 
@@ -178,23 +191,33 @@ public final class Player extends Entity {
      * if the returned value is null it won't check its distance so won't throw a NullPointerException.
      */
     public void airSensors(){
+        //TODO insert sensorC and sensorD
         if (Math.abs(speedX) >= Math.abs(speedY)) {
+            //In both cases the ground sensors will be checked
+            sensorA.setActive(true);
+            sensorB.setActive(true);
             if (speedX > 0) { //going mostly right
-                Sensor winningSensor = floorSensors();
-                if (winningSensor != null && winningSensor.getDistance() >= 0 && speedY <= 0) groundCollision(winningSensor);
+
+                sensorE.setActive(false);
+                sensorF.setActive(true);
             }
             else { //going mostly left
-                Sensor winningSensor = floorSensors();
-                if (winningSensor != null && winningSensor.getDistance() >= 0 && speedY <= 0) groundCollision(winningSensor);
+
+                sensorE.setActive(true);
+                sensorF.setActive(false);
             }
         }
         else {
+            //In both cases the wall sensors will be checked
+            sensorE.setActive(true);
+            sensorF.setActive(true);
             if (speedY > 0) { //going mostly up
-
+                sensorA.setActive(false);
+                sensorB.setActive(false);
             }
             else { //going mostly down
-                Sensor winningSensor = floorSensors();
-                if (winningSensor != null && winningSensor.getDistance() >= 0 && (sensorA.getDistance() <= -(speedY + 8) || sensorB.getDistance() >= -(speedY + 8))) groundCollision(winningSensor);
+                sensorA.setActive(true);
+                sensorB.setActive(true);
             }
         }
     }
