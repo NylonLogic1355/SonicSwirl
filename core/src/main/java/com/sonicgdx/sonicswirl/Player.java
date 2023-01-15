@@ -69,34 +69,41 @@ public final class Player extends Entity {
             else {
                 groundMove(delta);
 
+                sensorA.setActive(true);
+                sensorB.setActive(true);
+
                 //Updates player position
                 xPos += speedX * delta;
                 yPos += speedY * delta;
 
                 calculateSensorPositions();
+            }
 
-                if (sensorA.getActive() && sensorB.getActive()) {
+            if (sensorA.getActive() && sensorB.getActive()) {
 
-                    Sensor winningSensor = floorSensors();
+                Sensor winningSensor = floorSensors();
 
-                    if (isGrounded)
+                if (isGrounded) {
                     if (winningSensor != null && Math.max(-Math.abs(speedX) - 4, -14) < winningSensor.getDistance() && winningSensor.getDistance() < 14) groundCollision(winningSensor); //TODO comment out this line first if there are physics bugs.
                     else isGrounded = false;
-
-                    else{
-
-                    }
-
-                    if(aValid && sensorA.getDistance() > sensorB.getDistance()) groundCollision(sensorA);
-                    else if(bValid && sensorA.getDistance() < sensorB.getDistance()) groundCollision(sensorB);
-                    else if(aValid && sensorA.getDistance() == sensorB.getDistance() && sensorA.getTile() == sensorB.getTile()) groundCollision(sensorA); //TODO comment out this line first if there are physics bugs.
-                    else isGrounded = false;
-
                 }
+                else{
+                    if (Math.abs(speedX) >= Math.abs(speedY)) {
+                        if (speedX > 0) { //going mostly right
+                            if (winningSensor != null && winningSensor.getDistance() >= 0 && speedY <= 0) groundCollision(winningSensor);
+                        }
+                        else { //going mostly left
+                            if (winningSensor != null && winningSensor.getDistance() >= 0 && speedY <= 0) groundCollision(winningSensor);
+                        }
+                    }
+                    else {
+                        if (speedY > 0) { //going mostly up
 
-                if (isGrounded){
-
-
+                        }
+                        else { //going mostly down
+                            if (winningSensor != null && winningSensor.getDistance() >= 0 && (sensorA.getDistance() <= -(speedY + 8) || sensorB.getDistance() >= -(speedY + 8))) groundCollision(winningSensor);
+                        }
+                    }
                 }
 
             }
@@ -234,7 +241,7 @@ public final class Player extends Entity {
 
         if(sensorA.getDistance() > sensorB.getDistance()) return sensorA;
         else if (sensorA.getDistance() < sensorB.getDistance()) return sensorB;
-        else if (sensorA.getTile() == sensorB.getTile()) return sensorA;
+        else if (sensorA.getTile() == sensorB.getTile()) return sensorA; //FIXME comment out this line first if there are physics bugs.
         else return null;
 
     }
