@@ -108,7 +108,7 @@ public final class Player extends Entity {
         sprite.setBounds(xPos - ((spriteRegion.getRegionWidth() + 1) / 2F),bottomEdgeY, spriteRegion.getRegionWidth(), spriteRegion.getRegionHeight());
         //Since the xPos is the centre, you can just subtract the difference between the first pixel and the middle pixel to get the sprite co-ordinates.
         //yPos is also the centre, but bottomEdgeY is used instead since sprites don't have constant height and positioning above the ground can be inconsistent.
-        sprite.setOriginCenter();
+        sprite.setOriginCenter(); //TODO only set origin when region, also perhaps look into setOriginBasedPosition
 
         //FIXME possible approach https://www.reddit.com/r/libgdx/comments/i0plt4/comment/fzrlqqt
 
