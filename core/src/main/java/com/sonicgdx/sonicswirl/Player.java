@@ -211,15 +211,24 @@ public final class Player extends Entity {
      * Limits of -16<=x<=16 are not used as those distances are likely too far away from the player to matter.
      * Uses angle for rotation and speed of the player and for player slope physics. TODO
      * Applies unique calculation to find minimum value, from Sonic 2 depending on the player's speed.
-     * @return "Winning Distance" sensor which could be null in the condition that the sensor distances are equal but their respective returnTiles are different.
+     * @return NULLABLE "Winning Distance" sensor.
+     * Returns null in the condition that the sensor distances are equal but their respective returnTiles are different -
+     * this prevents the groundAngle being changed and the player rotating haphazardly.
      */
     public Sensor floorSensors()
     {
+        //Checks below and potentially above the positions of both sensors to find the nearest tile if one is present.
         sensorA.floorProcess();
         sensorB.floorProcess();
 
+        /*
+        Returns the sensor that had found the greater distance.
+        Note that even if it returns a sensor it may not have a valid distance.
+        The validation happens outside this method.
+        */
         if(sensorA.getDistance() > sensorB.getDistance()) return sensorA;
         else if (sensorA.getDistance() < sensorB.getDistance()) return sensorB;
+        //If sensorB could be returned in this case it would not make a difference - the sensors are essentially the same.
         else if (sensorA.getTile() == sensorB.getTile()) return sensorA; //FIXME comment out this line first if there are physics bugs.
         else return null;
 
@@ -227,12 +236,29 @@ public final class Player extends Entity {
 
     public void groundCollision(Sensor sensor)
     {
+        /*
+        Corrects the player's Y position according to the distance found by the sensor.
+        This should place them at the same height as the found tile after the frame is drawn
+        */
         yPos += sensor.getDistance();
 
+        /*
+        In the special case that the Tile has an angle of 360 (the 'flagged' angle)
+        the player's current angle is rounded to the nearest 90 degrees.
+        An example of a use case is the peak of a ramp which sends the player directly upwards when they run off it.
+        */
         if (groundAngle == 360) {
             groundAngle = snapToNearest(groundAngle,90);
         }
+
+        //Otherwise, sets the player's ground angle to that of the tile found by the sensor.
         else groundAngle = sensor.getTile().angle; //TODO possibly apply this to enemies?
+
+        /*
+        This block is run when the player lands onto the ground from the air (e.g. after jumping).
+        Its purpose is to apply the same momentum that the player had whilst in the air, but adjusted
+        depending on the angle of the ground.
+        */
         if (!isGrounded) {
             if (0 <= groundAngle && groundAngle <= 23) groundSpeed = speedX;
                 //TODO when mirrored... https://info.sonicretro.org/SPG:Slope_Physics#When_Falling_Downward
