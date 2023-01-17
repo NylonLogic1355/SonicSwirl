@@ -179,7 +179,9 @@ public final class Player extends Entity {
     {
         /*
         Corrects the player's Y position according to the distance found by the sensor.
-        This should place them at the same height as the found tile after the frame is drawn
+        This should place them at the same height as the found tile after the frame is drawn, responding to the collision.
+        Note that the player might not be on top of a surface even after this - this line may run multiple times if they
+        are inside the floor to push them upwards and out of it.
         */
         yPos += sensor.getDistance();
 
