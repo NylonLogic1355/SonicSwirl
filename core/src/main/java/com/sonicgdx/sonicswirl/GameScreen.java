@@ -27,8 +27,6 @@ public class GameScreen implements Screen {
         this.Init = Init;
 
         //TODO implement class with reference to https://gamedev.stackexchange.com/a/133593
-
-        //Gdx.app.debug("debugMode",String.valueOf(tile[1][3][15]));
         //FIXME possibly reduce viewport resolution to reduce pixels being missing at lower resolutions or change viewport type
 
         camera = new OrthographicCamera(); // 3D camera which projects into 2D.
