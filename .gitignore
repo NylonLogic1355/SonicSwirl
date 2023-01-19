@@ -64,6 +64,12 @@ www-test/
 *.iws
 *.iml
 
+## Visual Studio Code ##
+.vscode/
+.history/
+*.vsix
+.ionide
+
 ## Eclipse:
 .classpath
 .project
