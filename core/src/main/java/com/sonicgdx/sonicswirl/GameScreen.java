@@ -147,10 +147,14 @@ public class GameScreen implements Screen {
                 //Goes through every element in the height array
                 for (int block = 0; block < TILE_SIZE; block++)
                 {
+                    //At the starting x of each tile, sets the colour to black
+                    //to make it easy to see where each tile starts from
                     if (block==0) Init.batch.setColor(Color.BLACK);
+                    //Otherwise, format the tile's colours with a red gradient for each tile's y position
+                    //and a blue gradient for each element in the array
                     else Init.batch.setColor(new Color((1F/ TILES_PER_CHUNK) * tileY,0,block,1));
 
-                    // Draws a block at the located at the co-ordinates of the tile (+ the array position for the x-axis)
+                    // Draws a block at the located at the co-ordinates of the tile (+ the array position for the x-axis only)
                     // with width 1 and the height obtained from the array
                     Init.batch.draw(whiteSquare, block + (tileX* TILE_SIZE)+(chunkX* CHUNK_SIZE),(tileY* TILE_SIZE)+(chunkY* CHUNK_SIZE),1, TileMap.map[chunkX][chunkY].getTileArray()[tileX][tileY].getHeight(block));
 
