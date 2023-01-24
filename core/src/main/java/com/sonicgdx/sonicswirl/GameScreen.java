@@ -128,6 +128,9 @@ public class GameScreen implements Screen {
 
     /**
      * Draws each Tile in a chunk using a gradient - for debugging purposes only
+     * Draws each Tile using a gradient - for debugging purposes only
+     * Further iteration is done outside the procedure for every chunk in the TileMap. This is so that this method
+     * can potentially be reused in other circumstances (such as for rendering only one chunk in the creator UI)
      * @param chunkX the chunk number on the x-axis - not the same as its co-ordinate
      * @param chunkY the chunk number on the y-axis - not the same as its co-ordinate
      */
@@ -138,13 +141,17 @@ public class GameScreen implements Screen {
         {
             for (int tileY = 0; tileY < TILES_PER_CHUNK; tileY++)
             {
-                //skip if empty
+                //Skips the loop for empty tiles (every value in its array would be zero anyway)
                 if (TileMap.map[chunkX][chunkY].getTileArray()[tileX][tileY].empty) continue;
-                //draw the tile's height array at its location
+
+                //Goes through every element in the height array
                 for (int block = 0; block < TILE_SIZE; block++)
                 {
-                    if (block==0) Init.batch.setColor(new Color(0,0,0,1));
+                    if (block==0) Init.batch.setColor(Color.BLACK);
                     else Init.batch.setColor(new Color((1F/ TILES_PER_CHUNK) * tileY,0,block,1));
+
+                    // Draws a block at the located at the co-ordinates of the tile (+ the array position for the x-axis)
+                    // with width 1 and the height obtained from the array
                     Init.batch.draw(whiteSquare, block + (tileX* TILE_SIZE)+(chunkX* CHUNK_SIZE),(tileY* TILE_SIZE)+(chunkY* CHUNK_SIZE),1, TileMap.map[chunkX][chunkY].getTileArray()[tileX][tileY].getHeight(block));
 
                     //TODO reversed search order for flipped tiles. e.g. Collections.reverse() or ArrayUtils.reverse(int[] array)
@@ -158,28 +165,33 @@ public class GameScreen implements Screen {
 
     /**
      * Draws each Tile using a gradient - for debugging purposes only
+     * Further iteration is done outside the procedure for every chunk in the TileMap. This is so that this method
+     * can potentially be reused in other circumstances (such as for rendering only one chunk in the creator UI)
      * @param chunkX the chunk number on the x-axis - not the same as its co-ordinate
      * @param chunkY the chunk number on the y-axis - not the same as its co-ordinate
      */
     public void drawChunkWidthBatch(int chunkX, int chunkY) {
+        final int TILES_PER_CHUNK = CHUNK_SIZE / TILE_SIZE;
 
+        //Iterates through every tile in the chunk
         for (int tileX = 0; tileX < TILES_PER_CHUNK; tileX++)
         {
             for (int tileY = 0; tileY < TILES_PER_CHUNK; tileY++)
             {
+                //Skips the loop for empty tiles (every value in its array would be zero anyway)
                 if (TileMap.map[chunkX][chunkY][tileX][tileY].empty) continue;
                 for (int block = 0; block < TILE_SIZE; block++)
                 {
-                    if (block==0) Init.batch.setColor(new Color(0,0,0,1));
+                    if (block==0) Init.batch.setColor(Color.BLACK);
                     else Init.batch.setColor(new Color(0,(1F/TILES_PER_CHUNK) * tileY,block,1));
 
                     int yPosition = (tileY * TILE_SIZE) + (chunkY * CHUNK_SIZE) + block;
-                    int blockHeight = TileMap.map[chunkX][chunkY][tileX][tileY].getWidth(TILE_SIZE - block - 1);
+                    int blockWidth = TileMap.map[chunkX][chunkY][tileX][tileY].getWidth(TILE_SIZE - block - 1);
 
                     if (!TileMap.map[chunkX][chunkY][tileX][tileY].horizontalFlip) {
-                        Init.batch.draw(img, (tileX * TILE_SIZE) + (chunkX * CHUNK_SIZE) + (TILE_SIZE - blockHeight), yPosition, blockHeight, 1);
+                        Init.batch.draw(img, (tileX * TILE_SIZE) + (chunkX * CHUNK_SIZE) + (TILE_SIZE - blockWidth), yPosition, blockWidth, 1);
                     } else {
-                        Init.batch.draw(img, (tileX * TILE_SIZE) + (chunkX * CHUNK_SIZE), yPosition, blockHeight, 1);
+                        Init.batch.draw(img, (tileX * TILE_SIZE) + (chunkX * CHUNK_SIZE), yPosition, blockWidth, 1);
                     }
 
                     //TODO reversed search order for flipped tiles. e.g. Collections.reverse() or ArrayUtils.reverse(int[] array)
@@ -189,37 +201,6 @@ public class GameScreen implements Screen {
         }
         Init.batch.setColor(Color.WHITE); //Resets batch colour
 
-    }
-
-    /**
-     * Draws each Tile using a gradient - for debugging purposes only
-     * @param chunkX the chunk number on the x-axis - not the same as its co-ordinate
-     * @param chunkY the chunk number on the y-axis - not the same as its co-ordinate
-     * @deprecated Superseded by drawChunkBatch as ShapeRenderer uses its own mesh compared to the SpriteBatch and therefore conflicts in the rendering method making it cumbersome to use.
-     */
-    @Deprecated
-    public void drawTileHeightShapeRenderer(int chunkX, int chunkY) {
-
-        /*//TODO Foreach loop?
-        for (int tileX = 0; tileX < TILES_PER_CHUNK; tileX++)
-        {
-            for (int tileY = 0; tileY < TILES_PER_CHUNK; tileY++)
-            {
-                if (TileMap.map[chunkX][chunkY][tileX][tileY].empty){
-                    continue;
-                }
-                for (int block = 0; block < TILE_SIZE; block++)
-                {
-
-                    if (block==0) shapeRenderer.setColor(new Color(0,0,0,1));
-                    else shapeRenderer.setColor(new Color((1F/TILES_PER_CHUNK) * tileY,0,block,1));
-                    shapeRenderer.rect( block + (tileX*TILE_SIZE)+(chunkX*CHUNK_SIZE),(tileY*TILE_SIZE)+(chunkY*CHUNK_SIZE),1,TileMap.map[chunkX][chunkY][tileX][tileY].getHeight(block));
-
-                    //TODO reversed search order for flipped tiles. e.g. Collections.reverse() or ArrayUtils.reverse(int[] array)
-
-                }
-            }
-        }*/
     }
 
     @Override
@@ -254,6 +235,37 @@ public class GameScreen implements Screen {
     public void hide() {
         //TODO Auto-generated method stub
 
+    }
+
+    /**
+     * Draws each Tile using a gradient - for debugging purposes only
+     * @param chunkX the chunk number on the x-axis - not the same as its co-ordinate
+     * @param chunkY the chunk number on the y-axis - not the same as its co-ordinate
+     * @deprecated Superseded by drawChunkBatch as ShapeRenderer uses its own mesh compared to the SpriteBatch and therefore conflicts in the rendering method making it cumbersome to use.
+     */
+    @Deprecated
+    public void drawChunkHeightShapeRenderer(int chunkX, int chunkY) {
+
+        /*//TODO Foreach loop?
+        for (int tileX = 0; tileX < TILES_PER_CHUNK; tileX++)
+        {
+            for (int tileY = 0; tileY < TILES_PER_CHUNK; tileY++)
+            {
+                if (TileMap.map[chunkX][chunkY][tileX][tileY].empty){
+                    continue;
+                }
+                for (int block = 0; block < TILE_SIZE; block++)
+                {
+
+                    if (block==0) shapeRenderer.setColor(new Color(0,0,0,1));
+                    else shapeRenderer.setColor(new Color((1F/TILES_PER_CHUNK) * tileY,0,block,1));
+                    shapeRenderer.rect( block + (tileX*TILE_SIZE)+(chunkX*CHUNK_SIZE),(tileY*TILE_SIZE)+(chunkY*CHUNK_SIZE),1,TileMap.map[chunkX][chunkY][tileX][tileY].getHeight(block));
+
+                    //TODO reversed search order for flipped tiles. e.g. Collections.reverse() or ArrayUtils.reverse(int[] array)
+
+                }
+            }
+        }*/
     }
 
 }
