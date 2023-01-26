@@ -20,11 +20,12 @@ public final class Player extends Entity {
     // Original values were designed to occur 60 times every second so by multiplying it by 60 you get the amount of pixels moved per second.
     private float speedX = 0, speedY = 0, groundSpeed = 0, groundAngle = 0;
     private final Sensor sensorA, sensorB, sensorE,sensorF;
-
-    private Vector2 position, speed;
+    private Vector2 speed;
     Player(Texture image, int width, int height) {
         super(image, width, height);
-        position = new Vector2(600,200); // Player starts at (600,200);
+        position.set(600,200); // Sets the player's starting position at (600,200). (The variable was initialised in super constructor)
+        //The vector has two components for the x position and y position respectively
+        
         sensorA = new Sensor(position.x,position.y);
         sensorB = new Sensor(position.x + (sprite.getWidth() - 1),position.y);
         sensorE = new Sensor(position.x,position.y + (sprite.getHeight() - 1) / 2);
