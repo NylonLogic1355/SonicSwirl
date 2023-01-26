@@ -22,6 +22,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Rectangle;
 
 /**
@@ -43,17 +44,16 @@ public final class Player extends Entity {
     private TextureRegion spriteRegion;
 
     final int WIDTHRADIUS= 9, HEIGHTRADIUS = 19;
-
-
+    private Vector2 position, speed;
     Player(Texture image, int width, int height) {
         super(image, width, height);
         atlas = new TextureAtlas(Gdx.files.internal("sprites/SonicGDX.atlas"));
         spriteRegion = atlas.findRegion("sonic-idle",0);
-        xPos = 50; yPos = 200; // Player starts at (50,200);
-        sensorA = new Sensor(xPos,yPos);
-        sensorB = new Sensor(xPos + (sprite.getWidth() - 1),yPos);
-        sensorE = new Sensor(xPos,yPos + (sprite.getHeight() - 1) / 2);
-        sensorF = new Sensor(xPos + (sprite.getWidth() - 1),yPos + (sprite.getHeight() - 1) / 2);
+        position = new Vector2(50,200); // Player starts at (600,200);
+        sensorA = new Sensor(position.x,position.y);
+        sensorB = new Sensor(position.x + (sprite.getWidth() - 1),position.y);
+        sensorE = new Sensor(position.x,position.y + (sprite.getHeight() - 1) / 2);
+        sensorF = new Sensor(position.x + (sprite.getWidth() - 1),position.y + (sprite.getHeight() - 1) / 2);
     }
 
     //TODO Tommy Ettinger's digital extension could be used for faster operations on GWT
@@ -98,8 +98,8 @@ public final class Player extends Entity {
                 sensorB.setActive(true);
 
                 //Updates player position
-                xPos += speedX * delta;
-                yPos += speedY * delta;
+                position.x += speedX * delta;
+                position.y += speedY * delta;
 
             }
 
@@ -153,7 +153,7 @@ public final class Player extends Entity {
 
         //Rotates the sprite first, and THEN changes its co-ordinates (-translating it)
 
-        sprite.setPosition(xPos, yPos);
+        sprite.setPosition(position.x, position.y);
         sprite.setRotation(groundAngle);
 
         //TODO calculate y Position from ground up
@@ -206,7 +206,7 @@ public final class Player extends Entity {
     }
 
     /**
-     * Collides with the nearest floor within a certain limit by adjusting the player's yPos appropriately.
+     * Collides with the nearest floor within a certain limit by adjusting the player's y position appropriately.
      * The positive limit is always 14, but the negative limit only becomes more lenient as the player's speed increases.
      * Limits of -16<=x<=16 are not used as those distances are likely too far away from the player to matter.
      * Uses angle for rotation and speed of the player and for player slope physics. TODO
@@ -242,7 +242,7 @@ public final class Player extends Entity {
         Note that the player might not be on top of a surface even after this - this line may run multiple times if they
         are inside the floor to push them upwards and out of it.
         */
-        yPos += sensor.getDistance();
+        position.y += sensor.getDistance();
 
         /*
         In the special case that the Tile has an angle of 360 (the 'flagged' angle)
@@ -315,8 +315,8 @@ public final class Player extends Entity {
         }
 
         //Updates player position
-        xPos += speedX * delta;
-        yPos += speedY * delta;
+        position.x += speedX * delta;
+        position.y += speedY * delta;
 
         //Gravity - a force pushing the player down when they are in the air
         speedY += GRAVITY_FORCE * delta;
@@ -366,18 +366,18 @@ public final class Player extends Entity {
     @Override
     public void calculateSensorPositions(float widthRadius, float heightRadius) {
         super.calculateSensorPositions(widthRadius, heightRadius);
-        sensorA.setPosition(leftEdgeX,bottomEdgeY); //TODO possibly remove these variables
-        sensorB.setPosition(rightEdgeX,bottomEdgeY);
+        sensorA.setPosition(leftEdgeX,position.y); //TODO possibly remove these variables
+        sensorB.setPosition(rightEdgeX,position.y);
         //FIXME sensorE.setPosition(lSensorX,centreY);
         //FIXME sensorF.setPosition(rSensorX,centreY);
     }
 
     private void debugMove(float delta) {
         final int DEBUG_SPEED = 90;
-        if (Gdx.input.isKeyPressed(Input.Keys.D)) xPos += (DEBUG_SPEED * delta);
-        if (Gdx.input.isKeyPressed(Input.Keys.A)) xPos -= (DEBUG_SPEED * delta);
-        if (Gdx.input.isKeyPressed(Input.Keys.W)) yPos += (DEBUG_SPEED * delta);
-        if (Gdx.input.isKeyPressed(Input.Keys.S)) yPos -= (DEBUG_SPEED * delta);
+        if (Gdx.input.isKeyPressed(Input.Keys.D)) position.x += (DEBUG_SPEED * delta);
+        if (Gdx.input.isKeyPressed(Input.Keys.A)) position.x -= (DEBUG_SPEED * delta);
+        if (Gdx.input.isKeyPressed(Input.Keys.W)) position.y += (DEBUG_SPEED * delta);
+        if (Gdx.input.isKeyPressed(Input.Keys.S)) position.y -= (DEBUG_SPEED * delta);
         //DEBUG key for testing sprite rotation
         if (Gdx.input.isKeyJustPressed(Input.Keys.E)) groundAngle += 45;
         //Gdx.app.debug("deltaTime",String.valueOf(delta));
