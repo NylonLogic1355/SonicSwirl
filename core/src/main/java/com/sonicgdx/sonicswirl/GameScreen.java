@@ -63,7 +63,7 @@ public class GameScreen implements Screen {
         player = new Player(whiteSquare, PLAYER_WIDTH,PLAYER_HEIGHT);
 
         cameraOffset.x = 0; //TODO adjust view when looking up or down
-        cameraOffset.y = camera.position.y - player.yPos;
+        cameraOffset.y = camera.position.y - player.getYPosition();
 
         //frameLog = new FPSLogger();
         backgroundTexture = new Texture(Gdx.files.internal("sprites/aiz_background.jpg"));
@@ -87,7 +87,7 @@ public class GameScreen implements Screen {
         player.move(delta);
 
         //Updates the camera position to where the player is but keeps the offset
-        camera.position.set(player.xPos + cameraOffset.x,player.yPos + cameraOffset.y,camera.position.z); camera.update();
+        camera.position.set(player.getXPosition() + cameraOffset.x,player.getYPosition() + cameraOffset.y,camera.position.z); camera.update();
         //recompute the orthographical projection matrix
         //so that the change is responded to in the user's view
 
