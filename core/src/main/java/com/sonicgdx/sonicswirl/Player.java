@@ -37,20 +37,21 @@ public final class Player extends Entity {
     // An FPS of 60 was used to obtain the adjusted values
     // Original: ACCELERATION = 0.046875F, DECELERATION = 0.5F, DEBUG_SPEED = 1.5F, MAX_SPEED = 6, SLOPE_FACTOR = 0.125, AIR_ACCELERATION = 0.09375F, GRAVITY_FORCE = 0.21875F;
     // Original values were designed to occur 60 times every second so by multiplying it by 60 you get the amount of pixels moved per second.
-    private float speedX = 0, speedY = 0, groundSpeed = 0, groundAngle = 0;
+    private float groundVelocity = 0, groundAngle = 0;
     private final Sensor sensorA, sensorB, sensorE,sensorF;
 
     private final TextureAtlas atlas;
     private TextureRegion spriteRegion;
 
     final int WIDTHRADIUS= 9, HEIGHTRADIUS = 19;
-    private Vector2 speed;
+    private Vector2 velocity;
     Player(Texture image, int width, int height) {
         super(image, width, height);
         atlas = new TextureAtlas(Gdx.files.internal("sprites/SonicGDX.atlas"));
         spriteRegion = atlas.findRegion("sonic-idle",0);
         position = new Vector2(50,200); // Sets the player's starting position at (600,200). (The variable was initialised in super constructor)
         //The vector has two components for the x position and y position respectively
+        velocity = new Vector2(); //Initialises to zero starting speed
         sensorA = new Sensor(position.x,position.y);
         sensorB = new Sensor(position.x + (sprite.getWidth() - 1),position.y);
         sensorE = new Sensor(position.x,position.y + (sprite.getHeight() - 1) / 2);
@@ -74,9 +75,8 @@ public final class Player extends Entity {
             debugMode = !debugMode;
 
             //Reset movement variables when entering or exiting debug mode to prevent oddities in physics.
-            groundSpeed = 0;
-            speedX = 0;
-            speedY = 0;
+            groundVelocity = 0;
+            velocity.setZero();
             groundAngle = 0;
 
             //TODO acceleration in debug mode
@@ -99,8 +99,8 @@ public final class Player extends Entity {
                 sensorB.setActive(true);
 
                 //Updates player position
-                position.x += speedX * delta;
-                position.y += speedY * delta;
+                position.x += velocity.x * delta;
+                position.y += velocity.y * delta;
 
             }
 
@@ -109,24 +109,24 @@ public final class Player extends Entity {
                 Sensor winningSensor = floorSensors();
 
                 if (isGrounded) {
-                    if (winningSensor != null && Math.max(-Math.abs(speedX) - 4, -14) < winningSensor.getDistance() && winningSensor.getDistance() < 14) groundCollision(winningSensor); //TODO comment out this line first if there are physics bugs.
+                    if (winningSensor != null && Math.max(-Math.abs(velocity.x) - 4, -14) < winningSensor.getDistance() && winningSensor.getDistance() < 14) groundCollision(winningSensor); //TODO comment out this line first if there are physics bugs.
                     else isGrounded = false;
                 }
                 else{
-                    if (Math.abs(speedX) >= Math.abs(speedY)) {
-                        if (speedX > 0) { //going mostly right
-                            if (winningSensor != null && winningSensor.getDistance() >= 0 && speedY <= 0) groundCollision(winningSensor);
+                    if (Math.abs(velocity.x) >= Math.abs(velocity.y)) {
+                        if (velocity.x > 0) { //going mostly right
+                            if (winningSensor != null && winningSensor.getDistance() >= 0 && velocity.y <= 0) groundCollision(winningSensor);
                         }
                         else { //going mostly left
-                            if (winningSensor != null && winningSensor.getDistance() >= 0 && speedY <= 0) groundCollision(winningSensor);
+                            if (winningSensor != null && winningSensor.getDistance() >= 0 && velocity.y <= 0) groundCollision(winningSensor);
                         }
                     }
                     else {
-                        if (speedY > 0) { //going mostly up
+                        if (velocity.y > 0) { //going mostly up
 
                         }
                         else { //going mostly down
-                            if (winningSensor != null && winningSensor.getDistance() >= 0 && (sensorA.getDistance() <= -(speedY + 8) || sensorB.getDistance() >= -(speedY + 8))) groundCollision(winningSensor);
+                            if (winningSensor != null && winningSensor.getDistance() >= 0 && (sensorA.getDistance() <= -(velocity.y + 8) || sensorB.getDistance() >= -(velocity.y + 8))) groundCollision(winningSensor);
                         }
                     }
                 }
@@ -179,26 +179,25 @@ public final class Player extends Entity {
         //"Jump" action
         boolean jumpPressed = Gdx.input.isKeyJustPressed(Input.Keys.SPACE);
 
-        if (groundSpeed != 0) groundSpeed -= delta * SLOPE_FACTOR * MathUtils.sinDeg(groundAngle); //TODO this only happens when the player is not in ceiling mode.
+        if (groundVelocity != 0) groundVelocity -= delta * SLOPE_FACTOR * MathUtils.sinDeg(groundAngle); //TODO this only happens when the player is not in ceiling mode.
 
         //Moving right and moving left are mutually exclusive - if both are true, the outcome
         //is the same as if both are false
 
         if (rightPressed && !leftPressed) // if moving right
         {
-            if (groundSpeed < 0) groundSpeed += (DECELERATION * delta); // Deceleration acts in the opposite direction to the one in which the player is currently moving.
-            else if (groundSpeed < MAX_SPEED) groundSpeed += (ACCELERATION * delta); //Takes 128 frames to accelerate from 0 to 6 - exactly 2 seconds
+            if (groundVelocity < 0) groundVelocity += (DECELERATION * delta); // Deceleration acts in the opposite direction to the one in which the player is currently moving.
+            else if (groundVelocity < MAX_SPEED) groundVelocity += (ACCELERATION * delta); //Takes 128 frames to accelerate from 0 to 6 - exactly 2 seconds
         }
         else if (leftPressed && !rightPressed) // if moving left
         {
-            if (groundSpeed > 0) groundSpeed -= (DECELERATION * delta);
-            else if (groundSpeed > -MAX_SPEED) groundSpeed -= ACCELERATION * delta;
+            if (groundVelocity > 0) groundVelocity -= (DECELERATION * delta);
+            else if (groundVelocity > -MAX_SPEED) groundVelocity -= ACCELERATION * delta;
         }
-        else groundSpeed -= Math.min(Math.abs(groundSpeed), ACCELERATION * delta) * Math.signum(groundSpeed); // friction if not pressing any directions
+        else groundVelocity -= Math.min(Math.abs(groundVelocity), ACCELERATION * delta) * Math.signum(groundVelocity); // friction if not pressing any directions
         // Decelerates until the absolute value of groundSpeed is lower than the ACCELERATION value (which doubles as the friction value) and then stops
 
-        speedX = groundSpeed * MathUtils.cosDeg(groundAngle);
-        speedY = groundSpeed * MathUtils.sinDeg(groundAngle);
+        velocity.set(groundVelocity * MathUtils.cosDeg(groundAngle), groundVelocity * MathUtils.sinDeg(groundAngle));
 
         if (jumpPressed) jump(delta); //TODO placement different from original, may cause bugs.
 
@@ -263,20 +262,20 @@ public final class Player extends Entity {
         depending on the angle of the ground.
         */
         if (!isGrounded) {
-            if (0 <= groundAngle && groundAngle <= 23) groundSpeed = speedX;
+            if (0 <= groundAngle && groundAngle <= 23) groundVelocity = velocity.x;
                 //TODO when mirrored... https://info.sonicretro.org/SPG:Slope_Physics#When_Falling_Downward
             else if (24 <= groundAngle && groundAngle <= 45) {
-                if (Math.abs(speedX) >= Math.abs(speedY)) {
-                    groundSpeed = speedX;
+                if (Math.abs(velocity.x) >= Math.abs(velocity.y)) {
+                    groundVelocity = velocity.x;
                 } else {
-                    groundSpeed = speedY * 0.5F * -MathUtils.sinDeg(groundAngle);
+                    groundVelocity = velocity.y * 0.5F * -MathUtils.sinDeg(groundAngle);
                 }
             }
             else if (46 <= groundAngle && groundAngle <= 90) {
-                if (Math.abs(speedX) >= Math.abs(speedY)) {
-                    groundSpeed = speedX;
+                if (Math.abs(velocity.x) >= Math.abs(velocity.y)) {
+                    groundVelocity = velocity.x;
                 } else {
-                    groundSpeed = speedY * -MathUtils.sinDeg(groundAngle);
+                    groundVelocity = velocity.y * -MathUtils.sinDeg(groundAngle);
                 }
             }
             isGrounded = true;
@@ -290,37 +289,37 @@ public final class Player extends Entity {
      */
     public void jump(float delta) {
         //FIXME bug when jumping while moving downhill on a slope
-        speedX -= JUMP_FORCE * MathUtils.sinDeg(groundAngle);
-        speedY += JUMP_FORCE * MathUtils.cosDeg(groundAngle);
+        velocity.x -= JUMP_FORCE * MathUtils.sinDeg(groundAngle);
+        velocity.y += JUMP_FORCE * MathUtils.cosDeg(groundAngle);
         isGrounded = false; isJumping = true;
         //TODO if time is available, jump buffering and coyote time
     }
 
     public void airMove(float delta) {
         //Reduce the height jumped by capping the Y Speed if player releases the jump button (Space) early.
-        if (!Gdx.input.isKeyPressed(Input.Keys.SPACE) && speedY > 4 && isJumping) speedY = 4;
+        if (!Gdx.input.isKeyPressed(Input.Keys.SPACE) && velocity.y > 4 && isJumping) velocity.y = 4;
 
         //Air acceleration
         if (Gdx.input.isKeyPressed(Input.Keys.D) || (Gdx.input.isKeyPressed(Input.Keys.RIGHT))) // if moving right
         {
-            if (speedX < MAX_SPEED) speedX += AIR_ACCELERATION * delta; // accelerates right at twice the speed compared to on ground
+            if (velocity.x < MAX_SPEED) velocity.x += AIR_ACCELERATION * delta; // accelerates right at twice the speed compared to on ground
         }
         else if (Gdx.input.isKeyPressed(Input.Keys.A) || (Gdx.input.isKeyPressed(Input.Keys.LEFT))) // if moving left
         {
-            if (speedX > -MAX_SPEED) speedX -= AIR_ACCELERATION * delta; // accelerates left at twice the speed compared to on ground
+            if (velocity.x > -MAX_SPEED) velocity.x -= AIR_ACCELERATION * delta; // accelerates left at twice the speed compared to on ground
         }
         //Air drag
-        if (0 < speedY && speedY < 4)
+        if (0 < velocity.y && velocity.y < 4)
         {
-            speedX -= (MathUtils.floor(speedX / 0.125F) / 256F * 60F * delta); //TODO Maybe use 60 * delta in all calculations instead of applying it to variable. For readability
+            velocity.x -= (MathUtils.floor(velocity.x / 0.125F) / 256F * 60F * delta); //TODO Maybe use 60 * delta in all calculations instead of applying it to variable. For readability
         }
 
         //Updates player position
-        position.x += speedX * delta;
-        position.y += speedY * delta;
+        position.x += velocity.x * delta;
+        position.y += velocity.y * delta;
 
         //Gravity - a force pushing the player down when they are in the air
-        speedY += GRAVITY_FORCE * delta;
+        velocity.y += GRAVITY_FORCE * delta;
     }
 
     /**
@@ -329,11 +328,11 @@ public final class Player extends Entity {
      */
     public void setAirSensors(){
         //TODO insert sensorC and sensorD
-        if (Math.abs(speedX) >= Math.abs(speedY)) {
+        if (Math.abs(velocity.x) >= Math.abs(velocity.y)) {
             //In both cases the ground sensors will be checked
             sensorA.setActive(true);
             sensorB.setActive(true);
-            if (speedX > 0) { //going mostly right
+            if (velocity.x > 0) { //going mostly right
 
                 sensorE.setActive(false);
                 sensorF.setActive(true);
@@ -348,7 +347,7 @@ public final class Player extends Entity {
             //In both cases the wall sensors will be checked
             sensorE.setActive(true);
             sensorF.setActive(true);
-            if (speedY > 0) { //going mostly up
+            if (velocity.y > 0) { //going mostly up
                 sensorA.setActive(false);
                 sensorB.setActive(false);
             }
