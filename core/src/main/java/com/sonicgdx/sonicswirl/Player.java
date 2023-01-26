@@ -324,4 +324,11 @@ public final class Player extends Entity {
         if (Gdx.input.isKeyPressed(Input.Keys.S)) position.y -= (DEBUG_SPEED * delta);
         //Gdx.app.debug("deltaTime",String.valueOf(delta));
     }
+
+    public float getXPosition() {
+        return position.x;
+    }
+    public float getYPosition() {
+        return position.y;
+    }
 }

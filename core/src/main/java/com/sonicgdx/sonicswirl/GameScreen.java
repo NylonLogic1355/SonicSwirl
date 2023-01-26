@@ -41,8 +41,8 @@ public class GameScreen implements Screen {
         final int PLAYER_WIDTH = 20, PLAYER_HEIGHT = 40;
         player = new Player(playerImg, PLAYER_WIDTH,PLAYER_HEIGHT);
 
-        cameraOffset.x = camera.position.x - player.xPos;
-        cameraOffset.y = camera.position.y - player.yPos;
+        cameraOffset.x = camera.position.x - player.getXPosition();
+        cameraOffset.y = camera.position.y - player.getYPosition();
 
         //frameLog = new FPSLogger();
 
@@ -64,7 +64,7 @@ public class GameScreen implements Screen {
 
         player.move(delta);
 
-        camera.position.set(player.xPos + cameraOffset.x,player.yPos + cameraOffset.y,camera.position.z); camera.update(); // recompute matrix for orthographical projection
+        camera.position.set(player.getXPosition() + cameraOffset.x,player.getYPosition() + cameraOffset.y,camera.position.z); camera.update(); // recompute matrix for orthographical projection
         // so that the change is responded to in the view
 
         //tells the SpriteBatch to render in the coordinate system specified by the camera
