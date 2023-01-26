@@ -80,6 +80,7 @@ https://jvm-gaming.org/t/libgdx-subpixel-smooth-spite-movement/59881/3 \
 ## Co-ordinates
 https://colourtann.github.io/HelloLibgdx \
 https://libgdx.com/wiki/start/a-simple-game \
+https://gamedev.stackexchange.com/a/159061 \
 
 ## Movement in both directions / Acceleration
 Constants and movement values were derived from those in - https://info.sonicretro.org/SPG:Running \
