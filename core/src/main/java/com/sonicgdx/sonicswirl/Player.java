@@ -44,12 +44,13 @@ public final class Player extends Entity {
     private TextureRegion spriteRegion;
 
     final int WIDTHRADIUS= 9, HEIGHTRADIUS = 19;
-    private Vector2 position, speed;
+    private Vector2 speed;
     Player(Texture image, int width, int height) {
         super(image, width, height);
         atlas = new TextureAtlas(Gdx.files.internal("sprites/SonicGDX.atlas"));
         spriteRegion = atlas.findRegion("sonic-idle",0);
-        position = new Vector2(50,200); // Player starts at (600,200);
+        position = new Vector2(50,200); // Sets the player's starting position at (600,200). (The variable was initialised in super constructor)
+        //The vector has two components for the x position and y position respectively
         sensorA = new Sensor(position.x,position.y);
         sensorB = new Sensor(position.x + (sprite.getWidth() - 1),position.y);
         sensorE = new Sensor(position.x,position.y + (sprite.getHeight() - 1) / 2);
