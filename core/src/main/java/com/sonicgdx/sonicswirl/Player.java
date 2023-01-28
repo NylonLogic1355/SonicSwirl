@@ -90,6 +90,17 @@ public final class Player extends Entity {
                 //air state
                 airMove(delta);
                 setAirSensors();
+
+                if (sensorE.getActive()) sensorE.wallProcess();
+                if (sensorF.getActive()) sensorF.wallProcess();
+
+                if (-14 < sensorE.getDistance() && sensorE.getDistance() < 14) {
+                    wallCollision(sensorE);
+                }
+                if (-14 < sensorF.getDistance() && sensorF.getDistance() < 14) {
+                    wallCollision(sensorF);
+                }
+
             }
 
             else {
@@ -131,14 +142,11 @@ public final class Player extends Entity {
                     }
                 }
 
+
+
             }
 
-            sensorE.wallProcess();
-            sensorF.wallProcess();
 
-            if (-14 < sensorF.getDistance() && sensorF.getDistance() < 14) {
-                wallCollision(sensorF);
-            }
 
 
 
@@ -332,7 +340,7 @@ public final class Player extends Entity {
     }
 
     /**
-     * && operator uses short-circuit evaluation (as opposed to &) so will only evaluate the left hand side of the boolean expression is true. This means that
+     * Note: The && operator uses short-circuit evaluation (as opposed to &) so will only evaluate the left hand side of the boolean expression is true. This means that
      * if the returned value is null it won't check its distance so won't throw a NullPointerException.
      */
     public void setAirSensors(){
