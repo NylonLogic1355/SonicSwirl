@@ -110,6 +110,10 @@ public final class Player extends Entity {
             sensorE.wallProcess();
             sensorF.wallProcess();
 
+            if (-14 < sensorF.getDistance() && sensorF.getDistance() < 14) {
+                wallCollision(sensorF);
+            }
+
 
 
             //TODO perhaps add a check if the player is stationary before calculating collision
@@ -224,6 +228,11 @@ public final class Player extends Entity {
             isGrounded = true;
             if (isJumping) isJumping = false;
         }
+    }
+
+    public void wallCollision(Sensor sensor) {
+        position.x += sensor.getDistance();
+        //groundVelocity = 0;
     }
 
     /**
