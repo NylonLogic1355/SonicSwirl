@@ -130,7 +130,7 @@ public class Sensor {
     }
 
     public void setPositionValues(float x, float y) {
-        position.x = x; position.y = y;
+        position.set(x,y);
     }
     public void setPositionVector(Vector2 position) {
         this.position = position;

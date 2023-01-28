@@ -44,7 +44,7 @@ public final class Player extends Entity {
     private TextureRegion spriteRegion;
 
     final int WIDTHRADIUS= 9, HEIGHTRADIUS = 19;
-    private Vector2 velocity;
+    private final Vector2 velocity;
     Player(int width, int height) {
         super(width, height);
         atlas = new TextureAtlas(Gdx.files.internal("sprites/SonicGDX.atlas"));
