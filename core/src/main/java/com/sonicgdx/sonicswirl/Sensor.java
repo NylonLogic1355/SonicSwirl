@@ -152,7 +152,7 @@ public class Sensor {
             else checkDistance += (16-width);
         }
 
-        tile = TileMap.getTile(chunkX,chunkY,tileX,tileY); distance = checkDistance;
+        tile = TileMap.getTile(chunkX,chunkY,tileX,tileY); distance = checkDistance - 1;
         //Gdx.app.debug("distance",String.valueOf(distance));
     }
 
