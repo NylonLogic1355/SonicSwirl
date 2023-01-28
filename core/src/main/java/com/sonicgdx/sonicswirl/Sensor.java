@@ -1,21 +1,20 @@
 package com.sonicgdx.sonicswirl;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
 
 public class Sensor {
-    protected boolean isActive;
-    protected float xPosition, yPosition;
-
-    protected Tile tile;
-    protected float distance;
+    private boolean isActive;
+    private Vector2 position;
+    private Tile tile;
+    private float distance;
 
     public Sensor(float xPos, float yPos) {
-        this.xPosition = xPos;
-        this.yPosition = yPos;
+        position = new Vector2(xPos,yPos);
     }
-
-    //abstract void process();
+    public Sensor(Vector2 positionVector) {
+        this.position = positionVector;
+    }
 
     /**Attempts to find the nearest top of the surface relative to the sensor's position.
      * If no surface is found, the method will check one tile downwards for a non-empty height (and therefore a non-empty Tile).
@@ -24,26 +23,26 @@ public class Sensor {
      * The distance attribute is set to the distance on the y-axis between the sensor and that Tile.
      */
     public void floorProcess() {
-        if (xPosition < 0 || yPosition < 0) {
+        if (position.x < 0 || position.y < 0) {
             tile = TileMap.getEmpty(); distance = -50;
             return;
         }
         //TODO prevent catch block in getTile() from being used.
 
-        int tileX = Math.floorMod(MathUtils.round(xPosition), 128) / 16;
-        int chunkX = MathUtils.round(xPosition) / 128;
+        int tileX = Math.floorMod(MathUtils.round(position.x), 128) / 16;
+        int chunkX = MathUtils.round(position.x) / 128;
 
-        int tileY = Math.floorMod(MathUtils.round(yPosition), 128) / 16;
-        int chunkY = MathUtils.round(yPosition) / 128;
+        int tileY = Math.floorMod(MathUtils.round(position.y), 128) / 16;
+        int chunkY = MathUtils.round(position.y) / 128;
 
-        int block = Math.floorMod(MathUtils.round(xPosition),16); //Different behaviour for negative numbers compared to using %. For
+        int block = Math.floorMod(MathUtils.round(position.x),16); //Different behaviour for negative numbers compared to using %. For
         // example, -129 % 16 would return -1 which would cause an ArrayIndexOutOfBoundsException. Math.floorMod() would return a positive index in these cases.
 
-        // An alternate expression to calculate block: ((chunkX * 128) + (tileX * 16) - xPosition));
+        // An alternate expression to calculate block: ((chunkX * 128) + (tileX * 16) - position.x));
 
         int height = TileMap.getTile(chunkX,chunkY,tileX,tileY).getHeight(block);
 
-        float checkDistance = ((chunkY * 128) + (tileY * 16) + height) - yPosition;
+        float checkDistance = ((chunkY * 128) + (tileY * 16) + height) - position.y;
 
         if (height == 16)
         {
@@ -90,32 +89,44 @@ public class Sensor {
     }
 
     public void wallProcess() {
-        if (xPosition < 0 || yPosition < 0) {
+        if (position.x < 0 || position.y < 0) {
             tile = TileMap.getEmpty(); distance = -50;
             return;
         }
         //TODO prevent catch block in getTile() from being used.
 
-        int tileX = Math.floorMod(MathUtils.round(xPosition), 128) / 16;
-        int chunkX = MathUtils.round(xPosition) / 128;
+        int tileX = Math.floorMod(MathUtils.round(position.x), 128) / 16;
+        int chunkX = MathUtils.round(position.x) / 128;
 
-        int tileY = Math.floorMod(MathUtils.round(yPosition), 128) / 16;
-        int chunkY = MathUtils.round(yPosition) / 128;
+        int tileY = Math.floorMod(MathUtils.round(position.y), 128) / 16;
+        int chunkY = MathUtils.round(position.y) / 128;
 
-        int block = Math.floorMod(MathUtils.round(yPosition),16); //Different behaviour for negative numbers compared to using %. For
+        int block = Math.floorMod(MathUtils.round(position.y),16); //Different behaviour for negative numbers compared to using %. For
         // example, -129 % 16 would return -1 which would cause an ArrayIndexOutOfBoundsException. Math.floorMod() would return a positive index in these cases.
 
         int width = TileMap.getTile(chunkX,chunkY,tileX,tileY).getWidth(block);
 
         //TODO change process if tile is flipped horizontally
-        float checkDistance = ((chunkX * 128) + ((tileX + 1) * 16) - width) - xPosition;
+        float checkDistance = ((chunkX * 128) + ((tileX + 1) * 16) - width) - position.x;
 
         tile = TileMap.getTile(chunkX,chunkY,tileX,tileY); distance = checkDistance;
         //Gdx.app.debug("distance",String.valueOf(distance));
     }
 
-    public void setPosition(float x, float y) {
-        xPosition = x; yPosition = y;
+    public void setPositionValues(float x, float y) {
+        position.x = x; position.y = y;
+    }
+    public void setPositionVector(Vector2 position) {
+        this.position = position;
+    }
+    public float getXPosition() {
+        return position.x;
+    }
+    public float getYPosition() {
+        return position.y;
+    }
+    public Vector2 getPositionVector() {
+        return position;
     }
     public float getDistance() {
         return distance;
@@ -129,5 +140,6 @@ public class Sensor {
     public void setActive(boolean active) {
         isActive = active;
     }
+
 
 }

@@ -26,10 +26,10 @@ public final class Player extends Entity {
         position.set(600,200); // Sets the player's starting position at (600,200). (The variable was initialised in super constructor)
         //The vector has two components for the x position and y position respectively
         velocity = new Vector2(); //Initialises to zero starting speed
-        sensorA = new Sensor(position.x,position.y);
-        sensorB = new Sensor(position.x + (sprite.getWidth() - 1),position.y);
-        sensorE = new Sensor(position.x,position.y + (sprite.getHeight() - 1) / 2);
-        sensorF = new Sensor(position.x + (sprite.getWidth() - 1),position.y + (sprite.getHeight() - 1) / 2);
+        sensorA = new Sensor(position.cpy()); //Copies the player's position to the left floor sensor's.
+        sensorB = new Sensor(position.cpy().add((sprite.getWidth()-1),0)); //Copies the player's position but placed at the sprite's right instead of left.
+        sensorE = new Sensor(position.cpy().add(0,(sprite.getHeight() - 1) / 2)); //Copies the player's position but placed at the middle y position instead of the bottom
+        sensorF = new Sensor(position.cpy().add((sprite.getWidth() - 1),position.y + (sprite.getHeight() - 1) / 2)); //Copies the player's position but placed at the middle y position instead of the bottom and at the sprite's right instead of left.
     }
 
     //TODO Tommy Ettinger's digital extension could be used for faster operations on GWT
@@ -309,10 +309,10 @@ public final class Player extends Entity {
     @Override
     public void calculateSensorPositions() {
         super.calculateSensorPositions();
-        sensorA.setPosition(lSensorX,position.y); //TODO possibly remove these variables
-        sensorB.setPosition(rSensorX,position.y);
-        sensorE.setPosition(lSensorX,centreY);
-        sensorF.setPosition(rSensorX,centreY);
+        sensorA.setPositionValues(lSensorX,position.y); //TODO possibly remove these variables
+        sensorB.setPositionValues(rSensorX,position.y);
+        sensorE.setPositionValues(lSensorX,centreY);
+        sensorF.setPositionValues(rSensorX,centreY);
     }
 
     private void debugMove(float delta) {
