@@ -147,7 +147,7 @@ public class Sensor {
                 chunkX = tempChunkX;
                 tileX = tempTileX;
 
-                checkDistance += width;
+                checkDistance -= width;
             }
         }
 
@@ -164,8 +164,8 @@ public class Sensor {
 
             width = TileMap.getTile(chunkX,chunkY,tileX,tileY).getHeight(block);
 
-            if (width == 0) checkDistance -= 16;
-            else checkDistance -= (16-width);
+            if (width == 0) checkDistance += 16;
+            else checkDistance += (16-width);
         }
 
         tile = TileMap.getTile(chunkX,chunkY,tileX,tileY); distance = checkDistance;
