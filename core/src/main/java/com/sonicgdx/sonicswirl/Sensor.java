@@ -90,7 +90,7 @@ public class Sensor {
 
     public void wallProcess() {
         if (position.x < 0 || position.y < 0) {
-            tile = TileMap.getEmpty(); distance = -50;
+            tile = TileMap.getEmpty(); distance = 50;
             return;
         }
         //TODO prevent catch block in getTile() from being used.
