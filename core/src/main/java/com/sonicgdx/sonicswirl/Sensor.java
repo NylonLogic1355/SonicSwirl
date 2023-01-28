@@ -125,6 +125,49 @@ public class Sensor {
         //TODO change process if tile is flipped horizontally
         float checkDistance = ((chunkX * 128) + ((tileX + 1) * 16) - width) - position.x;
 
+        if (width == 16) {
+            int tempTileX, tempChunkX;
+            // sensor regression, checks one tile above with downwards facing sensors in an attempt to find surface if the height of the array is full
+
+            //for right facing tiles
+            if (tileX > 0)
+            {
+                tempChunkX = chunkX;
+                tempTileX = tileX - 1;
+            }
+            else
+            {
+                tempChunkX = chunkX - 1;
+                tempTileX = 7;
+            }
+
+            width = TileMap.getTile(tempChunkX,chunkY,tempTileX,tileY).getHeight(block);
+            if (width > 0) //TODO outline conditions in comment
+            {
+                chunkX = tempChunkX;
+                tileX = tempTileX;
+
+                checkDistance += width;
+            }
+        }
+
+        else if (width == 0) {
+            // sensor extension, checks one tile below with downwards facing sensors in an attempt to find surface
+
+            //for right facing tiles
+            if (tileX == 7)
+            {
+                chunkX++;
+                tileY = 0;
+            }
+            else tileX++;
+
+            width = TileMap.getTile(chunkX,chunkY,tileX,tileY).getHeight(block);
+
+            if (width == 0) checkDistance -= 16;
+            else checkDistance -= (16-width);
+        }
+
         tile = TileMap.getTile(chunkX,chunkY,tileX,tileY); distance = checkDistance;
         //Gdx.app.debug("distance",String.valueOf(distance));
     }
