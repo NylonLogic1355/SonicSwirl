@@ -297,7 +297,7 @@ public final class Player extends Entity {
 
     public void wallCollision(Sensor sensor) {
         position.x += sensor.getDistance();
-        //groundVelocity = 0;
+        groundVelocity = 0;
     }
 
     /**
