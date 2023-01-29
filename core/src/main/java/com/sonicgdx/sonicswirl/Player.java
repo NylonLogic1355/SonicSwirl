@@ -94,9 +94,9 @@ public final class Player extends Entity {
                 if (sensorE.getActive()) sensorE.wallProcess();
                 if (sensorF.getActive()) sensorF.wallProcess();
 
-                if (sensorE.getDistance() < 0) {
+                /*if (sensorE.getDistance() < 0) {
                     wallCollision(sensorE);
-                }
+                }*/
                 if (sensorF.getDistance() < 0) {
                     wallCollision(sensorF);
                 }
