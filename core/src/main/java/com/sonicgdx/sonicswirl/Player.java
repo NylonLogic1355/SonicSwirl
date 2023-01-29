@@ -23,7 +23,7 @@ public final class Player extends Entity {
     private final Vector2 velocity;
     Player(Texture image, int width, int height) {
         super(image, width, height);
-        position.set(600,200); // Sets the player's starting position at (600,200). (The variable was initialised in super constructor)
+        position.set(500,200); // Sets the player's starting position at (600,200). (The variable was initialised in super constructor)
         //The vector has two components for the x position and y position respectively
         velocity = new Vector2(); //Initialises to zero starting speed
         sensorA = new Sensor(position.cpy()); //Copies the player's position to the left floor sensor's.

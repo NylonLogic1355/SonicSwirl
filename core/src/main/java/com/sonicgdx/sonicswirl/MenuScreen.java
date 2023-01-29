@@ -15,6 +15,7 @@ public class MenuScreen implements Screen {
     final int SCREEN_WIDTH,SCREEN_HEIGHT;
     private final ScreenViewport menuViewport;
     Skin buttonSkin; TextButton button;
+    private boolean skipScreen = true;
 
     public MenuScreen(final Init Init){
         Gdx.app.setLogLevel(3); //TODO reduce logging level for release builds
@@ -38,20 +39,20 @@ public class MenuScreen implements Screen {
     public void render(float delta)
     {
         ScreenUtils.clear(0.1f, 0, 0.2f, 1);
-
         menuViewport.apply();
         //Init.batch.setProjectionMatrix(menuViewport.getCamera().combined);
+        if (Gdx.input.isTouched() || skipScreen) {
+            Init.batch.disableBlending(); //Blending is responsible for translucency using the alpha value but decreases performance.
+            Init.setScreen(Init.gameScreen);
+            dispose();
+        }
 		Init.batch.begin();
         button.draw(Init.batch,1); //TODO what is parent alpha?
 		Init.font.draw(Init.batch, "Sonic Swirl", SCREEN_WIDTH / 2F - 65, SCREEN_HEIGHT / 2F);
 		Init.font.draw(Init.batch, "Press to begin", SCREEN_WIDTH / 2F - 65, SCREEN_HEIGHT / 2F - 100);
 		Init.batch.end();
 
-		if (Gdx.input.isTouched()) {
-            Init.batch.disableBlending(); //Blending is responsible for translucency using the alpha value but decreases performance.
-			Init.setScreen(Init.gameScreen);
-			dispose();
-		}
+
 
     }
 
