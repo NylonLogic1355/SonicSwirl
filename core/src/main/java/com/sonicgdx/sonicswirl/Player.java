@@ -40,7 +40,7 @@ public final class Player extends Entity {
      * at different frame rates.
      * @see GameScreen#render(float)
      */
-    public void move(float delta)
+    public void update(float delta)
     {
         //TODO Would be better to implement an InputProcessor. This makes more sense as an interrupt rather than constant polling.
         if (Gdx.input.isKeyJustPressed(Input.Keys.Q))

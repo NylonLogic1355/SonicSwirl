@@ -62,7 +62,7 @@ public class GameScreen implements Screen {
             if (debugToggle == 2) debugToggle = 0;
         }
 
-        player.move(delta);
+        player.update(delta);
 
         camera.position.set(player.getXPosition() + cameraOffset.x,player.getYPosition() + cameraOffset.y,camera.position.z); camera.update(); // recompute matrix for orthographical projection
         // so that the change is responded to in the view
