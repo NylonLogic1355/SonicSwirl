@@ -84,7 +84,7 @@ public class GameScreen implements Screen {
             if (drawMode == 3) drawMode = 0;
         }
 
-        player.move(delta);
+        player.update(delta);
 
         //Updates the camera position to where the player is but keeps the offset
         camera.position.set(player.getXPosition() + cameraOffset.x,player.getYPosition() + cameraOffset.y,camera.position.z); camera.update();
