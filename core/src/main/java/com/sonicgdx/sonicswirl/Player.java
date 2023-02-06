@@ -91,13 +91,12 @@ public final class Player extends Entity {
                 airMove(delta);
                 setAirSensors();
 
-                if (sensorE.getActive()) sensorE.wallProcess();
+                //if (sensorE.getActive()) sensorE.wallProcess();
                 if (sensorF.getActive()) sensorF.wallProcess();
 
-                /*if (sensorE.getDistance() < 0) {
-                    wallCollision(sensorE);
-                }*/
+                //since positive distances would mean the player is outside the detected tile, they are not accepted
                 if (sensorF.getDistance() < 0) {
+                    //testing only one sensor at this point to see if the basic collision works
                     wallCollision(sensorF);
                 }
 
@@ -295,9 +294,14 @@ public final class Player extends Entity {
         }
     }
 
+    /**
+     * @param sensor the sensor that has collided with a wall.
+     * (Distances have been generated beforehand)
+     */
     public void wallCollision(Sensor sensor) {
+        //the distance is the difference between the tile's x position and the sensor's
+        //since only a negative distance is accepted, the player will be pushed backwards by this amount
         position.x += sensor.getDistance();
-        //groundVelocity = 0;
     }
 
     /**
