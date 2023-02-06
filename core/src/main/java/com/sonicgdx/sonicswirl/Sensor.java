@@ -23,6 +23,13 @@ public class Sensor {
      * The distance attribute is set to the distance on the y-axis between the sensor and that Tile.
      */
     public void floorProcess() {
+        //TODO take into account solidity value
+
+        /*  Out of bounds values would cause an error if attempting to check their distance
+            - the arrays do not have negative indices. Therefore, if the player's x position
+            or y position is negative values are set so that collision will never happen.
+        */
+        //TODO possibly perform check inside player function instead
         if (position.x < 0 || position.y < 0) {
             tile = TileMap.getEmpty(); distance = -50;
             return;
@@ -88,8 +95,21 @@ public class Sensor {
         tile = TileMap.getTile(chunkX,chunkY,tileX,tileY); distance = checkDistance;
     }
 
+    /**
+     * Generates the distance value based on how far away the sensor is from the nearest wall on the x-axis
+     */
     public void wallProcess() {
+        //TODO take into account solidity value
+
+        /*
+            Out of bounds values would cause an error if attempting to check their distance
+            - the arrays do not have negative indices. Therefore, if the player's x position
+            or y position is negative values are set so that collision will never happen.
+        */
+        //TODO possibly perform check inside player function instead
         if (position.x < 0 || position.y < 0) {
+            //positive distances aren't accepted and 50 is too far out of the range
+            //so this will never trigger a collision if out of bounds
             tile = TileMap.getEmpty(); distance = 50;
             return;
         }
@@ -126,7 +146,7 @@ public class Sensor {
             }
 
             width = TileMap.getTile(tempChunkX,chunkY,tempTileX,tileY).getHeight(block);
-            if (width > 0) //TODO outline conditions in comment
+            if (width > 0)
             {
                 chunkX = tempChunkX;
                 tileX = tempTileX;
