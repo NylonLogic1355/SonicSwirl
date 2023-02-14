@@ -1,35 +1,16 @@
 {
-  "name": "Java 8",
-  "image": "mcr.microsoft.com/devcontainers/java:1-8-buster",
+  "name": "Java",
+  "image": "mcr.microsoft.com/devcontainers/java",
   "features": {
     "ghcr.io/devcontainers/features/java:1": {
-      "version": "8",
       "installMaven": "false",
-      "installGradle": "true"
-    },
-    "ghcr.io/devcontainers/features/node:1": {
-      "version": "none"
+      "installGradle": "false"
     }
   },
 
   // Configure tool-specific properties.
   "customizations": {
-    // Configure properties specific to VS Code.
-    "vscode": {
-      // Set *default* container specific settings.json values on container create.
-      "settings": {
-        "java.import.gradle.java.home": "/usr/local/sdkman/candidates/java/current",
-        "java.configuration.runtimes": [
-          {
-            "default": true,
-            "name": "JavaSE-1.8",
-            "path": "/usr/local/sdkman/candidates/java/current"
-          }
-        ]
-      }
-    },
       // Add the IDs of extensions you want installed when the container is created.
-      // TODO add more extensions
       "extensions": [
         "vscjava.vscode-java-pack",
         "vscjava.vscode-gradle",
