@@ -106,14 +106,28 @@ public final class Player extends Entity {
     }
 
     private void groundMove(float delta) {
+
+        //These booleans are true if any of the inputs which cause their respective action are pressed
+        //or held down in the current frame
+
+        //"Move Right" action
+        boolean rightPressed = Gdx.input.isKeyPressed(Input.Keys.D) || (Gdx.input.isKeyPressed(Input.Keys.RIGHT));
+        //"Move Left" action
+        boolean leftPressed = Gdx.input.isKeyPressed(Input.Keys.A) || (Gdx.input.isKeyPressed(Input.Keys.LEFT));
+        //"Jump" action
+        boolean jumpPressed = Gdx.input.isKeyJustPressed(Input.Keys.SPACE);
+
         if (groundSpeed != 0) groundSpeed -= delta * SLOPE_FACTOR * MathUtils.sinDeg(groundAngle); //TODO this only happens when the player is not in ceiling mode.
 
-        if (Gdx.input.isKeyPressed(Input.Keys.D) || (Gdx.input.isKeyPressed(Input.Keys.RIGHT))) // if moving right
+        //Moving right and moving left are mutually exclusive - if both are true, the outcome
+        //is the same as if both are false
+
+        if (rightPressed && !leftPressed) // if moving right
         {
             if (groundSpeed < 0) groundSpeed += (DECELERATION * delta); // Deceleration acts in the opposite direction to the one in which the player is currently moving.
             else if (groundSpeed < MAX_SPEED) groundSpeed += (ACCELERATION * delta); //Takes 128 frames to accelerate from 0 to 6 - exactly 2 seconds
         }
-        else if (Gdx.input.isKeyPressed(Input.Keys.A) || (Gdx.input.isKeyPressed(Input.Keys.LEFT))) // if moving left
+        else if (leftPressed && !rightPressed) // if moving left
         {
             if (groundSpeed > 0) groundSpeed -= (DECELERATION * delta);
             else if (groundSpeed > -MAX_SPEED) groundSpeed -= ACCELERATION * delta;
@@ -124,7 +138,7 @@ public final class Player extends Entity {
         speedX = groundSpeed * MathUtils.cosDeg(groundAngle);
         speedY = groundSpeed * MathUtils.sinDeg(groundAngle);
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) jump(delta); //TODO placement different from original, may cause bugs.
+        if (jumpPressed) jump(delta); //TODO placement different from original, may cause bugs.
 
 
     }
