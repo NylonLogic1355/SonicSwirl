@@ -34,6 +34,9 @@ public class GameScreen implements Screen {
 
     Player player;
 
+    public static final int TILE_SIZE = 16;
+    public static final int CHUNK_SIZE = 96;
+
     public GameScreen(final Init Init) {
 
         //Have to declare it outside, so it is a global variable?
@@ -105,15 +108,12 @@ public class GameScreen implements Screen {
     //TODO multithreading except for GWT?
 
     /**
-     * Draws each Tile using a gradient - for debugging purposes only
+     * Draws each Tile in a chunk using a gradient - for debugging purposes only
      * @param chunkX the chunk number on the x-axis - not the same as its co-ordinate
      * @param chunkY the chunk number on the y-axis - not the same as its co-ordinate
      */
     public void drawChunkBatch(int chunkX, int chunkY) {
-
-        int TILE_SIZE = 16;
-        int CHUNK_SIZE = 96;
-        int TILES_PER_CHUNK = CHUNK_SIZE / TILE_SIZE;
+        final int TILES_PER_CHUNK = CHUNK_SIZE / TILE_SIZE;
         //Iterates through every tile in the
         for (int tileX = 0; tileX < TILES_PER_CHUNK; tileX++)
         {
@@ -137,17 +137,13 @@ public class GameScreen implements Screen {
     }
 
     /**
-     * Draws each Tile's assigned texture
+     * Draws each Chunk's assigned texture at its corresponding location
      * @param chunkX the chunk number on the x-axis - not the same as its co-ordinate
      * @param chunkY the chunk number on the y-axis - not the same as its co-ordinate
      */
     public void drawChunkTextureBatch(int chunkX, int chunkY) {
-
-        int TILE_SIZE = 16;
-        int CHUNK_SIZE = 96;
-        int TILES_PER_CHUNK = CHUNK_SIZE / TILE_SIZE;
+        //If the chunk isn't empty, draw its texture at the chunk's location
         if (!TileMap.map[chunkX][chunkY].isEmpty()) Init.batch.draw(TileMap.map[chunkX][chunkY].getTexture(), (chunkX* CHUNK_SIZE),(chunkY* CHUNK_SIZE),CHUNK_SIZE, CHUNK_SIZE);
-
 
     }
 

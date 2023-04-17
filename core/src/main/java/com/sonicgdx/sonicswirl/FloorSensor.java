@@ -16,12 +16,14 @@
 
 package com.sonicgdx.sonicswirl;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.math.MathUtils;
+
+import static com.sonicgdx.sonicswirl.GameScreen.CHUNK_SIZE;
+import static com.sonicgdx.sonicswirl.GameScreen.TILE_SIZE;
 
 public class FloorSensor extends Sensor{
     //TODO get from gamescreen
-    private int CHUNK_SIZE = 96;
-    private int TILE_SIZE = 16;
     public FloorSensor() {
     }
 
@@ -33,6 +35,8 @@ public class FloorSensor extends Sensor{
      */
     @Override
     public void process() {
+        int TILES_PER_CHUNK = CHUNK_SIZE / TILE_SIZE;
+
         if (xPosition < 0 || yPosition < 0) {
             tile = TileMap.getEmpty(); distance = -50;
             return;
@@ -56,7 +60,7 @@ public class FloorSensor extends Sensor{
         {
             int tempTileY, tempChunkY;
             // sensor regression, checks one tile above with downwards facing sensors in an attempt to find surface if the height of the array is full
-            if (tileY < 7)
+            if (tileY < TILES_PER_CHUNK - 1)
             {
                 tempChunkY = chunkY;
                 tempTileY = tileY + 1;
@@ -83,7 +87,7 @@ public class FloorSensor extends Sensor{
             if (tileY == 0)
             {
                 chunkY--;
-                tileY = 7;
+                tileY = TILES_PER_CHUNK - 1;
             }
             else tileY--;
 
