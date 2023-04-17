@@ -93,7 +93,7 @@ public class GameScreen implements Screen {
         {
             for (int chunkY = 0; chunkY<TileMap.map[chunkX].length; chunkY++)
             {
-                drawChunkBatch(chunkX,chunkY);
+                drawChunkTextureBatch(chunkX,chunkY);
             }
         }
         player.sprite.draw(Init.batch);

@@ -69,7 +69,7 @@ public enum TileMap {
             {rvtile,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY}});
 
     private final Chunk sChunk =
-        new Chunk(new Texture(Gdx.files.internal("sprites/AIZ2/130.png")),new Tile[][]{
+        new Chunk(new Texture(Gdx.files.internal("sprites/AIZ2/65.png")),new Tile[][]{
                     {stile,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY},
                     {ftile,stile,EMPTY,EMPTY,EMPTY,EMPTY},
                     {ftile,ftile,stile,EMPTY,EMPTY,EMPTY},
@@ -86,7 +86,7 @@ public enum TileMap {
                     {fChunk,eChunk,eChunk,eChunk},
                     {fChunk,eChunk,eChunk,eChunk},
                     {eChunk,eChunk,eChunk,eChunk},
-                    {eChunk,eChunk,eChunk,eChunk},
+                    {eChunk,hChunk,eChunk,eChunk},
                     {eChunk,eChunk,eChunk,eChunk},
                     {fChunk,eChunk,eChunk,eChunk},
                     {fChunk,eChunk,eChunk,eChunk},
