@@ -112,8 +112,9 @@ public class GameScreen implements Screen {
     public void drawChunkBatch(int chunkX, int chunkY) {
 
         int TILE_SIZE = 16;
-        int CHUNK_SIZE = 128;
+        int CHUNK_SIZE = 96;
         int TILES_PER_CHUNK = CHUNK_SIZE / TILE_SIZE;
+        //Iterates through every tile in the
         for (int tileX = 0; tileX < TILES_PER_CHUNK; tileX++)
         {
             for (int tileY = 0; tileY < TILES_PER_CHUNK; tileY++)
@@ -128,6 +129,28 @@ public class GameScreen implements Screen {
                     //TODO reversed search order for flipped tiles. e.g. Collections.reverse() or ArrayUtils.reverse(byte[] array)
 
                 }
+            }
+        }
+        Init.batch.setColor(Color.WHITE); //Resets batch colour
+
+    }
+
+    /**
+     * Draws each Tile's assigned texture
+     * @param chunkX the chunk number on the x-axis - not the same as its co-ordinate
+     * @param chunkY the chunk number on the y-axis - not the same as its co-ordinate
+     */
+    public void drawChunkTextureBatch(int chunkX, int chunkY) {
+
+        int TILE_SIZE = 16;
+        int CHUNK_SIZE = 96;
+        int TILES_PER_CHUNK = CHUNK_SIZE / TILE_SIZE;
+        for (int tileX = 0; tileX < TILES_PER_CHUNK; tileX++)
+        {
+            for (int tileY = 0; tileY < TILES_PER_CHUNK; tileY++)
+            {
+                if (TileMap.map[chunkX][chunkY][tileX][tileY].empty) continue;
+                Init.batch.draw(TileMap.map[chunkX][chunkY][tileX][tileY].getTexture(), (tileX* TILE_SIZE)+(chunkX* CHUNK_SIZE),(tileY* TILE_SIZE)+(chunkY* CHUNK_SIZE),CHUNK_SIZE, CHUNK_SIZE);
             }
         }
         Init.batch.setColor(Color.WHITE); //Resets batch colour
