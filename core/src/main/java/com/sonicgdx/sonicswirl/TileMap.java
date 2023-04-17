@@ -49,37 +49,31 @@ public enum TileMap {
     private final Tile htile = new Tile(halfh,halfw,0,(byte) 1,false,new Texture(Gdx.files.internal("sprites/AIZ2/176.png")));
     private final Tile testtile = new Tile(testh,testw,33.75F,(byte) 1,false,new Texture(Gdx.files.internal("sprites/AIZ2/235.png")));
 
-    private final Chunk fChunk = new Chunk(new Texture(Gdx.files.internal("sprites/AIZ2/95.png")),Collections.nCopies(8,Collections.nCopies(8,ftile).toArray(new Tile[0])).toArray(new Tile[0][0]));
+    private final Chunk fChunk = new Chunk(new Texture(Gdx.files.internal("sprites/AIZ2/95.png")),Collections.nCopies(6,Collections.nCopies(6,ftile).toArray(new Tile[0])).toArray(new Tile[0][0]));
 
     private final Chunk hChunk = new Chunk(new Texture(Gdx.files.internal("sprites/AIZ2/95.png")),new Tile[][]{
-            {ftile,ftile,ftile,ftile,ftile,ftile,ftile,htile},
-            {ftile,ftile,ftile,ftile,ftile,ftile,ftile,htile},
-            {ftile,ftile,ftile,ftile,ftile,ftile,ftile,htile},
-            {ftile,ftile,ftile,ftile,ftile,ftile,ftile,htile},
-            {ftile,ftile,ftile,ftile,ftile,ftile,ftile,htile},
-            {ftile,ftile,ftile,ftile,ftile,ftile,ftile,htile},
-            {ftile,ftile,ftile,ftile,ftile,ftile,ftile,htile},
-            {ftile,ftile,ftile,ftile,ftile,ftile,ftile,htile}});
+            {ftile,ftile,ftile,ftile,ftile,htile},
+            {ftile,ftile,ftile,ftile,ftile,htile},
+            {ftile,ftile,ftile,ftile,ftile,htile},
+            {ftile,ftile,ftile,ftile,ftile,htile},
+            {ftile,ftile,ftile,ftile,ftile,htile},
+            {ftile,ftile,ftile,ftile,ftile,htile}});
     private final Chunk rvChunk = new Chunk(new Texture(Gdx.files.internal("sprites/AIZ2/130.png")),new Tile[][]{
-            {ftile,ftile,ftile,ftile,ftile,ftile,ftile,rvtile},
-            {ftile,ftile,ftile,ftile,ftile,ftile,rvtile,EMPTY},
-            {ftile,ftile,ftile,ftile,ftile,rvtile,EMPTY,EMPTY},
-            {ftile,ftile,ftile,ftile,rvtile,EMPTY,EMPTY,EMPTY},
-            {ftile,ftile,ftile,rvtile,EMPTY,EMPTY,EMPTY,EMPTY},
-            {ftile,ftile,rvtile,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY},
-            {ftile,rvtile,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY},
-            {rvtile,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY}});
+            {ftile,ftile,ftile,ftile,ftile,rvtile,},
+            {ftile,ftile,ftile,ftile,rvtile,EMPTY},
+            {ftile,ftile,ftile,rvtile,EMPTY,EMPTY},
+            {ftile,ftile,rvtile,EMPTY,EMPTY,EMPTY},
+            {ftile,rvtile,EMPTY,EMPTY,EMPTY,EMPTY},
+            {rvtile,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY}});
 
     private final Chunk sChunk =
         new Chunk(new Texture(Gdx.files.internal("sprites/AIZ2/130.png")),new Tile[][]{
-                    {stile,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY},
-                    {ftile,stile,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY},
-                    {ftile,ftile,stile,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY},
-                    {ftile,ftile,ftile,stile,EMPTY,EMPTY,EMPTY,EMPTY},
-                    {ftile,ftile,ftile,ftile,stile,EMPTY,EMPTY,EMPTY},
-                    {ftile,ftile,ftile,ftile,ftile,stile,EMPTY,EMPTY},
-                    {ftile,ftile,ftile,ftile,ftile,ftile,stile,EMPTY},
-                    {ftile,ftile,ftile,ftile,ftile,ftile,ftile,stile}});
+                    {stile,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY},
+                    {ftile,stile,EMPTY,EMPTY,EMPTY,EMPTY},
+                    {ftile,ftile,stile,EMPTY,EMPTY,EMPTY},
+                    {ftile,ftile,ftile,stile,EMPTY,EMPTY},
+                    {ftile,ftile,ftile,ftile,stile,EMPTY},
+                    {ftile,ftile,ftile,ftile,ftile,stile}});
 
 
     private final Chunk eChunk = new Chunk();
