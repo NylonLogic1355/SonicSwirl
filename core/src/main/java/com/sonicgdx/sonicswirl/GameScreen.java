@@ -90,7 +90,7 @@ public class GameScreen implements Screen {
         {
             for (int chunkY = 0; chunkY<TileMap.map[chunkX].length; chunkY++)
             {
-                drawChunkBatch(chunkX,chunkY);
+                drawChunkTextureBatch(chunkX,chunkY);
             }
         }
         player.sprite.draw(Init.batch);
@@ -114,8 +114,24 @@ public class GameScreen implements Screen {
         int TILE_SIZE = 16;
         int CHUNK_SIZE = 96;
         int TILES_PER_CHUNK = CHUNK_SIZE / TILE_SIZE;
-        if TileMap[map]
-        Init.batch.draw(whiteSquare, block + (tileX* TILE_SIZE)+(chunkX* CHUNK_SIZE),(tileY* TILE_SIZE)+(chunkY* CHUNK_SIZE),1, TileMap.map[chunkX][chunkY][tileX][tileY].getHeight(block));
+        //Iterates through every tile in the
+        for (int tileX = 0; tileX < TILES_PER_CHUNK; tileX++)
+        {
+            for (int tileY = 0; tileY < TILES_PER_CHUNK; tileY++)
+            {
+                if (TileMap.map[chunkX][chunkY].getTileArray()[tileX][tileY].empty) continue;
+                for (int block = 0; block < TILE_SIZE; block++)
+                {
+                    if (block==0) Init.batch.setColor(new Color(0,0,0,1));
+                    else Init.batch.setColor(new Color((1F/ TILES_PER_CHUNK) * tileY,0,block,1));
+                    Init.batch.draw(whiteSquare, block + (tileX* TILE_SIZE)+(chunkX* CHUNK_SIZE),(tileY* TILE_SIZE)+(chunkY* CHUNK_SIZE),1, TileMap.map[chunkX][chunkY].getTileArray()[tileX][tileY].getHeight(block));
+
+                    //TODO reversed search order for flipped tiles. e.g. Collections.reverse() or ArrayUtils.reverse(byte[] array)
+
+                }
+            }
+        }
+        Init.batch.setColor(Color.WHITE); //Resets batch colour
 
 
     }
@@ -130,15 +146,8 @@ public class GameScreen implements Screen {
         int TILE_SIZE = 16;
         int CHUNK_SIZE = 96;
         int TILES_PER_CHUNK = CHUNK_SIZE / TILE_SIZE;
-        for (int tileX = 0; tileX < TILES_PER_CHUNK; tileX++)
-        {
-            for (int tileY = 0; tileY < TILES_PER_CHUNK; tileY++)
-            {
-                if (TileMap.map[chunkX][chunkY][tileX][tileY].empty) continue;
-                Init.batch.draw(TileMap.map[chunkX][chunkY][tileX][tileY].getTexture(), (tileX* TILE_SIZE)+(chunkX* CHUNK_SIZE),(tileY* TILE_SIZE)+(chunkY* CHUNK_SIZE),CHUNK_SIZE, CHUNK_SIZE);
-            }
-        }
-        Init.batch.setColor(Color.WHITE); //Resets batch colour
+        Init.batch.draw(TileMap.map[chunkX][chunkY].getTexture(), (chunkX* CHUNK_SIZE),(chunkY* CHUNK_SIZE),CHUNK_SIZE, CHUNK_SIZE);
+
 
     }
 
