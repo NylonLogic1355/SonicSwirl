@@ -51,6 +51,8 @@ public enum TileMap {
 
     private final Chunk fChunk = new Chunk(new Texture(Gdx.files.internal("sprites/AIZ2/95.png")),Collections.nCopies(6,Collections.nCopies(6,ftile).toArray(new Tile[0])).toArray(new Tile[0][0]));
 
+    public final Tile[][] emptyTileArray = Collections.nCopies(8,Collections.nCopies(8,EMPTY).toArray(new Tile[0])).toArray(new Tile[0][0]);
+
     private final Chunk hChunk = new Chunk(new Texture(Gdx.files.internal("sprites/AIZ2/95.png")),new Tile[][]{
             {ftile,ftile,ftile,ftile,ftile,htile},
             {ftile,ftile,ftile,ftile,ftile,htile},
@@ -76,7 +78,7 @@ public enum TileMap {
                     {ftile,ftile,ftile,ftile,ftile,stile}});
 
 
-    private final Chunk eChunk = new Chunk();
+    private final Chunk eChunk = new Chunk(emptyTileArray);
     private final Chunk[][] testMap =
             {
                     {sChunk,eChunk,eChunk,eChunk},
@@ -121,12 +123,16 @@ public enum TileMap {
 
     }
 
+    public static Chunk getChunk(int chunkX, int chunkY) {
+        return map[chunkX][chunkY];
+    }
+
     public static Tile getEmpty()
     {
         return TILE_MAP.EMPTY;
     }
 
-    @Deprecated
+    /*@Deprecated
     public byte getHeight(int chunkX, int chunkY, int tileX, int tileY, int block)
     {
         if (map[chunkX][chunkY].getTileArray()[tileX][tileY].empty) return 0;
@@ -185,6 +191,6 @@ public enum TileMap {
         if (map[chunkX][chunkY].getTileArray()[tileX][tileY].empty) return new byte[16];
         else return map[chunkX][chunkY].getTileArray()[tileX][tileY].heightArray;
     }
-
+*/
 
 }

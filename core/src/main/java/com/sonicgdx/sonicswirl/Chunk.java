@@ -18,6 +18,8 @@ package com.sonicgdx.sonicswirl;
 
 import com.badlogic.gdx.graphics.Texture;
 
+import java.util.Collections;
+
 public class Chunk {
     private Texture texture;
     private Tile[][] tileArray;
@@ -29,8 +31,9 @@ public class Chunk {
         this.empty = false;
     }
 
-    public Chunk() {
+    public Chunk(Tile[][] tileArray) {
         this.empty = true;
+        this.tileArray = tileArray;
     }
 
     public Texture getTexture() {
