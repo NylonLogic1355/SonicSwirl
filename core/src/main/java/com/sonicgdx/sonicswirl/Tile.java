@@ -26,9 +26,8 @@ public class Tile {
     byte solidity;
     // 0 = solid from top, 1 = solid from bottom, 2 = solid from left, 3 = solid from right, 4 = solid from all sides
     float angle;
-    Texture texture;
 
-    Tile(byte[] heightArray, byte[] widthArray, float angle, byte solidity, boolean flipped, Texture texture) {
+    Tile(byte[] heightArray, byte[] widthArray, float angle, byte solidity, boolean flipped) {
         this.empty = false;
 
         if (heightArray.length == 16) this.heightArray = heightArray;
@@ -39,8 +38,6 @@ public class Tile {
         this.angle = angle;
         this.isFlipped = flipped;
         this.solidity = solidity;
-        this.texture = texture;
-
     }
     Tile()
     {
@@ -64,10 +61,6 @@ public class Tile {
         else {
             return widthArray[block];
         }
-    }
-
-    public Texture getTexture() {
-        return texture;
     }
 
     public boolean isEmpty() {
