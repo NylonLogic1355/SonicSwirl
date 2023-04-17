@@ -146,7 +146,7 @@ public class GameScreen implements Screen {
         int TILE_SIZE = 16;
         int CHUNK_SIZE = 96;
         int TILES_PER_CHUNK = CHUNK_SIZE / TILE_SIZE;
-        Init.batch.draw(TileMap.map[chunkX][chunkY].getTexture(), (chunkX* CHUNK_SIZE),(chunkY* CHUNK_SIZE),CHUNK_SIZE, CHUNK_SIZE);
+        if (!TileMap.map[chunkX][chunkY].isEmpty()) Init.batch.draw(TileMap.map[chunkX][chunkY].getTexture(), (chunkX* CHUNK_SIZE),(chunkY* CHUNK_SIZE),CHUNK_SIZE, CHUNK_SIZE);
 
 
     }
