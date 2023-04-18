@@ -16,6 +16,7 @@
 
 package com.sonicgdx.sonicswirl;
 
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -34,6 +35,7 @@ public class GameScreen implements Screen {
 
     Player player;
 
+    private int drawMode;
     public static final int TILE_SIZE = 16;
     public static final int CHUNK_SIZE = 96;
 
@@ -75,6 +77,12 @@ public class GameScreen implements Screen {
 
         ScreenUtils.clear(Color.DARK_GRAY); // clears the screen and sets the background to a certain colour
 
+        //Toggle between one of two draw modes: texture drawing and height array drawing
+        if (Gdx.input.isKeyJustPressed(Input.Keys.Y)) {
+            drawMode += 1;
+            if (drawMode == 2) drawMode = 0;
+        }
+
         player.move(delta);
 
         //TODO check for jumps here
@@ -89,15 +97,20 @@ public class GameScreen implements Screen {
         Init.batch.begin();
         //Blending has been disabled in MenuScreen
         //TODO render gradually as player progresses
+
+        //Iterates through every chunk on the x-axis
         for (int chunkX = 0; chunkX<TileMap.map.length; chunkX++)
         {
+            //Iterates through every chunk on the y-axis
             for (int chunkY = 0; chunkY<TileMap.map[chunkX].length; chunkY++)
             {
-                drawChunkTextureBatch(chunkX,chunkY);
+                //Draw the chunk's texture unless the debug drawing mode has been toggled
+                if (drawMode == 0) drawChunkTextureBatch(chunkX,chunkY);
+                else drawChunkBatch(chunkX,chunkY);
             }
         }
         player.sprite.draw(Init.batch);
-        // DEBUG
+        // DEBUG - draw white squares at sensor locations
         Init.batch.draw(whiteSquare,player.leftEdgeX,player.yPos); Init.batch.draw(whiteSquare,player.rightEdgeX,player.yPos);
         Init.batch.draw(whiteSquare,player.leftEdgeX,player.bottomEdgeY); Init.batch.draw(whiteSquare,player.rightEdgeX,player.bottomEdgeY);
         Init.batch.draw(whiteSquare,player.leftEdgeX,player.topEdgeY); Init.batch.draw(whiteSquare,player.rightEdgeX,player.topEdgeY);
