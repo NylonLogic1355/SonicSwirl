@@ -98,8 +98,11 @@ public class GameScreen implements Screen {
         //viewport.apply();
         Init.batch.setProjectionMatrix(camera.combined);
         Init.batch.begin();
-        //Blending has been disabled in MenuScreen
-        Init.batch.draw(backgroundTexture,0,0);
+        //Disabling and enabling blending gives a performance boost
+        //transparency is not needed for the background image
+        Init.batch.disableBlending();
+        Init.batch.draw(backgroundTexture,gameViewport.project(Vector2.Zero).x,gameViewport.project(Vector2.Zero).y);
+        Init.batch.enableBlending();
         //TODO render gradually as player progresses
 
         //Iterates through every chunk on the x-axis
