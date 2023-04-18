@@ -101,7 +101,7 @@ public class GameScreen implements Screen {
         //Disabling and enabling blending gives a performance boost
         //transparency is not needed for the background image
         Init.batch.disableBlending();
-        Init.batch.draw(backgroundTexture,gameViewport.project(Vector2.Zero).x,gameViewport.project(Vector2.Zero).y);
+        Init.batch.draw(backgroundTexture,camera.position.x - (camera.viewportWidth / 2),camera.position.y - (camera.viewportHeight / 2));
         Init.batch.enableBlending();
         //TODO render gradually as player progresses
 
