@@ -35,6 +35,8 @@ public class GameScreen implements Screen {
 
     Player player;
 
+    private Texture backgroundTexture;
+
     private int drawMode;
     public static final int TILE_SIZE = 16;
     public static final int CHUNK_SIZE = 96;
@@ -66,6 +68,7 @@ public class GameScreen implements Screen {
         cameraOffset.y = camera.position.y - player.yPos;
 
         //frameLog = new FPSLogger();
+        backgroundTexture = new Texture(Gdx.files.internal("sprites/aiz_background.jpg"));
 
     }
 
@@ -96,6 +99,7 @@ public class GameScreen implements Screen {
         Init.batch.setProjectionMatrix(camera.combined);
         Init.batch.begin();
         //Blending has been disabled in MenuScreen
+        Init.batch.draw(backgroundTexture,0,0);
         //TODO render gradually as player progresses
 
         //Iterates through every chunk on the x-axis
