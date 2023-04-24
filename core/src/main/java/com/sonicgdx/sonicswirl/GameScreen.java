@@ -35,7 +35,7 @@ public class GameScreen implements Screen {
 
     Player player;
 
-    private Texture backgroundTexture;
+    private final Texture backgroundTexture;
 
     private int drawMode;
     public static final int TILE_SIZE = 16;
@@ -90,6 +90,7 @@ public class GameScreen implements Screen {
 
         //TODO check for jumps here
 
+        //Updates the camera position to where the player is but keeps the offset
         camera.position.set(player.xPos + cameraOffset.x,player.yPos + cameraOffset.y,camera.position.z); camera.update(); // recompute matrix for orthographical projection so that the change is responded to in the view
 
         //TODO Add collision logic
@@ -99,7 +100,7 @@ public class GameScreen implements Screen {
         Init.batch.setProjectionMatrix(camera.combined);
         Init.batch.begin();
         //Disabling and enabling blending gives a performance boost
-        //transparency is not needed for the background image
+        //and transparency is not needed for the background image
         Init.batch.disableBlending();
         Init.batch.draw(backgroundTexture,camera.position.x - (camera.viewportWidth / 2),camera.position.y - (camera.viewportHeight / 2));
         Init.batch.enableBlending();
@@ -117,7 +118,7 @@ public class GameScreen implements Screen {
             }
         }
         player.sprite.draw(Init.batch);
-        // DEBUG - draw white squares at sensor locations
+        // DEBUG - draw white squares at sensor locations on the player
         Init.batch.draw(whiteSquare,player.leftEdgeX,player.yPos); Init.batch.draw(whiteSquare,player.rightEdgeX,player.yPos);
         Init.batch.draw(whiteSquare,player.leftEdgeX,player.bottomEdgeY); Init.batch.draw(whiteSquare,player.rightEdgeX,player.bottomEdgeY);
         Init.batch.draw(whiteSquare,player.leftEdgeX,player.topEdgeY); Init.batch.draw(whiteSquare,player.rightEdgeX,player.topEdgeY);
@@ -134,12 +135,14 @@ public class GameScreen implements Screen {
      */
     public void drawChunkBatch(int chunkX, int chunkY) {
         final int TILES_PER_CHUNK = CHUNK_SIZE / TILE_SIZE;
-        //Iterates through every tile in the
+        //Iterates through every tile in the chunk
         for (int tileX = 0; tileX < TILES_PER_CHUNK; tileX++)
         {
             for (int tileY = 0; tileY < TILES_PER_CHUNK; tileY++)
             {
+                //skip if empty
                 if (TileMap.map[chunkX][chunkY].getTileArray()[tileX][tileY].empty) continue;
+                //draw the tile's height array at its location
                 for (int block = 0; block < TILE_SIZE; block++)
                 {
                     if (block==0) Init.batch.setColor(new Color(0,0,0,1));

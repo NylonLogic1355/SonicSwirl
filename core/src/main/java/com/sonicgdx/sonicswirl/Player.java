@@ -299,6 +299,7 @@ public final class Player extends Entity {
         if (Gdx.input.isKeyPressed(Input.Keys.A)) xPos -= (DEBUG_SPEED * delta);
         if (Gdx.input.isKeyPressed(Input.Keys.W)) yPos += (DEBUG_SPEED * delta);
         if (Gdx.input.isKeyPressed(Input.Keys.S)) yPos -= (DEBUG_SPEED * delta);
+        //DEBUG key for testing sprite rotation
         if (Gdx.input.isKeyJustPressed(Input.Keys.E)) groundAngle += 45;
         //Gdx.app.debug("deltaTime",String.valueOf(delta));
     }
