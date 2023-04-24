@@ -143,6 +143,8 @@ https://www.spriters-resource.com/custom_edited/sonicthehedgehogcustoms/sheet/16
 https://www.youtube.com/watch?v=BhdDQwRYMCI
 https://askubuntu.com/a/351772
 https://graphicdesign.stackexchange.com/a/138968
+https://www.youtube.com/watch?v=KY3W6psyjFI
+https://www.spriters-resource.com/game_boy_advance/sonicadv/
 
 ## Rotation (didn't use)
 https://stackoverflow.com/a/2285945

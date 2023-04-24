@@ -1,7 +1,9 @@
-Credit to:
+Credit goes to:
 [@raeleus](https://github.com/raeleus) for the original Particle Pack UI skin
 [@tommyettinger](https://github.com/tommyettinger) for the gdx-setup tool that was used to generate the project, as well as the adapted UI skin.
 [@louplayer] (https://github.com/louplayer) for the edited Sonic sprites (https://www.spriters-resource.com/custom_edited/sonicthehedgehogcustoms/sheet/160249/)
+Techokami for ripping the tileset for AIZ.
+Sonic Team, DIMPS and SEGA for the original games.
 
 Copyright 2023 SonicGDX
 
