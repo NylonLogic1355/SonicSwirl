@@ -55,7 +55,7 @@ public class MenuScreen implements Screen {
     {
         ScreenUtils.clear(0.1f, 0, 0.2f, 1);
 
-        menuViewport.apply();
+        /*menuViewport.apply();
         //Init.batch.setProjectionMatrix(menuViewport.getCamera().combined);
 		Init.batch.begin();
         button.draw(Init.batch,1); //TODO what is parent alpha?
@@ -65,10 +65,11 @@ public class MenuScreen implements Screen {
 
 		if (Gdx.input.isTouched()) {
             //Init.batch.disableBlending(); //Blending is responsible for translucency using the alpha value but decreases performance.
-			Init.setScreen(Init.gameScreen);
-			dispose();
-		}
 
+		}*/
+
+        Init.setScreen(Init.gameScreen);
+        dispose();
     }
 
     @Override
