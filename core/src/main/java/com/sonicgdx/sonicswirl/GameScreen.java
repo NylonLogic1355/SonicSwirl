@@ -64,7 +64,7 @@ public class GameScreen implements Screen {
 
         player = new Player();
 
-        cameraOffset.x = camera.position.x - player.xPos;
+        cameraOffset.x = 0;
         cameraOffset.y = camera.position.y - player.yPos;
 
         //frameLog = new FPSLogger();
