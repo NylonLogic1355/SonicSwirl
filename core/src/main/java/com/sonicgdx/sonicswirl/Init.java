@@ -17,6 +17,7 @@
 package com.sonicgdx.sonicswirl;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
@@ -28,6 +29,9 @@ public class Init extends Game {
 	private MenuScreen menuScreen;
 
 	public void create() {
+        //Log level of 3 logs everything
+        Gdx.app.setLogLevel(3); //TODO reduce logging level for release builds
+
         batch = new SpriteBatch(); // sprite batch provides multiple sprites to draw to the GPU to improve openGl performance https://gamedev.stackexchange.com/questions/32910/what-is-the-technical-defInition-of-sprite-batching
         // Can be easily shared between screens
 		menuScreen = new MenuScreen(this);
