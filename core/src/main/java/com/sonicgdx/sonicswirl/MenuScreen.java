@@ -90,8 +90,9 @@ public class MenuScreen implements Screen {
         });
 
         //adds the buttons as a child of the table, so they are automatically positioned
-        table.add(createButton);
-        table.add(importButton);
+        //sets width and height to 100
+        table.add(createButton).height(100).width(100);
+        table.add(importButton).height(100).width(100);
     }
 
     @Override
