@@ -18,15 +18,19 @@ package com.sonicgdx.sonicswirl;
 
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 public class MenuScreen implements Screen {
+    //The initial class that sets the screen. Used for sharing a SpriteBatch
+    private final Init Init;
 
     //Stage is a class that automatically processes user input and directs
     //click / touch positions to the appropriate UI element action
@@ -35,10 +39,10 @@ public class MenuScreen implements Screen {
     //The table class positions widgets automatically depending on the screen size
     //which is better than absolute positioning
     private final Table table;
+    private final Skin uiSkin;
+    private final TextButton createButton, importButton;
 
-    //The initial class that sets the screen. Used for sharing a SpriteBatch
-    final Init Init;
-    Skin buttonSkin; TextButton createButton;
+
 
     public MenuScreen(final Init Init){
 
@@ -62,11 +66,32 @@ public class MenuScreen implements Screen {
         table.setDebug(false);
 
         //the skin defines the appearance of UI elements in different states
-        buttonSkin = new Skin(Gdx.files.internal("ui/uiskin.json")); //Constructor automatically finds and disposes atlas file as required.
+        uiSkin = new Skin(Gdx.files.internal("ui/uiskin.json")); //Constructor automatically finds and disposes atlas file as required.
 
-        createButton = new TextButton("Begin", buttonSkin);
-        //adds the button as a child of the table, so it is automatically positioned
+        createButton = new TextButton("Begin", uiSkin);
+
+        // Adds listeners to the buttons. ChangeListener is fired when the button's checked state has changed
+        createButton.addListener(new ChangeListener() {
+            public void changed (ChangeEvent event, Actor actor) {
+                //Moves to the gameScreen and disposes the menu screen - it isn't needed anymore
+                Init.setScreen(Init.gameScreen);
+                dispose();
+            }
+        });
+
+        //FIXME doesn't function yet
+        importButton = new TextButton("Begin", uiSkin);
+        importButton.addListener(new ChangeListener() {
+            public void changed (ChangeEvent event, Actor actor) {
+                importButton.setText("Sorry, Not Implemented!");
+                Gdx.app.error("Not Implemented:", "Import Level");
+                //dispose();
+            }
+        });
+
+        //adds the buttons as a child of the table, so they are automatically positioned
         table.add(createButton);
+        table.add(importButton);
     }
 
     @Override
@@ -80,7 +105,7 @@ public class MenuScreen implements Screen {
     }
     @Override
     public void dispose() {
-        buttonSkin.dispose();
+        uiSkin.dispose();
         stage.dispose();
     }
     @Override
