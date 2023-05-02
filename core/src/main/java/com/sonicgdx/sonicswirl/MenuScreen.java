@@ -27,7 +27,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
-    public class MenuScreen implements Screen {
+public class MenuScreen implements Screen {
 
     //Stage is a class that automatically processes user input and directs
     //click / touch positions to the appropriate UI element action
@@ -63,13 +63,17 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
         table.setDebug(false);
 
         //the skin defines the appearance of UI elements in different states
-        buttonSkin = new Skin(Gdx.files.internal("ui/skin-composer-ui.json")); //Constructor automatically finds and disposes atlas file as required.
-        buttonSkin.getFont("font").getData().setScale(1f);
-        buttonSkin.getFont("title").getData().setScale(1f);
+        buttonSkin = new Skin(Gdx.files.internal("ui/uiskin.json")); //Constructor automatically finds and disposes atlas file as required.
+        //Get the font stored with the name 'font' in the atlas and set its scale to 5x.
+        System.out.println(buttonSkin.getAll(BitmapFont.class));
+        buttonSkin.getFont("font").getData().setScale(2f);
+        buttonSkin.getFont("default").getData().setScale(2f);
+
+
         createButton = new TextButton("Begin", buttonSkin);
         //adds the button as a child of the table, so it is automatically positioned
         //then sets its width and height to 100
-        table.add(createButton).height(50).width(50);
+        table.add(createButton).height(100).width(100);
 
     }
 
