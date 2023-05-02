@@ -51,8 +51,8 @@ public class MenuScreen implements Screen {
 
         table = new Table();
 
-        //because this is the root table, FillParent is enabled
-        //because it is used for positioning "children" widgets
+        /*This is the root table, so FillParent is enabled
+        because it is used for positioning "children" widgets*/
         table.setFillParent(true);
 
         //Stage models real life theatre where the stage comprises actors that "act" to update their positions
@@ -63,10 +63,14 @@ public class MenuScreen implements Screen {
 
         //the skin defines the appearance of UI elements in different states
         buttonSkin = new Skin(Gdx.files.internal("ui/uiskin.json")); //Constructor automatically finds and disposes atlas file as required.
+        //Get the font stored with the name 'font' in the atlas and set its scale to 5x.
+        buttonSkin.getFont("font").getData().setScale(5f);
 
         createButton = new TextButton("Begin", buttonSkin);
         //adds the button as a child of the table, so it is automatically positioned
-        table.add(createButton);
+        //then sets its width and height to 100
+        table.add(createButton).height(100).width(100);
+
     }
 
     @Override
