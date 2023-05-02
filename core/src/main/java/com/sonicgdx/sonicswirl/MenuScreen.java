@@ -18,6 +18,7 @@ package com.sonicgdx.sonicswirl;
 
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -64,7 +65,10 @@ public class MenuScreen implements Screen {
         //the skin defines the appearance of UI elements in different states
         buttonSkin = new Skin(Gdx.files.internal("ui/uiskin.json")); //Constructor automatically finds and disposes atlas file as required.
         //Get the font stored with the name 'font' in the atlas and set its scale to 5x.
-        buttonSkin.getFont("font").getData().setScale(5f);
+        System.out.println(buttonSkin.getAll(BitmapFont.class));
+        buttonSkin.getFont("font").getData().setScale(2f);
+        buttonSkin.getFont("default").getData().setScale(2f);
+
 
         createButton = new TextButton("Begin", buttonSkin);
         //adds the button as a child of the table, so it is automatically positioned
