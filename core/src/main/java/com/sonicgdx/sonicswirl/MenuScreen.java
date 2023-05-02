@@ -17,58 +17,113 @@
 package com.sonicgdx.sonicswirl;
 
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 public class MenuScreen implements Screen {
+    //The initial class that sets the screen. Used for sharing a SpriteBatch
+    private final Init Init;
 
-    Stage stage;
-    final Init Init;
-    final int SCREEN_WIDTH,SCREEN_HEIGHT;
-    private final ScreenViewport menuViewport;
-    Skin buttonSkin; TextButton button;
+    //Stage is a class that automatically processes user input and directs
+    //click / touch positions to the appropriate UI element action
+    private final Stage stage;
+
+    //The table class positions widgets automatically depending on the screen size
+    //which is better than absolute positioning
+    private final Table table;
+    private final Skin uiSkin;
+
+    private final Image gameLogo;
+    private final TextButton createButton, importButton;
+
+
 
     public MenuScreen(final Init Init){
-        Gdx.app.setLogLevel(3); //TODO reduce logging level for release builds
+
         this.Init = Init;
-
-        //TODO change viewport size
-        SCREEN_WIDTH = Gdx.graphics.getWidth(); SCREEN_HEIGHT = Gdx.graphics.getHeight();
-
-        menuViewport = new ScreenViewport();
-
-        stage = new Stage(menuViewport,Init.batch);
-
         Init.gameScreen = new GameScreen(Init);
 
-        buttonSkin = new Skin(Gdx.files.internal("ui/uiskin.json")); //Constructor automatically finds and disposes atlas file as required.
+        //Reuses the SpriteBatch from the Init class to improve performance
+        stage = new Stage(new ScreenViewport(),Init.batch);
+        Gdx.input.setInputProcessor(stage);
 
-        button = new TextButton("Begin", buttonSkin);
+        table = new Table();
+
+        //because this is the root table, FillParent is enabled
+        //because it is used for positioning "children" widgets
+        table.setFillParent(true);
+
+        //Stage models real life theatre where the stage comprises actors that "act" to update their positions
+        stage.addActor(table);
+
+        //DEBUG - draws debug lines on tables to visualize what is happening in the layout
+        table.setDebug(false);
+
+        //the skin defines the appearance of UI elements in different states
+        uiSkin = new Skin(Gdx.files.internal("ui/uiskin.json")); //Constructor automatically finds and disposes atlas file as required.
+
+        createButton = new TextButton("Begin", uiSkin);
+
+        // Adds listeners to the buttons. ChangeListener is fired when the button's checked state has changed
+        createButton.addListener(new ChangeListener() {
+            public void changed (ChangeEvent event, Actor actor) {
+                //Moves to the gameScreen and disposes the menu screen - it isn't needed anymore
+                Init.setScreen(Init.gameScreen);
+                dispose();
+            }
+        });
+
+        //FIXME doesn't function yet
+        importButton = new TextButton("Import", uiSkin);
+        importButton.addListener(new ChangeListener() {
+            public void changed (ChangeEvent event, Actor actor) {
+                importButton.setText("Sorry, Not Implemented!");
+                Gdx.app.error("Not Implemented:", "Import Level");
+                //dispose();
+            }
+        });
+
+        gameLogo = new Image(new Texture(Gdx.files.internal("ui/logo.png")));
+
+        //centres the logo in the top center, puts space below it, makes it take up 3 columns and goes to the next
+        //row in the table
+        table.add(gameLogo).top().center().spaceBottom(200).colspan(3).row();
+        //adds the buttons as a child of the table, so they are automatically positioned
+        //then sets its width and height to 50
+        table.add(createButton).height(50).width(50).space(50);
+        table.add(importButton).height(50).width(50);
+
     }
 
     @Override
     public void render(float delta)
     {
-        ScreenUtils.clear(0.1f, 0, 0.2f, 1);
+        ScreenUtils.clear(Color.WHITE);
 
-        menuViewport.apply();
-        //Init.batch.setProjectionMatrix(menuViewport.getCamera().combined);
-		Init.batch.begin();
-        button.draw(Init.batch,1); //TODO what is parent alpha?
-		Init.font.draw(Init.batch, "Sonic Swirl", SCREEN_WIDTH / 2F - 65, SCREEN_HEIGHT / 2F);
-		Init.font.draw(Init.batch, "Press to begin", SCREEN_WIDTH / 2F - 65, SCREEN_HEIGHT / 2F - 100);
-		Init.batch.end();
+        stage.act(delta);
+        stage.draw();
 
-		if (Gdx.input.isTouched()) {
-            Init.batch.disableBlending(); //Blending is responsible for translucency using the alpha value but decreases performance.
-			Init.setScreen(Init.gameScreen);
-			dispose();
-		}
-
+    }
+    @Override
+    public void dispose() {
+        uiSkin.dispose();
+        stage.dispose();
+    }
+    @Override
+    //The third argument in the update method enables the camera to be centred
+    //which is used in the Main Menu because the position doesn't change
+    public void resize(int width, int height) {
+        stage.getViewport().update(width,height,true);
     }
 
     @Override
@@ -76,35 +131,19 @@ public class MenuScreen implements Screen {
     {
         // TODO Auto-generated method stub
     }
-
-    @Override
-    public void show() {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void resize(int width, int height) {
-        menuViewport.update(width,height,true);
-    }
-
     @Override
     public void resume() {
         // TODO Auto-generated method stub
 
     }
+    @Override
+    public void show() {
+        // TODO Auto-generated method stub
 
+    }
     @Override
     public void hide() {
         // TODO Auto-generated method stub
 
     }
-
-    @Override
-    public void dispose() {
-        buttonSkin.dispose();
-        stage.dispose();
-    }
-
-
 }
