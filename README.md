@@ -1,5 +1,5 @@
 Credit to:
-[@raeleus](https://github.com/raeleus) for the original Particle Pack UI skin
+[***Raymond "Raeleus" Buckley***](https://ray3k.wordpress.com/software/skin-composer-for-libgdx/) for the original Particle Pack UI skin
 [@tommyettinger](https://github.com/tommyettinger) for the gdx-setup tool that was used to generate the project, as well as the adapted UI skin.
 
 Copyright 2023 SonicGDX
