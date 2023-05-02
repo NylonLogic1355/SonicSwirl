@@ -18,8 +18,10 @@ package com.sonicgdx.sonicswirl;
 
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -40,6 +42,8 @@ public class MenuScreen implements Screen {
     //which is better than absolute positioning
     private final Table table;
     private final Skin uiSkin;
+
+    private final Image gameLogo;
     private final TextButton createButton, importButton;
 
 
@@ -80,7 +84,7 @@ public class MenuScreen implements Screen {
         });
 
         //FIXME doesn't function yet
-        importButton = new TextButton("Begin", uiSkin);
+        importButton = new TextButton("Import", uiSkin);
         importButton.addListener(new ChangeListener() {
             public void changed (ChangeEvent event, Actor actor) {
                 importButton.setText("Sorry, Not Implemented!");
@@ -89,16 +93,22 @@ public class MenuScreen implements Screen {
             }
         });
 
+        gameLogo = new Image(new Texture(Gdx.files.internal("ui/logo.png")));
+
+        //centres the logo in the top center, puts space below it, makes it take up 3 columns and goes to the next
+        //row in the table
+        table.add(gameLogo).top().center().spaceBottom(200).colspan(3).row();
         //adds the buttons as a child of the table, so they are automatically positioned
-        //sets width and height to 100
-        table.add(createButton).height(100).width(100);
-        table.add(importButton).height(100).width(100);
+        //then sets its width and height to 50
+        table.add(createButton).height(50).width(50).space(50);
+        table.add(importButton).height(50).width(50);
+
     }
 
     @Override
     public void render(float delta)
     {
-        ScreenUtils.clear(Color.BLACK);
+        ScreenUtils.clear(Color.WHITE);
 
         stage.act(delta);
         stage.draw();
