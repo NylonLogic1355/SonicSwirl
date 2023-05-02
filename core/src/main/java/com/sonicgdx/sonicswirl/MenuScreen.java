@@ -37,6 +37,8 @@ public class MenuScreen implements Screen {
     //which is better than absolute positioning
     private final Table table;
 
+    private final BitmapFont uiFont;
+
     //The initial class that sets the screen. Used for sharing a SpriteBatch
     final Init Init;
     Skin buttonSkin; TextButton createButton;
@@ -64,10 +66,12 @@ public class MenuScreen implements Screen {
 
         //the skin defines the appearance of UI elements in different states
         buttonSkin = new Skin(Gdx.files.internal("ui/uiskin.json")); //Constructor automatically finds and disposes atlas file as required.
-        //Get the font stored with the name 'font' in the atlas and set its scale to 5x.
-        System.out.println(buttonSkin.getAll(BitmapFont.class));
-        buttonSkin.getFont("font").getData().setScale(2f);
-        buttonSkin.getFont("default").getData().setScale(2f);
+
+        uiFont = new BitmapFont();
+
+        //Get the font stored with the name 'default' in the atlas and set its scale to 5x.
+        //Queried fonts in the atlas - System.out.println(buttonSkin.getAll(BitmapFont.class));
+        buttonSkin.getFont("default").getData().setScale(1f);
 
 
         createButton = new TextButton("Begin", buttonSkin);
@@ -80,7 +84,7 @@ public class MenuScreen implements Screen {
     @Override
     public void render(float delta)
     {
-        ScreenUtils.clear(Color.BLACK);
+        ScreenUtils.clear(Color.WHITE);
 
         stage.act(delta);
         stage.draw();
