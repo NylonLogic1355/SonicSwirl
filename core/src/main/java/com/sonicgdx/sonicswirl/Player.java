@@ -161,9 +161,7 @@ public final class Player extends Entity {
 
         //FIXME rotation
 
-        //Rotates the sprite first, and THEN changes its co-ordinates (-translating it)
-
-        sprite.setPosition(position.x, position.y);
+        //Rotates the sprite first, and THEN changes its co-ordinates - translating it
         sprite.setRotation(groundAngle);
 
         //TODO calculate y Position from ground up
