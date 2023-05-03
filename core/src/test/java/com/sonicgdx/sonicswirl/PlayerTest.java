@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class PlayerTest {
 
-    private final Player player = new Player();
+    private final Player player = new Player(10,10);
 
     @Test
     void slopeTest() {

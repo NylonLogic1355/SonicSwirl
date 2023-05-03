@@ -25,7 +25,7 @@ import com.badlogic.gdx.math.Vector2;
  */
 public abstract class Entity {
     protected Vector2 position;
-    protected float leftEdgeX, rightEdgeX, bottomEdgeY, topEdgeY;
+    protected float leftEdgeX, rightEdgeX, bottomEdgeY, topEdgeY, centreY;
 
     //TODO reconsider usage of local variables as well as sprite.getx/y
     Sprite sprite;
@@ -43,17 +43,14 @@ public abstract class Entity {
         //yPos = Math.max(yPos,0);
     }
 
-    public void calculateSensorPositions(float widthRadius, float heightRadius)
+    public void calculateSensorPositions()
     {
         //FIXME
-        topEdgeY = yPos + heightRadius;
-        bottomEdgeY = yPos - heightRadius;
-        leftEdgeX = xPos - widthRadius;
-        rightEdgeX = xPos + widthRadius;
-        lSensorX = position.x;
-        rSensorX = position.x + (sprite.getWidth() - 1); // xPos + (srcWidth - 1) - using srcWidth places it one pixel right of the square
+        bottomEdgeY = position.y - (sprite.getHeight() - 1);
+        leftEdgeX = position.x;
+        rightEdgeX = position.x + (sprite.getWidth() - 1); // xPos + (srcWidth - 1) - using srcWidth places it one pixel right of the square
         centreY = position.y + ((sprite.getHeight() - 1) / 2);
-        topY = position.y + (sprite.getHeight() - 1);
+        topEdgeY = position.y + (sprite.getHeight() - 1);
     }
     public float snapToNearest (float angle, float snapTo) {
         return MathUtils.round(angle/snapTo) * snapTo;

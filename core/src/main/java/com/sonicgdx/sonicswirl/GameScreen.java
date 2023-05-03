@@ -19,11 +19,9 @@ package com.sonicgdx.sonicswirl;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
@@ -60,7 +58,7 @@ public class GameScreen implements Screen {
         //TODO AssetManager
         whiteSquare = new Texture(Gdx.files.internal("1x1-ffffffff.png")); blackSquare = new Texture(Gdx.files.internal("1x1-000000ff.png"));
         final int PLAYER_WIDTH = 20, PLAYER_HEIGHT = 40; //FIXME standardise
-        player = new Player(whiteSquare, PLAYER_WIDTH,PLAYER_HEIGHT);
+        player = new Player(PLAYER_WIDTH,PLAYER_HEIGHT);
 
         cameraOffset.x = 0; //TODO adjust view when looking up or down
         cameraOffset.y = camera.position.y - player.getYPosition();
@@ -110,31 +108,38 @@ public class GameScreen implements Screen {
             {
                 //TODO draw tile width batch
                 //Draw the chunk's texture unless the debug drawing mode has been toggled
-                if (drawMode == 1) drawChunkHeightBatch(chunkX,chunkY);
-                else if (drawMode == 2) drawChunkWidthBatch(chunkX,chunkY);
+                if (drawMode == 1) drawChunkHeightArray(chunkX,chunkY);
+                else if (drawMode == 2) drawChunkWidthArray(chunkX,chunkY);
                 else drawChunkTextureBatch(chunkX,chunkY);
             }
         }
         player.sprite.draw(Init.batch);
         // DEBUG - draw white squares at sensor locations on the player
-        Init.batch.draw(whiteSquare,player.leftEdgeX,player.yPos); Init.batch.draw(whiteSquare,player.rightEdgeX,player.yPos);
+        Init.batch.draw(whiteSquare,player.leftEdgeX,player.getYPosition()); Init.batch.draw(whiteSquare,player.rightEdgeX,player.getYPosition());
         Init.batch.draw(whiteSquare,player.leftEdgeX,player.bottomEdgeY); Init.batch.draw(whiteSquare,player.rightEdgeX,player.bottomEdgeY);
         Init.batch.draw(whiteSquare,player.leftEdgeX,player.topEdgeY); Init.batch.draw(whiteSquare,player.rightEdgeX,player.topEdgeY);
-        Init.batch.draw(whiteSquare,player.xPos,player.yPos);
+        Init.batch.draw(whiteSquare,player.getXPosition(),player.getYPosition());
         Init.batch.end();
     }
 
-    //TODO multithreading except for GWT?
+    /**
+     * Draws each Chunk's assigned texture at its corresponding location
+     * @param chunkX the chunk number on the x-axis - not the same as its co-ordinate
+     * @param chunkY the chunk number on the y-axis - not the same as its co-ordinate
+     */
+    public void drawChunkTextureBatch(int chunkX, int chunkY) {
+        //If the chunk isn't empty, draw its texture at the chunk's location
+        if (!TileMap.map[chunkX][chunkY].isEmpty()) Init.batch.draw(TileMap.map[chunkX][chunkY].getTexture(), (chunkX* CHUNK_SIZE),(chunkY* CHUNK_SIZE),CHUNK_SIZE, CHUNK_SIZE);
+    }
 
     /**
-     * Draws each Tile in a chunk using a gradient - for debugging purposes only
-     * Draws each Tile using a gradient - for debugging purposes only
+     * Draws each Tile in a Chunk's height arrays  using a gradient - for debugging purposes only
      * Further iteration is done outside the procedure for every chunk in the TileMap. This is so that this method
      * can potentially be reused in other circumstances (such as for rendering only one chunk in the creator UI)
      * @param chunkX the chunk number on the x-axis - not the same as its co-ordinate
      * @param chunkY the chunk number on the y-axis - not the same as its co-ordinate
      */
-    public void drawChunkHeightBatch(int chunkX, int chunkY) {
+    public void drawChunkHeightArray(int chunkX, int chunkY) {
         final int TILES_PER_CHUNK = CHUNK_SIZE / TILE_SIZE;
         //Iterates through every tile in the chunk
         for (int tileX = 0; tileX < TILES_PER_CHUNK; tileX++)
@@ -168,13 +173,13 @@ public class GameScreen implements Screen {
     }
 
     /**
-     * Draws each Tile using a gradient - for debugging purposes only
+     * Draws each Tile in a Chunk's height array using a gradient - for debugging purposes only
      * Further iteration is done outside the procedure for every chunk in the TileMap. This is so that this method
      * can potentially be reused in other circumstances (such as for rendering only one chunk in the creator UI)
      * @param chunkX the chunk number on the x-axis - not the same as its co-ordinate
      * @param chunkY the chunk number on the y-axis - not the same as its co-ordinate
      */
-    public void drawChunkWidthBatch(int chunkX, int chunkY) {
+    public void drawChunkWidthArray(int chunkX, int chunkY) {
         final int TILES_PER_CHUNK = CHUNK_SIZE / TILE_SIZE;
 
         //Iterates through every tile in the chunk
@@ -183,19 +188,19 @@ public class GameScreen implements Screen {
             for (int tileY = 0; tileY < TILES_PER_CHUNK; tileY++)
             {
                 //Skips the loop for empty tiles (every value in its array would be zero anyway)
-                if (TileMap.map[chunkX][chunkY][tileX][tileY].empty) continue;
+                if (TileMap.map[chunkX][chunkY].getTileArray()[tileX][tileY].empty) continue;
                 for (int block = 0; block < TILE_SIZE; block++)
                 {
                     if (block==0) Init.batch.setColor(Color.BLACK);
                     else Init.batch.setColor(new Color(0,(1F/TILES_PER_CHUNK) * tileY,block,1));
 
                     int yPosition = (tileY * TILE_SIZE) + (chunkY * CHUNK_SIZE) + block;
-                    int blockWidth = TileMap.map[chunkX][chunkY][tileX][tileY].getWidth(TILE_SIZE - block - 1);
+                    int blockWidth = TileMap.map[chunkX][chunkY].getTileArray()[tileX][tileY].getWidth(TILE_SIZE - block - 1);
 
-                    if (!TileMap.map[chunkX][chunkY][tileX][tileY].horizontalFlip) {
-                        Init.batch.draw(img, (tileX * TILE_SIZE) + (chunkX * CHUNK_SIZE) + (TILE_SIZE - blockWidth), yPosition, blockWidth, 1);
+                    if (!TileMap.map[chunkX][chunkY].getTileArray()[tileX][tileY].horizontalFlip) {
+                        Init.batch.draw(whiteSquare, (tileX * TILE_SIZE) + (chunkX * CHUNK_SIZE) + (TILE_SIZE - blockWidth), yPosition, blockWidth, 1);
                     } else {
-                        Init.batch.draw(img, (tileX * TILE_SIZE) + (chunkX * CHUNK_SIZE), yPosition, blockWidth, 1);
+                        Init.batch.draw(whiteSquare, (tileX * TILE_SIZE) + (chunkX * CHUNK_SIZE), yPosition, blockWidth, 1);
                     }
 
                     //TODO reversed search order for flipped tiles. e.g. Collections.reverse() or ArrayUtils.reverse(int[] array)

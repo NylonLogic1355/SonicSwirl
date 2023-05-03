@@ -155,7 +155,7 @@ public final class Player extends Entity {
 
         enforceBoundaries();
 
-        calculateSensorPositions(WIDTHRADIUS,HEIGHTRADIUS);
+        calculateSensorPositions();
 
         //if (speedX == 0 && speedY == 0 && isGrounded) spriteRegion = atlas.findRegion("sonic-idle",0);
 
@@ -169,7 +169,7 @@ public final class Player extends Entity {
         sprite.setRotation(groundAngle);
 
         //TODO calculate y Position from ground up
-        sprite.setBounds(xPos - ((spriteRegion.getRegionWidth() + 1) / 2F),bottomEdgeY, spriteRegion.getRegionWidth(), spriteRegion.getRegionHeight());
+        sprite.setBounds(position.x - ((spriteRegion.getRegionWidth() + 1) / 2F),bottomEdgeY, spriteRegion.getRegionWidth(), spriteRegion.getRegionHeight());
         //Since the xPos is the centre, you can just subtract the difference between the first pixel and the middle pixel to get the sprite co-ordinates.
         //yPos is also the centre, but bottomEdgeY is used instead since sprites don't have constant height and positioning above the ground can be inconsistent.
         sprite.setOriginCenter(); //TODO only set origin when region, also perhaps look into setOriginBasedPosition
@@ -385,8 +385,8 @@ public final class Player extends Entity {
      * sensorE is positioned at the centre left and sensorF is positioned at the centre right.
      */
     @Override
-    public void calculateSensorPositions(float widthRadius, float heightRadius) {
-        super.calculateSensorPositions(widthRadius, heightRadius);
+    public void calculateSensorPositions() {
+        super.calculateSensorPositions();
         sensorA.setPositionValues(leftEdgeX,position.y); //TODO possibly remove these variables
         sensorB.setPositionValues(rightEdgeX,position.y);
         //FIXME sensorE.setPositionValues(lSensorX,centreY);
