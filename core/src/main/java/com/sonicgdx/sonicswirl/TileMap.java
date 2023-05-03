@@ -27,14 +27,9 @@ public enum TileMap {
     TILE_MAP;
 
     // solid blocks
-    //TODO tile ID
-    //TODO add tile textureregion
     //TODO reconsider usage of TileMap class
-    //TODO possible GUI chunk editor
 
-    public static final Chunk[][] map = TILE_MAP.testMap;
-
-    //TODO test class - check if all these are 16 in length
+    public static final Chunk[][] map = TILE_MAP.testLevel;
 
     // Classes are reference types so modifying a value would affect all the tiles that are the same.
     private final int[] zero = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
@@ -55,13 +50,13 @@ public enum TileMap {
 
     public final Tile[][] emptyTileArray = Collections.nCopies(TILES_PER_CHUNK,Collections.nCopies(TILES_PER_CHUNK,EMPTY).toArray(new Tile[0])).toArray(new Tile[0][0]);
 
-    private final Chunk hChunk = new Chunk(new Texture(Gdx.files.internal("sprites/AIZ2/95.png")),new Tile[][]{
-            {ftile,ftile,ftile,ftile,ftile,htile},
-            {ftile,ftile,ftile,ftile,ftile,htile},
-            {ftile,ftile,ftile,ftile,ftile,htile},
-            {ftile,ftile,ftile,ftile,ftile,htile},
-            {ftile,ftile,ftile,ftile,ftile,htile},
-            {ftile,ftile,ftile,ftile,ftile,htile}});
+    private final Chunk hChunk = new Chunk(new Texture(Gdx.files.internal("sprites/AIZ2/176.png")),new Tile[][]{
+            {ftile,ftile,htile},
+            {ftile,ftile,htile},
+            {ftile,ftile,htile},
+            {ftile,ftile,htile},
+            {ftile,ftile,htile},
+            {ftile,ftile,htile}});
     private final Chunk rvChunk = new Chunk(new Texture(Gdx.files.internal("sprites/AIZ2/130.png")),new Tile[][]{
             {ftile,ftile,ftile,ftile,ftile,rvtile,},
             {ftile,ftile,ftile,ftile,rvtile,EMPTY},
@@ -88,7 +83,7 @@ public enum TileMap {
                     {fChunk,eChunk,eChunk,eChunk},
                     {fChunk,eChunk,eChunk,eChunk},
                     {eChunk,eChunk,eChunk,eChunk},
-                    {eChunk,hChunk,eChunk,eChunk},
+                    {eChunk,fChunk,eChunk,eChunk},
                     {eChunk,eChunk,eChunk,eChunk},
                     {fChunk,eChunk,eChunk,eChunk},
                     {fChunk,eChunk,eChunk,eChunk},
@@ -99,6 +94,39 @@ public enum TileMap {
                     {rvChunk,eChunk,eChunk,eChunk}
 
             };
+
+    private final Chunk[][] testLevel =
+        {
+            {sChunk},
+            {fChunk},
+            {fChunk},
+            {fChunk},
+            {eChunk},
+            {eChunk,fChunk},
+            {eChunk},
+            {fChunk},
+            {fChunk},
+            {fChunk},
+            {fChunk},
+            {fChunk,fChunk},
+            {fChunk},
+            {eChunk,rvChunk, eChunk, eChunk,eChunk, fChunk},
+            {fChunk,eChunk,eChunk, eChunk,eChunk, fChunk},
+            {eChunk,sChunk,eChunk,hChunk,fChunk},
+            {eChunk,eChunk,eChunk,hChunk},
+            {eChunk,eChunk,rvChunk},
+            {eChunk,rvChunk},
+            {eChunk,sChunk},
+            {eChunk,eChunk,sChunk},
+            {eChunk},
+            {eChunk},
+            {eChunk},
+            {eChunk},
+            {hChunk}
+
+
+
+        };
 
     public static Tile getTile(int chunkX, int chunkY, int tileX, int tileY)
     {
