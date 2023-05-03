@@ -45,12 +45,12 @@ public abstract class Entity {
 
     public void calculateSensorPositions()
     {
-        bottomEdgeY = position.y;
         leftEdgeX = position.x;
+        bottomEdgeY = position.y;
         rightEdgeX = position.x + (sprite.getWidth() - 1); // xPos + (srcWidth - 1) - using srcWidth places it one pixel right of the square
-        centreX = position.x + ((sprite.getWidth() - 1) / 2);
-        centreY = position.y + ((sprite.getHeight() - 1) / 2);
         topEdgeY = position.y + (sprite.getHeight() - 1);
+        centreX = position.x + ((sprite.getWidth() + 1) / 2);
+        centreY = position.y + ((sprite.getHeight() + 1) / 2);
     }
     public float snapToNearest (float angle, float snapTo) {
         return MathUtils.round(angle/snapTo) * snapTo;
