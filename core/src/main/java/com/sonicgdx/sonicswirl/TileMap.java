@@ -18,6 +18,7 @@ package com.sonicgdx.sonicswirl;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import static com.sonicgdx.sonicswirl.GameScreen.TILES_PER_CHUNK;
 
 import java.util.Collections;
 
@@ -32,8 +33,6 @@ public enum TileMap {
     //TODO possible GUI chunk editor
 
     public static final Chunk[][] map = TILE_MAP.testMap;
-
-    private final int TILES_PER_CHUNK = GameScreen.CHUNK_LENGTH / GameScreen.TILE_LENGTH;
 
     //TODO test class - check if all these are 16 in length
 

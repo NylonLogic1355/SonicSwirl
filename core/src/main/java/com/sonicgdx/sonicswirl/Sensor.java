@@ -21,6 +21,7 @@ import com.badlogic.gdx.math.Vector2;
 
 import static com.sonicgdx.sonicswirl.GameScreen.CHUNK_LENGTH;
 import static com.sonicgdx.sonicswirl.GameScreen.TILE_LENGTH;
+import static com.sonicgdx.sonicswirl.GameScreen.TILES_PER_CHUNK;
 
 public class Sensor {
     private boolean isActive;
@@ -35,7 +36,11 @@ public class Sensor {
         this.position = positionVector;
     }
 
+    /**
+     * Creates an empty sensor (with the assumption that its position will be updated later)
+     */
     public Sensor() {
+        //Sets the position to Vector2.ZERO, so that it is not null
         this.position = new Vector2();
     }
 
@@ -46,7 +51,6 @@ public class Sensor {
      * The distance attribute is set to the distance on the y-axis between the sensor and that Tile.
      */
     public void floorProcess() {
-        int TILES_PER_CHUNK = CHUNK_LENGTH / TILE_LENGTH;
         //TODO take into account solidity value
 
         /*  Out of bounds values would cause an error if attempting to check their distance
@@ -123,8 +127,6 @@ public class Sensor {
      * Generates the distance value based on how far away the sensor is from the nearest wall on the x-axis
      */
     public void wallProcess() {
-        int TILES_PER_CHUNK = CHUNK_LENGTH / TILE_LENGTH;
-
         //TODO take into account solidity value
 
         /*

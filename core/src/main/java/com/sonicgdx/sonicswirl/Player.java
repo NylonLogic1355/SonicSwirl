@@ -37,15 +37,12 @@ public final class Player extends Entity {
     // Original values were designed to occur 60 times every second so by multiplying it by 60 you get the amount of pixels moved per second.
     private float groundVelocity = 0, groundAngle = 0;
     private final Sensor sensorA, sensorB, sensorE,sensorF;
-
-    private final TextureAtlas atlas;
     private TextureRegion spriteRegion;
     private final Vector2 velocity;
     Player(float widthRadius, float heightRadius) {
         super(widthRadius, heightRadius);
-        atlas = new TextureAtlas(Gdx.files.internal("sprites/SonicGDX.atlas"));
-        spriteRegion = atlas.findRegion("sonic-idle",0);
-        position = new Vector2(50,200); // Sets the player's starting position at (600,200). (The variable was initialised in super constructor)
+        spriteRegion = GameScreen.getTextureRegion("sonic-idle",0);
+        position = new Vector2(50,200); // Sets the player's starting position at (50,200). (The variable was initialised in super constructor)
         //The vector has two components for the x position and y position respectively
         velocity = new Vector2(); //Initialises to zero starting speed
         sensorA = new Sensor(); //Copies the player's position to the left floor sensor's.
@@ -137,16 +134,8 @@ public final class Player extends Entity {
                         }
                     }
                 }
-
-
-
             }
-
-
-
-
-
-            //TODO perhaps add a check if the player is stationary before calculating collision
+            //TODO perhaps add a check if the player is stationary before calculating collision to increase FPS
 
         }
 
@@ -154,7 +143,7 @@ public final class Player extends Entity {
 
         calculateSensorPositions();
 
-        //if (speedX == 0 && speedY == 0 && isGrounded) spriteRegion = atlas.findRegion("sonic-idle",0);
+        //if (speedX == 0 && speedY == 0 && isGrounded) spriteRegion = GameScreen.getTextureRegion("sonic-idle",0);
 
         sprite.setRegion(spriteRegion);
 
@@ -379,9 +368,8 @@ public final class Player extends Entity {
      * sensorA is positioned in the bottom left corner and sensorB in the bottom right corner.
      * sensorE is positioned at the centre left and sensorF is positioned at the centre right.
      */
-    @Override
     public void calculateSensorPositions() {
-        super.calculateSensorPositions();
+        super.calculateCornerPositions();
         sensorA.setPositionValues(leftEdgeX,bottomEdgeY);
         sensorB.setPositionValues(rightEdgeX,bottomEdgeY);
         sensorE.setPositionValues(leftEdgeX,position.y);

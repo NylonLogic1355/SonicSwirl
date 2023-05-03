@@ -46,7 +46,7 @@ public abstract class Entity {
         //yPos = Math.max(yPos,0);
     }
 
-    public void calculateSensorPositions()
+    public void calculateCornerPositions()
     {
         leftEdgeX = position.x - WIDTH_RADIUS;
         bottomEdgeY = position.y - HEIGHT_RADIUS;

@@ -22,6 +22,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
@@ -32,14 +34,11 @@ public class GameScreen implements Screen {
     private final Texture whiteSquare, blackSquare;
     //private final FPSLogger frameLog;
     private final OrthographicCamera camera; private final Vector2 cameraOffset = Vector2.Zero; private final ExtendViewport gameViewport;
-
     private final Player player;
-
+    public static TextureAtlas spriteAtlas;
     private final Texture backgroundTexture;
-
     private int drawMode = 0;
-    public static final int TILE_LENGTH = 16;
-    public static final int CHUNK_LENGTH = 96;
+    public static final int TILE_LENGTH = 16, CHUNK_LENGTH = 96, TILES_PER_CHUNK = CHUNK_LENGTH / TILE_LENGTH;
 
     public GameScreen(final Init Init) {
 
@@ -54,6 +53,8 @@ public class GameScreen implements Screen {
         camera.setToOrtho(false,1280,720); // Even if the device has a scaled resolution, the in game view will still be 1280x720
         //So for example, one screen won't be in the bottom left corner in 1080p
         //but would take up the entire view
+
+        spriteAtlas = new TextureAtlas(Gdx.files.internal("sprites/SonicGDX.atlas"));
 
         //TODO AssetManager
         whiteSquare = new Texture(Gdx.files.internal("1x1-ffffffff.png")); blackSquare = new Texture(Gdx.files.internal("1x1-000000ff.png"));
@@ -113,7 +114,7 @@ public class GameScreen implements Screen {
             }
         }
         player.sprite.draw(Init.batch);
-        // DEBUG - draw white squares at sensor locations on the player
+        // DEBUG - draw 1x1 white squares at the player's sensor locations
         Init.batch.draw(whiteSquare,player.leftEdgeX,player.bottomEdgeY); Init.batch.draw(whiteSquare,player.rightEdgeX,player.bottomEdgeY);
         Init.batch.draw(whiteSquare,player.leftEdgeX,player.getYPosition()); Init.batch.draw(whiteSquare,player.rightEdgeX,player.getYPosition());
         Init.batch.draw(whiteSquare,player.leftEdgeX,player.topEdgeY); Init.batch.draw(whiteSquare,player.rightEdgeX,player.topEdgeY);
@@ -139,7 +140,6 @@ public class GameScreen implements Screen {
      * @param chunkY the chunk number on the y-axis - not the same as its co-ordinate
      */
     public void drawChunkHeightArray(int chunkX, int chunkY) {
-        final int TILES_PER_CHUNK = CHUNK_LENGTH / TILE_LENGTH;
         //Iterates through every tile in the chunk
         for (int tileX = 0; tileX < TILES_PER_CHUNK; tileX++)
         {
@@ -179,7 +179,6 @@ public class GameScreen implements Screen {
      * @param chunkY the chunk number on the y-axis - not the same as its co-ordinate
      */
     public void drawChunkWidthArray(int chunkX, int chunkY) {
-        final int TILES_PER_CHUNK = CHUNK_LENGTH / TILE_LENGTH;
 
         //Iterates through every tile in the chunk
         for (int tileX = 0; tileX < TILES_PER_CHUNK; tileX++)
@@ -209,6 +208,14 @@ public class GameScreen implements Screen {
         }
         Init.batch.setColor(Color.WHITE); //Resets batch colour
 
+    }
+
+    public static TextureRegion getTextureRegion(String regionName) {
+        return spriteAtlas.findRegion(regionName);
+    }
+
+    public static TextureRegion getTextureRegion(String regionName, int animationIndex) {
+        return spriteAtlas.findRegion(regionName,animationIndex);
     }
 
     @Override
