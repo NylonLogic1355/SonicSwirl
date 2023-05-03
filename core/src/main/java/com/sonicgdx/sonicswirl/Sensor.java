@@ -19,6 +19,9 @@ package com.sonicgdx.sonicswirl;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 
+import static com.sonicgdx.sonicswirl.GameScreen.CHUNK_SIZE;
+import static com.sonicgdx.sonicswirl.GameScreen.TILE_SIZE;
+
 public class Sensor {
     private boolean isActive;
     private Vector2 position;
@@ -39,6 +42,7 @@ public class Sensor {
      * The distance attribute is set to the distance on the y-axis between the sensor and that Tile.
      */
     public void floorProcess() {
+        int TILES_PER_CHUNK = CHUNK_SIZE / TILE_SIZE;
         //TODO take into account solidity value
 
         /*  Out of bounds values would cause an error if attempting to check their distance
@@ -52,26 +56,26 @@ public class Sensor {
         }
         //TODO prevent catch block in getTile() from being used.
 
-        int tileX = Math.floorMod(MathUtils.round(position.x), 128) / 16;
-        int chunkX = MathUtils.round(position.x) / 128;
+        int tileX = Math.floorMod(MathUtils.round(position.x), CHUNK_SIZE) / TILE_SIZE;
+        int chunkX = MathUtils.round(position.x) / CHUNK_SIZE;
 
-        int tileY = Math.floorMod(MathUtils.round(position.y), 128) / 16;
-        int chunkY = MathUtils.round(position.y) / 128;
+        int tileY = Math.floorMod(MathUtils.round(position.y), CHUNK_SIZE) / TILE_SIZE;
+        int chunkY = MathUtils.round(position.y) / CHUNK_SIZE;
 
-        int block = Math.floorMod(MathUtils.round(position.x),16); //Different behaviour for negative numbers compared to using %. For
+        int block = Math.floorMod(MathUtils.round(position.x),TILE_SIZE); //Different behaviour for negative numbers compared to using %. For
         // example, -129 % 16 would return -1 which would cause an ArrayIndexOutOfBoundsException. Math.floorMod() would return a positive index in these cases.
 
         // An alternate expression to calculate block: ((chunkX * 128) + (tileX * 16) - position.x));
 
         int height = TileMap.getTile(chunkX,chunkY,tileX,tileY).getHeight(block);
 
-        float checkDistance = ((chunkY * 128) + (tileY * 16) + height) - position.y;
+        float checkDistance = ((chunkY * CHUNK_SIZE) + (tileY * TILE_SIZE) + height) - position.y;
 
-        if (height == 16)
+        if (height == TILE_SIZE)
         {
             int tempTileY, tempChunkY;
             // sensor regression, checks one tile above with downwards facing sensors in an attempt to find surface if the height of the array is full
-            if (tileY < 7)
+            if (tileY < TILES_PER_CHUNK - 1)
             {
                 tempChunkY = chunkY;
                 tempTileY = tileY + 1;
@@ -98,14 +102,14 @@ public class Sensor {
             if (tileY == 0)
             {
                 chunkY--;
-                tileY = 7;
+                tileY = TILES_PER_CHUNK - 1;
             }
             else tileY--;
 
             height = TileMap.getTile(chunkX,chunkY,tileX,tileY).getHeight(block);
 
-            if (height == 0) checkDistance -= 16;
-            else checkDistance -= (16-height);
+            if (height == 0) checkDistance -= TILE_SIZE;
+            else checkDistance -= (TILE_SIZE-height);
         }
 
         tile = TileMap.getTile(chunkX,chunkY,tileX,tileY); distance = checkDistance;
@@ -115,6 +119,8 @@ public class Sensor {
      * Generates the distance value based on how far away the sensor is from the nearest wall on the x-axis
      */
     public void wallProcess() {
+        int TILES_PER_CHUNK = CHUNK_SIZE / TILE_SIZE;
+
         //TODO take into account solidity value
 
         /*
@@ -131,21 +137,21 @@ public class Sensor {
         }
         //TODO prevent catch block in getTile() from being used.
 
-        int tileX = Math.floorMod(MathUtils.round(position.x), 128) / 16;
-        int chunkX = MathUtils.round(position.x) / 128;
+        int tileX = Math.floorMod(MathUtils.round(position.x), CHUNK_SIZE) / TILE_SIZE;
+        int chunkX = MathUtils.round(position.x) / CHUNK_SIZE;
 
-        int tileY = Math.floorMod(MathUtils.round(position.y), 128) / 16;
-        int chunkY = MathUtils.round(position.y) / 128;
+        int tileY = Math.floorMod(MathUtils.round(position.y), CHUNK_SIZE) / TILE_SIZE;
+        int chunkY = MathUtils.round(position.y) / CHUNK_SIZE;
 
-        int block = Math.floorMod(MathUtils.round(position.y),16); //Different behaviour for negative numbers compared to using %. For
+        int block = Math.floorMod(MathUtils.round(position.y),TILE_SIZE); //Different behaviour for negative numbers compared to using %. For
         // example, -129 % 16 would return -1 which would cause an ArrayIndexOutOfBoundsException. Math.floorMod() would return a positive index in these cases.
 
         int width = TileMap.getTile(chunkX,chunkY,tileX,tileY).getWidth(block);
 
         //TODO change process if tile is flipped horizontally
-        float checkDistance = ((chunkX * 128) + ((tileX + 1) * 16) - width) - position.x;
+        float checkDistance = ((chunkX * CHUNK_SIZE) + ((tileX + 1) * TILE_SIZE) - width) - position.x;
 
-        if (width == 16) {
+        if (width == TILE_SIZE) {
             int tempTileX, tempChunkX;
             // sensor regression, checks one tile above with downwards facing sensors in an attempt to find surface if the height of the array is full
 
@@ -158,7 +164,7 @@ public class Sensor {
             else
             {
                 tempChunkX = chunkX - 1;
-                tempTileX = 7;
+                tempTileX = TILES_PER_CHUNK - 1;
             }
 
             width = TileMap.getTile(tempChunkX,chunkY,tempTileX,tileY).getHeight(block);
@@ -175,7 +181,7 @@ public class Sensor {
             // sensor extension, checks one tile below with downwards facing sensors in an attempt to find surface
 
             //for right facing tiles
-            if (tileX == 7)
+            if (tileX == TILES_PER_CHUNK - 1)
             {
                 chunkX++;
                 tileY = 0;
@@ -184,8 +190,8 @@ public class Sensor {
 
             width = TileMap.getTile(chunkX,chunkY,tileX,tileY).getHeight(block);
 
-            if (width == 0) checkDistance += 16;
-            else checkDistance += (16-width);
+            if (width == 0) checkDistance += TILE_SIZE;
+            else checkDistance += (TILE_SIZE-width);
         }
 
         tile = TileMap.getTile(chunkX,chunkY,tileX,tileY); distance = checkDistance;
