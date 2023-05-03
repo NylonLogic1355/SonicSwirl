@@ -16,6 +16,8 @@
 
 package com.sonicgdx.sonicswirl;
 
+import static com.sonicgdx.sonicswirl.GameScreen.TILE_LENGTH;
+
 public class Tile {
 
     boolean horizontalFlip, verticalFlip, empty;
@@ -26,9 +28,9 @@ public class Tile {
     Tile(int[] heightArray, int[] widthArray, float angle, int solidity, boolean flippedHorizontally, boolean flippedVertically) {
         this.empty = false;
 
-        if (heightArray.length == 16) this.heightArray = heightArray;
+        if (heightArray.length == TILE_LENGTH) this.heightArray = heightArray;
         else throw new RuntimeException("heightArray Length = " + heightArray.length);
-        if (widthArray.length == 16) this.widthArray = widthArray;
+        if (widthArray.length == TILE_LENGTH) this.widthArray = widthArray;
         else throw new RuntimeException("widthArray Length = " + widthArray.length);
 
         this.angle = angle;
@@ -46,7 +48,7 @@ public class Tile {
 
     public int getHeight(int block)
     {
-        if (empty || block < 0 || block > 15) return 0;
+        if (empty || block < 0 || block > TILE_LENGTH - 1) return 0;
         else {
             return heightArray[block];
         }
@@ -54,7 +56,7 @@ public class Tile {
     }
     public int getWidth(int block)
     {
-        if (empty || block < 0 || block > 15) return 0;
+        if (empty || block < 0 || block > TILE_LENGTH - 1) return 0;
         else {
             return widthArray[block];
         }

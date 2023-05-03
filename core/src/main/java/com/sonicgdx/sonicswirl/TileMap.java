@@ -33,6 +33,8 @@ public enum TileMap {
 
     public static final Chunk[][] map = TILE_MAP.testMap;
 
+    private final int TILES_PER_CHUNK = GameScreen.CHUNK_LENGTH / GameScreen.TILE_LENGTH;
+
     //TODO test class - check if all these are 16 in length
 
     // Classes are reference types so modifying a value would affect all the tiles that are the same.
@@ -50,9 +52,9 @@ public enum TileMap {
     private final Tile htile = new Tile(halfh,halfw,0,1,false,false);
     private final Tile testtile = new Tile(testh,testw,33.75F,1,false,false);
 
-    private final Chunk fChunk = new Chunk(new Texture(Gdx.files.internal("sprites/AIZ2/95.png")),Collections.nCopies(6,Collections.nCopies(6,ftile).toArray(new Tile[0])).toArray(new Tile[0][0]));
+    private final Chunk fChunk = new Chunk(new Texture(Gdx.files.internal("sprites/AIZ2/95.png")),Collections.nCopies(TILES_PER_CHUNK,Collections.nCopies(TILES_PER_CHUNK,ftile).toArray(new Tile[0])).toArray(new Tile[0][0]));
 
-    public final Tile[][] emptyTileArray = Collections.nCopies(8,Collections.nCopies(8,EMPTY).toArray(new Tile[0])).toArray(new Tile[0][0]);
+    public final Tile[][] emptyTileArray = Collections.nCopies(TILES_PER_CHUNK,Collections.nCopies(TILES_PER_CHUNK,EMPTY).toArray(new Tile[0])).toArray(new Tile[0][0]);
 
     private final Chunk hChunk = new Chunk(new Texture(Gdx.files.internal("sprites/AIZ2/95.png")),new Tile[][]{
             {ftile,ftile,ftile,ftile,ftile,htile},
