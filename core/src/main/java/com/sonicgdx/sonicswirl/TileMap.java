@@ -99,13 +99,9 @@ public enum TileMap {
 
             };
 
-
-    // 128x128 chunk - one dimension for x, one dimension for y and the data is a height array
-    // one height array makes up a 16x16 block
-
     public static Tile getTile(int chunkX, int chunkY, int tileX, int tileY)
     {
-        if(chunkX >= 0 && chunkY >= 0 && tileX >= 0 && tileY >= 0 && !map[chunkX][chunkY].isEmpty()) {
+        if(chunkX >= 0 && chunkY >= 0 && tileX >= 0 && tileY >= 0 && !checkEmpty(chunkX,chunkY)) {
             if (chunkX < map.length && chunkY < map[chunkX].length && tileX < map[chunkX][chunkY].getTileArray().length && tileY < map[chunkX][chunkY].getTileArray()[tileX].length)
                 return map[chunkX][chunkY].getTileArray()[tileX][tileY];
             else return TILE_MAP.EMPTY;
@@ -125,7 +121,13 @@ public enum TileMap {
     }
 
     public static Chunk getChunk(int chunkX, int chunkY) {
-        return map[chunkX][chunkY];
+        if (chunkX < map.length) if (chunkY < map[chunkX].length) return map[chunkX][chunkY];
+        return null;
+    }
+
+    public static boolean checkEmpty(int chunkX, int chunkY) {
+        if (getChunk(chunkX,chunkY) == null) return false;
+        else return getChunk(chunkX,chunkY).isEmpty();
     }
 
     public static Tile getEmpty()

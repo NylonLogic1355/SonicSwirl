@@ -65,7 +65,7 @@ public class Sensor {
         int block = Math.floorMod(MathUtils.round(position.x), TILE_LENGTH); //Different behaviour for negative numbers compared to using %. For
         // example, -129 % 16 would return -1 which would cause an ArrayIndexOutOfBoundsException. Math.floorMod() would return a positive index in these cases.
 
-        // An alternate expression to calculate block: ((chunkX * 128) + (tileX * 16) - position.x));
+        // An alternate expression to calculate block: ((chunkX * CHUNK_LENGTH) + (tileX * TILE_LENGTH) - position.x));
 
         int height = TileMap.getTile(chunkX,chunkY,tileX,tileY).getHeight(block);
 
