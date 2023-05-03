@@ -37,13 +37,17 @@ public abstract class Entity {
         this.WIDTH_RADIUS = widthRadius; this.HEIGHT_RADIUS = heightRadius;
     }
 
+    /**
+     * Ensures the player doesn't go into negative co-ordinates as calculations may not
+     * take that into account
+     */
     public void enforceBoundaries()
     {
         // "Invisible walls" - prevent objects from going beyond borders to simplify calculations. TODO stop collision errors when going outside index bounds
-        //xPos = Math.min(xPos,1280);
-        //yPos = Math.min(yPos,720);
         position.x = Math.max(position.x,0);
-        //yPos = Math.max(yPos,0);
+
+        //commented out as negative y values are currently not broken
+        //position.y = Math.max(position.y,0);
     }
 
     public void calculateCornerPositions()

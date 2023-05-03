@@ -113,6 +113,7 @@ public final class Player extends Entity {
                 Sensor winningSensor = floorSensors();
 
                 if (isGrounded) {
+                    //checks that the sensor distance is in a valid range before correcting the player's position
                     if (winningSensor != null && Math.max(-Math.abs(velocity.x) - 4, -14) < winningSensor.getDistance() && winningSensor.getDistance() < 14) groundCollision(winningSensor); //TODO comment out this line first if there are physics bugs.
                     else isGrounded = false;
                 }
@@ -307,11 +308,11 @@ public final class Player extends Entity {
         //Air acceleration
         if (Gdx.input.isKeyPressed(Input.Keys.D) || (Gdx.input.isKeyPressed(Input.Keys.RIGHT))) // if moving right
         {
-            if (velocity.x < MAX_SPEED) velocity.x += AIR_ACCELERATION * delta; // accelerates right at twice the speed compared to on ground
+            if (velocity.x < MAX_SPEED) velocity.x += AIR_ACCELERATION * delta; // accelerates right at twice the speed compared to on ground (no friction)
         }
         else if (Gdx.input.isKeyPressed(Input.Keys.A) || (Gdx.input.isKeyPressed(Input.Keys.LEFT))) // if moving left
         {
-            if (velocity.x > -MAX_SPEED) velocity.x -= AIR_ACCELERATION * delta; // accelerates left at twice the speed compared to on ground
+            if (velocity.x > -MAX_SPEED) velocity.x -= AIR_ACCELERATION * delta; // accelerates left at twice the speed compared to on ground (no friction)
         }
         //Air drag
         if (0 < velocity.y && velocity.y < 4)
