@@ -42,8 +42,6 @@ public final class Player extends Entity {
 
     private final TextureAtlas atlas;
     private TextureRegion spriteRegion;
-
-    final int WIDTHRADIUS= 9, HEIGHTRADIUS = 19;
     private final Vector2 velocity;
     Player(int width, int height) {
         super(width, height);
