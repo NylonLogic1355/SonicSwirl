@@ -37,15 +37,15 @@ https://web.archive.org/web/20200427232345/https://www.badlogicgames.com/wordpre
 viewports - https://libgdx.com/wiki/graphics/viewports \
 https://stackoverflow.com/questions/40059360/difference-between-viewport-and-camera-in-libgdx \
 
-## Neon Paradise Zone:
+## OLD Neon Paradise Zone:
 
 DanielMania123 - https://www.deviantart.com/danielmania123/art/Neon-Paradise-Zone-356857787 \
-
-## Emerald Hill Advanced Zone:
+ 
+## OLD Emerald Hill Advanced Zone:
 
 ShiftSike - https://www.deviantart.com/shiftsike/art/Emerald-Hill-Advanced-669254073 \
 
-## Aqua Lake Zone
+## OLD Aqua Lake Zone
 
 Alex13Art - https://www.deviantart.com/alex13art/art/Aqua-Lake-Zone-Sprites-514473527 \
 
@@ -134,3 +134,29 @@ https://info.sonicretro.org/SPG:Air_State \
 https://info.sonicretro.org/SPG:Slope_Collision \
 https://info.sonicretro.org/SPG:Solid_Tiles#Sensors \
 https://info.sonicretro.org/SPG:Jumping \
+
+## Sprites / TextureAtlas
+https://github.com/crashinvaders/gdx-texture-packer-gui
+https://libgdx.com/wiki/tools/texture-packer#textureatlas
+https://libgdx.com/wiki/graphics/2d/spritebatch-textureregions-and-sprites
+https://www.spriters-resource.com/custom_edited/sonicthehedgehogcustoms/sheet/160249/
+https://www.youtube.com/watch?v=BhdDQwRYMCI
+https://askubuntu.com/a/351772
+https://graphicdesign.stackexchange.com/a/138968
+https://www.youtube.com/watch?v=KY3W6psyjFI
+https://www.spriters-resource.com/game_boy_advance/sonicadv/
+
+## Rotation (didn't use)
+https://stackoverflow.com/a/2285945
+https://gamedev.stackexchange.com/a/86784
+
+## Icons
+https://uxwing.com/sonic-icon/
+https://icon.kitchen
+https://www.appicon.co/
+https://developer.android.com/develop/ui/views/launch/icon_design_adaptive
+https://favicon.io/favicon-converter/
+https://cloudconvert.com/png-to-icns
+https://github.com/tommyettinger/gdx-liftoff/blob/master/Guide.md
+https://stackoverflow.com/questions/3103490/html-title-image
+https://stackoverflow.com/a/1353634

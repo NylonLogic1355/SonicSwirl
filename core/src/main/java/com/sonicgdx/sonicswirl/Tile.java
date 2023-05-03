@@ -16,6 +16,9 @@
 
 package com.sonicgdx.sonicswirl;
 
+import com.badlogic.gdx.assets.loaders.TextureAtlasLoader;
+import com.badlogic.gdx.graphics.Texture;
+
 public class Tile {
 
     boolean isFlipped, empty;
@@ -23,7 +26,8 @@ public class Tile {
     byte solidity;
     // 0 = solid from top, 1 = solid from bottom, 2 = solid from left, 3 = solid from right, 4 = solid from all sides
     float angle;
-    Tile(byte[] heightArray, byte[] widthArray, float angle, byte solid, boolean flipped) {
+
+    Tile(byte[] heightArray, byte[] widthArray, float angle, byte solidity, boolean flipped) {
         this.empty = false;
 
         if (heightArray.length == 16) this.heightArray = heightArray;
@@ -33,8 +37,7 @@ public class Tile {
 
         this.angle = angle;
         this.isFlipped = flipped;
-        this.solidity = solid;
-
+        this.solidity = solidity;
     }
     Tile()
     {
@@ -60,5 +63,8 @@ public class Tile {
         }
     }
 
+    public boolean isEmpty() {
+        return empty;
+    }
 
 }

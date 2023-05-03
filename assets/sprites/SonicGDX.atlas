@@ -1,0 +1,231 @@
+SonicGDX.png
+	size: 2048, 64
+	repeat: none
+sonic-balance
+	index: 0
+	bounds: 159, 22, 36, 40
+sonic-balance
+	index: 1
+	bounds: 844, 23, 32, 39
+sonic-blunder
+	index: 0
+	bounds: 2, 19, 36, 43
+sonic-blunder
+	index: 1
+	bounds: 121, 22, 36, 40
+sonic-breathe
+	index: 0
+	bounds: 197, 25, 37, 37
+sonic-cling
+	index: 1
+	bounds: 375, 2, 47, 26
+sonic-cling
+	index: 0
+	bounds: 424, 3, 48, 25
+sonic-continue
+	index: 2
+	bounds: 517, 2, 40, 27
+sonic-continue
+	index: 1
+	bounds: 601, 2, 40, 27
+sonic-continue
+	index: 0
+	bounds: 643, 2, 40, 28
+sonic-dash
+	index: 2
+	bounds: 731, 5, 39, 32
+sonic-dash
+	index: 0
+	bounds: 772, 6, 39, 32
+sonic-dash
+	index: 1
+	bounds: 911, 31, 38, 31
+sonic-dash
+	index: 3
+	bounds: 951, 31, 38, 31
+sonic-duck
+	index: 1
+	bounds: 1861, 7, 29, 26
+sonic-duck
+	index: 0
+	bounds: 1919, 30, 25, 32
+sonic-fall
+	index: 0
+	bounds: 559, 2, 40, 27
+sonic-fall
+	index: 1
+	bounds: 911, 3, 39, 26
+sonic-fastrun
+	index: 1
+	bounds: 375, 30, 41, 32
+sonic-fastrun
+	index: 3
+	bounds: 418, 30, 41, 32
+sonic-fastrun
+	index: 0
+	bounds: 547, 31, 40, 31
+sonic-fastrun
+	index: 2
+	bounds: 589, 31, 39, 31
+sonic-hang
+	index: 0
+	bounds: 40, 22, 37, 40
+sonic-hang
+	index: 1
+	bounds: 79, 25, 40, 37
+sonic-hover
+	index: 0
+	bounds: 685, 7, 44, 23
+sonic-hover
+	index: 2
+	bounds: 713, 39, 44, 23
+sonic-hover
+	index: 1
+	bounds: 759, 40, 44, 22
+sonic-hover
+	index: 3
+	bounds: 952, 6, 39, 23
+sonic-hover
+	index: 4
+	bounds: 991, 39, 39, 23
+sonic-idle
+	index: 0
+	bounds: 1129, 24, 29, 38
+sonic-idle
+	index: 2
+	bounds: 1400, 26, 29, 36
+sonic-idle
+	index: 1
+	bounds: 1462, 25, 28, 37
+sonic-idle
+	index: 3
+	bounds: 1492, 26, 28, 36
+sonic-jog
+	index: 1
+	bounds: 236, 25, 37, 37
+sonic-jog
+	index: 2
+	bounds: 878, 24, 31, 38
+sonic-jog
+	index: 0
+	bounds: 1552, 25, 26, 37
+sonic-launch
+	index: 0
+	bounds: 1225, 17, 24, 45
+sonic-lookup
+	index: 1
+	bounds: 1305, 25, 29, 37
+sonic-lookup
+	index: 0
+	bounds: 1336, 25, 29, 37
+sonic-peelout
+	index: 2
+	bounds: 461, 31, 41, 31
+sonic-peelout
+	index: 0
+	bounds: 504, 31, 41, 31
+sonic-peelout
+	index: 1
+	bounds: 630, 32, 40, 30
+sonic-peelout
+	index: 3
+	bounds: 672, 32, 39, 30
+sonic-push
+	index: 0
+	bounds: 1431, 26, 29, 36
+sonic-push
+	index: 2
+	bounds: 1522, 26, 28, 36
+sonic-push
+	index: 1
+	bounds: 1639, 25, 24, 37
+sonic-push
+	index: 3
+	bounds: 1665, 25, 24, 37
+sonic-roll
+	index: 4
+	bounds: 1607, 32, 30, 30
+sonic-roll
+	index: 3
+	bounds: 1607, 2, 30, 28
+sonic-roll
+	index: 0
+	bounds: 1735, 32, 28, 30
+sonic-roll
+	index: 1
+	bounds: 1735, 2, 30, 28
+sonic-roll
+	index: 2
+	bounds: 1765, 32, 28, 30
+sonic-run
+	index: 1
+	bounds: 993, 2, 33, 35
+sonic-run
+	index: 3
+	bounds: 1028, 2, 33, 35
+sonic-run
+	index: 0
+	bounds: 1191, 28, 32, 34
+sonic-run
+	index: 2
+	bounds: 1367, 28, 31, 34
+sonic-spindash
+	index: 0
+	bounds: 1767, 3, 30, 27
+sonic-spindash
+	index: 2
+	bounds: 1795, 35, 29, 27
+sonic-spindash
+	index: 4
+	bounds: 1799, 6, 29, 27
+sonic-spindash
+	index: 1
+	bounds: 1826, 35, 29, 27
+sonic-spindash
+	index: 3
+	bounds: 1830, 6, 29, 27
+sonic-spindash
+	index: 5
+	bounds: 1857, 35, 29, 27
+sonic-spring
+	index: 1
+	bounds: 813, 18, 29, 44
+sonic-spring
+	index: 4
+	bounds: 1251, 19, 25, 43
+sonic-spring
+	index: 3
+	bounds: 1278, 19, 25, 43
+sonic-spring
+	index: 2
+	bounds: 1691, 18, 20, 44
+sonic-spring
+	index: 0
+	bounds: 1713, 18, 20, 44
+sonic-stun
+	index: 0
+	bounds: 474, 2, 41, 27
+sonic-transform
+	index: 1
+	bounds: 313, 18, 30, 44
+sonic-transform
+	index: 2
+	bounds: 345, 15, 28, 47
+sonic-transform
+	index: 0
+	bounds: 1892, 30, 25, 32
+sonic-turn
+	index: 0
+	bounds: 1063, 26, 31, 36
+sonic-turn
+	index: 1
+	bounds: 1096, 26, 31, 36
+sonic-walk
+	index: 1
+	bounds: 275, 25, 36, 37
+sonic-walk
+	index: 2
+	bounds: 1160, 24, 29, 38
+sonic-walk
+	index: 0
+	bounds: 1580, 25, 25, 37

@@ -16,11 +16,15 @@
 
 package com.sonicgdx.sonicswirl;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.math.MathUtils;
 
+import static com.sonicgdx.sonicswirl.GameScreen.CHUNK_SIZE;
+import static com.sonicgdx.sonicswirl.GameScreen.TILE_SIZE;
+
 public class FloorSensor extends Sensor{
-    public FloorSensor(float xPos, float yPos) {
-        super(xPos,yPos);
+    //TODO get from gamescreen
+    public FloorSensor() {
     }
 
     /**Attempts to find the nearest top of the surface relative to the sensor's position.
@@ -31,30 +35,32 @@ public class FloorSensor extends Sensor{
      */
     @Override
     public void process() {
+        int TILES_PER_CHUNK = CHUNK_SIZE / TILE_SIZE;
+
         if (xPosition < 0 || yPosition < 0) {
             tile = TileMap.getEmpty(); distance = -50;
             return;
         }
         //TODO prevent catch block in getTile() from being used.
 
-        int tileX = Math.floorMod(MathUtils.round(xPosition), 128) / 16;
-        int chunkX = MathUtils.round(xPosition) / 128;
+        int tileX = Math.floorMod(MathUtils.round(xPosition), CHUNK_SIZE) / TILE_SIZE;
+        int chunkX = MathUtils.round(xPosition) / CHUNK_SIZE;
 
-        int tileY = Math.floorMod(MathUtils.round(yPosition), 128) / 16;
-        int chunkY = MathUtils.round(yPosition) / 128;
+        int tileY = Math.floorMod(MathUtils.round(yPosition), CHUNK_SIZE) / TILE_SIZE;
+        int chunkY = MathUtils.round(yPosition) / CHUNK_SIZE;
 
-        int block = Math.floorMod(MathUtils.round(xPosition),16); //Different behaviour for negative numbers compared to using %. For
+        int block = Math.floorMod(MathUtils.round(xPosition),TILE_SIZE); //Different behaviour for negative numbers compared to using %. For
         // example, -129 % 16 would return -1 which would cause an ArrayIndexOutOfBoundsException. Math.floorMod() would return a positive index in these cases.
 
         byte height = TileMap.getTile(chunkX,chunkY,tileX,tileY).getHeight(block);
 
-        float checkDistance = ((chunkY * 128) + (tileY * 16) + height) - yPosition;
+        float checkDistance = ((chunkY * CHUNK_SIZE) + (tileY * TILE_SIZE) + height) - yPosition;
 
-        if (height == 16)
+        if (height == TILE_SIZE)
         {
             int tempTileY, tempChunkY;
             // sensor regression, checks one tile above with downwards facing sensors in an attempt to find surface if the height of the array is full
-            if (tileY < 7)
+            if (tileY < TILES_PER_CHUNK - 1)
             {
                 tempChunkY = chunkY;
                 tempTileY = tileY + 1;
@@ -81,14 +87,14 @@ public class FloorSensor extends Sensor{
             if (tileY == 0)
             {
                 chunkY--;
-                tileY = 7;
+                tileY = TILES_PER_CHUNK - 1;
             }
             else tileY--;
 
             height = TileMap.getTile(chunkX,chunkY,tileX,tileY).getHeight(block);
 
-            if (height == 0) checkDistance -= 16;
-            else checkDistance -= (16-height);
+            if (height == 0) checkDistance -= TILE_SIZE;
+            else checkDistance -= (TILE_SIZE-height);
         }
 
         tile = TileMap.getTile(chunkX,chunkY,tileX,tileY); distance = checkDistance;

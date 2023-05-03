@@ -16,6 +16,9 @@
 
 package com.sonicgdx.sonicswirl;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+
 import java.util.Collections;
 
 public enum TileMap {
@@ -27,7 +30,7 @@ public enum TileMap {
     //TODO reconsider usage of TileMap class
     //TODO possible GUI chunk editor
 
-    public static final Tile[][][][] map = TILE_MAP.testMap;
+    public static final Chunk[][] map = TILE_MAP.testMap;
 
     //TODO test class - check if all these are 16 in length
 
@@ -46,81 +49,44 @@ public enum TileMap {
     private final Tile htile = new Tile(halfh,halfw,0,(byte) 1,false);
     private final Tile testtile = new Tile(testh,testw,33.75F,(byte) 1,false);
 
-    private final Tile[][] fChunk = Collections.nCopies(8,Collections.nCopies(8,ftile).toArray(new Tile[0])).toArray(new Tile[0][0]);
+    private final Chunk fChunk = new Chunk(new Texture(Gdx.files.internal("sprites/AIZ2/95.png")),Collections.nCopies(6,Collections.nCopies(6,ftile).toArray(new Tile[0])).toArray(new Tile[0][0]));
 
-    private final Tile[][] hChunk = {
-            {ftile,ftile,ftile,ftile,ftile,ftile,ftile,htile},
-            {ftile,ftile,ftile,ftile,ftile,ftile,ftile,htile},
-            {ftile,ftile,ftile,ftile,ftile,ftile,ftile,htile},
-            {ftile,ftile,ftile,ftile,ftile,ftile,ftile,htile},
-            {ftile,ftile,ftile,ftile,ftile,ftile,ftile,htile},
-            {ftile,ftile,ftile,ftile,ftile,ftile,ftile,htile},
-            {ftile,ftile,ftile,ftile,ftile,ftile,ftile,htile},
-            {ftile,ftile,ftile,ftile,ftile,ftile,ftile,htile}};
-    private final Tile[][] rvChunk = {
-            {ftile,ftile,ftile,ftile,ftile,ftile,ftile,rvtile},
-            {ftile,ftile,ftile,ftile,ftile,ftile,rvtile,EMPTY},
-            {ftile,ftile,ftile,ftile,ftile,rvtile,EMPTY,EMPTY},
-            {ftile,ftile,ftile,ftile,rvtile,EMPTY,EMPTY,EMPTY},
-            {ftile,ftile,ftile,rvtile,EMPTY,EMPTY,EMPTY,EMPTY},
-            {ftile,ftile,rvtile,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY},
-            {ftile,rvtile,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY},
-            {rvtile,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY}};
+    public final Tile[][] emptyTileArray = Collections.nCopies(8,Collections.nCopies(8,EMPTY).toArray(new Tile[0])).toArray(new Tile[0][0]);
 
-    private final Tile[][] sChunk =
-            {
-                    {stile,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY},
-                    {ftile,stile,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY},
-                    {ftile,ftile,stile,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY},
-                    {ftile,ftile,ftile,stile,EMPTY,EMPTY,EMPTY,EMPTY},
-                    {ftile,ftile,ftile,ftile,stile,EMPTY,EMPTY,EMPTY},
-                    {ftile,ftile,ftile,ftile,ftile,stile,EMPTY,EMPTY},
-                    {ftile,ftile,ftile,ftile,ftile,ftile,stile,EMPTY},
-                    {ftile,ftile,ftile,ftile,ftile,ftile,ftile,stile},
-            };
+    private final Chunk hChunk = new Chunk(new Texture(Gdx.files.internal("sprites/AIZ2/95.png")),new Tile[][]{
+            {ftile,ftile,ftile,ftile,ftile,htile},
+            {ftile,ftile,ftile,ftile,ftile,htile},
+            {ftile,ftile,ftile,ftile,ftile,htile},
+            {ftile,ftile,ftile,ftile,ftile,htile},
+            {ftile,ftile,ftile,ftile,ftile,htile},
+            {ftile,ftile,ftile,ftile,ftile,htile}});
+    private final Chunk rvChunk = new Chunk(new Texture(Gdx.files.internal("sprites/AIZ2/130.png")),new Tile[][]{
+            {ftile,ftile,ftile,ftile,ftile,rvtile,},
+            {ftile,ftile,ftile,ftile,rvtile,EMPTY},
+            {ftile,ftile,ftile,rvtile,EMPTY,EMPTY},
+            {ftile,ftile,rvtile,EMPTY,EMPTY,EMPTY},
+            {ftile,rvtile,EMPTY,EMPTY,EMPTY,EMPTY},
+            {rvtile,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY}});
+
+    private final Chunk sChunk =
+        new Chunk(new Texture(Gdx.files.internal("sprites/AIZ2/65.png")),new Tile[][]{
+                    {stile,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY},
+                    {ftile,stile,EMPTY,EMPTY,EMPTY,EMPTY},
+                    {ftile,ftile,stile,EMPTY,EMPTY,EMPTY},
+                    {ftile,ftile,ftile,stile,EMPTY,EMPTY},
+                    {ftile,ftile,ftile,ftile,stile,EMPTY},
+                    {ftile,ftile,ftile,ftile,ftile,stile}});
 
 
-    private final Tile[][] eChunk = Collections.nCopies(8,Collections.nCopies(8,EMPTY).toArray(new Tile[0])).toArray(new Tile[0][0]);
-    private final Tile[][] testtileChunk = Collections.nCopies(8,Collections.nCopies(8,testtile).toArray(new Tile[0])).toArray(new Tile[0][0]);
-
-    private final Tile[][] borderedChunk = {
-            {ftile,ftile,ftile,ftile,ftile,ftile,ftile,ftile},
-            {ftile,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,ftile},
-            {ftile,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,ftile},
-            {ftile,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,ftile},
-            {ftile,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,ftile},
-            {ftile,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,ftile},
-            {ftile,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,ftile},
-            {ftile,ftile,ftile,ftile,ftile,ftile,ftile,ftile}
-
-    };
-
-    private final Tile[][][][] fMap = Collections.nCopies(8,Collections.nCopies(8,fChunk).toArray(new Tile[0][0][0])).toArray(new Tile[0][0][0][0]);
-
-    private final Tile[][][][] eMap = Collections.nCopies(8,Collections.nCopies(8,eChunk).toArray(new Tile[0][0][0])).toArray(new Tile[0][0][0][0]);
-            /*{ OLD
-                    Collections.nCopies(8,eChunk).toArray(new Tile[0][0][0]),
-                    {eChunk,eChunk,eChunk,eChunk,eChunk,eChunk,eChunk,eChunk},
-                    {eChunk,eChunk,eChunk,eChunk,eChunk,eChunk,eChunk,eChunk},
-                    {eChunk,eChunk,eChunk,eChunk,eChunk,eChunk,eChunk,eChunk},
-                    {eChunk,eChunk,eChunk,eChunk,eChunk,eChunk,eChunk,eChunk},
-                    {eChunk,eChunk,eChunk,eChunk,eChunk,eChunk,eChunk,eChunk},
-                    {eChunk,eChunk,eChunk,eChunk,eChunk,eChunk,eChunk,eChunk},
-                    {eChunk,eChunk,eChunk,eChunk,eChunk,eChunk,eChunk,eChunk}
-
-            };*/
-
-    private final Tile[][][][] sMap = Collections.nCopies(8,Collections.nCopies(8,sChunk).toArray(new Tile[0][0][0])).toArray(new Tile[0][0][0][0]);
-    private final Tile[][][][] rvMap = Collections.nCopies(8,Collections.nCopies(8,rvChunk).toArray(new Tile[0][0][0])).toArray(new Tile[0][0][0][0]);
-    private final Tile[][][][] testtileMap = Collections.nCopies(8,Collections.nCopies(8,testtileChunk).toArray(new Tile[0][0][0])).toArray(new Tile[0][0][0][0]);
-    private final Tile[][][][] testMap =
+    private final Chunk eChunk = new Chunk(emptyTileArray);
+    private final Chunk[][] testMap =
             {
                     {sChunk,eChunk,eChunk,eChunk},
                     {fChunk,eChunk,eChunk,eChunk},
                     {fChunk,eChunk,eChunk,eChunk},
                     {fChunk,eChunk,eChunk,eChunk},
                     {eChunk,eChunk,eChunk,eChunk},
-                    {eChunk,eChunk,eChunk,eChunk},
+                    {eChunk,hChunk,eChunk,eChunk},
                     {eChunk,eChunk,eChunk,eChunk},
                     {fChunk,eChunk,eChunk,eChunk},
                     {fChunk,eChunk,eChunk,eChunk},
@@ -138,9 +104,9 @@ public enum TileMap {
 
     public static Tile getTile(int chunkX, int chunkY, int tileX, int tileY)
     {
-        if(chunkX >= 0 && chunkY >= 0 && tileX >= 0 && tileY >= 0) {
-            if (chunkX < map.length && chunkY < map[chunkX].length && tileX < map[chunkX][chunkY].length && tileY < map[chunkX][chunkY][tileX].length)
-                return map[chunkX][chunkY][tileX][tileY];
+        if(chunkX >= 0 && chunkY >= 0 && tileX >= 0 && tileY >= 0 && !map[chunkX][chunkY].isEmpty()) {
+            if (chunkX < map.length && chunkY < map[chunkX].length && tileX < map[chunkX][chunkY].getTileArray().length && tileY < map[chunkX][chunkY].getTileArray()[tileX].length)
+                return map[chunkX][chunkY].getTileArray()[tileX][tileY];
             else return TILE_MAP.EMPTY;
         }
         else return TILE_MAP.EMPTY;
@@ -157,27 +123,31 @@ public enum TileMap {
 
     }
 
+    public static Chunk getChunk(int chunkX, int chunkY) {
+        return map[chunkX][chunkY];
+    }
+
     public static Tile getEmpty()
     {
         return TILE_MAP.EMPTY;
     }
 
-    @Deprecated
+    /*@Deprecated
     public byte getHeight(int chunkX, int chunkY, int tileX, int tileY, int block)
     {
-        if (map[chunkX][chunkY][tileX][tileY].empty) return 0;
-        else return map[chunkX][chunkY][tileX][tileY].heightArray[block];
+        if (map[chunkX][chunkY].getTileArray()[tileX][tileY].empty) return 0;
+        else return map[chunkX][chunkY].getTileArray()[tileX][tileY].heightArray[block];
     }
 
     @Deprecated
     public byte getWidth(int chunkX, int chunkY, int tileX, int tileY, int block)
     {
-        if (map[chunkX][chunkY][tileX][tileY].empty) return 0;
-        else return map[chunkX][chunkY][tileX][tileY].widthArray[block];
+        if (map[chunkX][chunkY].getTileArray()[tileX][tileY].empty) return 0;
+        else return map[chunkX][chunkY].getTileArray()[tileX][tileY].widthArray[block];
     }
 
     @Deprecated
-    public Tile[][][][] getMap() {
+    public Chunk[][] getMap() {
         return map;
     }
 
@@ -191,8 +161,8 @@ public enum TileMap {
             tileY = 0;
         }
 
-        if (map[chunkX][chunkY][tileX][tileY].empty) return 0;
-        else return map[chunkX][chunkY][tileX][tileY].heightArray[block];
+        if (map[chunkX][chunkY].getTileArray()[tileX][tileY].empty) return 0;
+        else return map[chunkX][chunkY].getTileArray()[tileX][tileY].heightArray[block];
     }
     @Deprecated
     public byte getHeightBelow(int chunkX, int chunkY, int tileX, int tileY, int block)
@@ -204,23 +174,23 @@ public enum TileMap {
         }
         else tileY--;
 
-        if (map[chunkX][chunkY][tileX][tileY].empty) return 0;
-        else return map[chunkX][chunkY][tileX][tileY].heightArray[block];
+        if (map[chunkX][chunkY].getTileArray()[tileX][tileY].empty) return 0;
+        else return map[chunkX][chunkY].getTileArray()[tileX][tileY].heightArray[block];
     }
 
     @Deprecated
     public byte[] getWidthArray(int chunkX, int chunkY, int tileX, int tileY)
     {
-        if (map[chunkX][chunkY][tileX][tileY].empty) return new byte[16];
-        else return map[chunkX][chunkY][tileX][tileY].widthArray;
+        if (map[chunkX][chunkY].getTileArray()[tileX][tileY].empty) return new byte[16];
+        else return map[chunkX][chunkY].getTileArray()[tileX][tileY].widthArray;
     }
 
     @Deprecated
     public byte[] getHeightArray(int chunkX, int chunkY, int tileX, int tileY)
     {
-        if (map[chunkX][chunkY][tileX][tileY].empty) return new byte[16];
-        else return map[chunkX][chunkY][tileX][tileY].heightArray;
+        if (map[chunkX][chunkY].getTileArray()[tileX][tileY].empty) return new byte[16];
+        else return map[chunkX][chunkY].getTileArray()[tileX][tileY].heightArray;
     }
-
+*/
 
 }
