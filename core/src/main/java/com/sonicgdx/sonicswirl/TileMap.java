@@ -101,8 +101,8 @@ public enum TileMap {
 
     public static Tile getTile(int chunkX, int chunkY, int tileX, int tileY)
     {
-        if(chunkX >= 0 && chunkY >= 0 && tileX >= 0 && tileY >= 0 && !checkEmpty(chunkX,chunkY)) {
-            if (chunkX < map.length && chunkY < map[chunkX].length && tileX < map[chunkX][chunkY].getTileArray().length && tileY < map[chunkX][chunkY].getTileArray()[tileX].length)
+        if(tileX >= 0 && tileY >= 0 && !checkEmpty(chunkX,chunkY)) {
+            if (tileX < map[chunkX][chunkY].getTileArray().length && tileY < map[chunkX][chunkY].getTileArray()[tileX].length)
                 return map[chunkX][chunkY].getTileArray()[tileX][tileY];
             else return TILE_MAP.EMPTY;
         }
@@ -121,12 +121,12 @@ public enum TileMap {
     }
 
     public static Chunk getChunk(int chunkX, int chunkY) {
-        if (chunkX < map.length) if (chunkY < map[chunkX].length) return map[chunkX][chunkY];
+        if (chunkX < map.length && chunkX >= 0) if (chunkY < map[chunkX].length && chunkY >= 0) return map[chunkX][chunkY];
         return null;
     }
 
     public static boolean checkEmpty(int chunkX, int chunkY) {
-        if (getChunk(chunkX,chunkY) == null) return false;
+        if (getChunk(chunkX,chunkY) == null) return true;
         else return getChunk(chunkX,chunkY).isEmpty();
     }
 
