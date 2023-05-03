@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package com.sonicgdx.sonicswirl;
+package com.sonicgdx.sonicgdx;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import static com.sonicgdx.sonicswirl.GameScreen.TILES_PER_CHUNK;
+import static com.sonicgdx.sonicgdx.GameScreen.TILES_PER_CHUNK;
 
 import java.util.Collections;
 

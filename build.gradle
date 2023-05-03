@@ -30,7 +30,7 @@ configure(subprojects) {
 
 subprojects {
   version = '1.0.0'
-  ext.appName = 'SonicSwirl'
+  ext.appName = 'SonicGDX'
   repositories {
     mavenCentral()
     maven { url 'https://s01.oss.sonatype.org' }
@@ -43,4 +43,4 @@ subprojects {
   }
 }
 
-eclipse.project.name = 'SonicSwirl' + '-parent'
+eclipse.project.name = 'SonicGDX' + '-parent'

@@ -1,9 +1,9 @@
-package com.sonicgdx.sonicswirl.gwt;
+package com.sonicgdx.sonicgdx.gwt;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.backends.gwt.GwtApplication;
 import com.badlogic.gdx.backends.gwt.GwtApplicationConfiguration;
-import com.sonicgdx.sonicswirl.Init;
+import com.sonicgdx.sonicgdx.Init;
 
 /** Launches the GWT application. */
 public class GwtLauncher extends GwtApplication {

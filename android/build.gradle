@@ -30,7 +30,7 @@ android {
     exclude 'META-INF/dependencies.txt'
   }
   defaultConfig {
-    applicationId 'com.sonicgdx.sonicswirl'
+    applicationId 'com.sonicgdx.sonicgdx'
     minSdkVersion 19
     targetSdkVersion 30
     versionCode 1
@@ -42,7 +42,7 @@ android {
     targetCompatibility "1.8"
     coreLibraryDesugaringEnabled true
   }
-  
+
   buildTypes {
     release {
       minifyEnabled false
@@ -123,7 +123,7 @@ task run(type: Exec) {
   }
 
   def adb = path + "/platform-tools/adb"
-  commandLine "$adb", 'shell', 'am', 'start', '-n', 'com.sonicgdx.sonicswirl/com.sonicgdx.sonicswirl.android.AndroidLauncher'
+  commandLine "$adb", 'shell', 'am', 'start', '-n', 'com.sonicgdx.sonicgdx/com.sonicgdx.sonicgdx.android.AndroidLauncher'
 }
 
 eclipse.project.name = appName + "-android"
