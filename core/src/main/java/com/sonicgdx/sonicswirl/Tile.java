@@ -16,27 +16,26 @@
 
 package com.sonicgdx.sonicswirl;
 
-import com.badlogic.gdx.assets.loaders.TextureAtlasLoader;
-import com.badlogic.gdx.graphics.Texture;
+import static com.sonicgdx.sonicswirl.GameScreen.TILE_LENGTH;
 
 public class Tile {
 
-    boolean isFlipped, empty;
-    byte[] heightArray, widthArray;
-    byte solidity;
+    boolean horizontalFlip, verticalFlip, empty;
+    int[] heightArray, widthArray;
+    int solidity;
     // 0 = solid from top, 1 = solid from bottom, 2 = solid from left, 3 = solid from right, 4 = solid from all sides
     float angle;
-
-    Tile(byte[] heightArray, byte[] widthArray, float angle, byte solidity, boolean flipped) {
+    Tile(int[] heightArray, int[] widthArray, float angle, int solidity, boolean flippedHorizontally, boolean flippedVertically) {
         this.empty = false;
 
-        if (heightArray.length == 16) this.heightArray = heightArray;
+        if (heightArray.length == TILE_LENGTH) this.heightArray = heightArray;
         else throw new RuntimeException("heightArray Length = " + heightArray.length);
-        if (widthArray.length == 16) this.widthArray = widthArray;
+        if (widthArray.length == TILE_LENGTH) this.widthArray = widthArray;
         else throw new RuntimeException("widthArray Length = " + widthArray.length);
 
         this.angle = angle;
-        this.isFlipped = flipped;
+        this.horizontalFlip = flippedHorizontally;
+        this.verticalFlip = flippedVertically;
         this.solidity = solidity;
     }
     Tile()
@@ -47,17 +46,17 @@ public class Tile {
         this.angle = 0;
     }
 
-    public byte getHeight(int block)
+    public int getHeight(int block)
     {
-        if (empty || block < 0 || block > 15) return 0;
+        if (empty || block < 0 || block > TILE_LENGTH - 1) return 0;
         else {
             return heightArray[block];
         }
 
     }
-    public byte getWidth(int block)
+    public int getWidth(int block)
     {
-        if (empty || block < 0 || block > 15) return 0;
+        if (empty || block < 0 || block > TILE_LENGTH - 1) return 0;
         else {
             return widthArray[block];
         }

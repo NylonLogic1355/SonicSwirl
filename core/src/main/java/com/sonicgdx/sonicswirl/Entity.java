@@ -18,35 +18,44 @@ package com.sonicgdx.sonicswirl;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
 
 /**
  * The base class all objects extend from, including the Player.
  */
 public abstract class Entity {
-    protected float xPos, yPos;
+    protected Vector2 position;
     protected float leftEdgeX, rightEdgeX, bottomEdgeY, topEdgeY;
+
+    protected final float WIDTH_RADIUS, HEIGHT_RADIUS;
 
     //TODO reconsider usage of local variables as well as sprite.getx/y
     Sprite sprite;
-    Entity() {
+    Entity(float widthRadius, float heightRadius) {
         sprite = new Sprite();
+        position = new Vector2(); //Initialise Vector with zero co-ordinates to prevent NullPointerExceptions
+        this.WIDTH_RADIUS = widthRadius; this.HEIGHT_RADIUS = heightRadius;
     }
 
+    /**
+     * Ensures the player doesn't go into negative co-ordinates as calculations may not
+     * take that into account
+     */
     public void enforceBoundaries()
     {
         // "Invisible walls" - prevent objects from going beyond borders to simplify calculations. TODO stop collision errors when going outside index bounds
-        //xPos = Math.min(xPos,1280);
-        //yPos = Math.min(yPos,720);
-        xPos = Math.max(xPos,0);
-        //yPos = Math.max(yPos,0);
+        position.x = Math.max(position.x,0);
+
+        //commented out as negative y values are currently not broken
+        //position.y = Math.max(position.y,0);
     }
 
-    public void calculateSensorPositions(float widthRadius, float heightRadius)
+    public void calculateCornerPositions()
     {
-        topEdgeY = yPos + heightRadius;
-        bottomEdgeY = yPos - heightRadius;
-        leftEdgeX = xPos - widthRadius;
-        rightEdgeX = xPos + widthRadius;
+        leftEdgeX = position.x - WIDTH_RADIUS;
+        bottomEdgeY = position.y - HEIGHT_RADIUS;
+        rightEdgeX = position.x + WIDTH_RADIUS; // xPos + (srcWidth - 1) - using srcWidth places it one pixel right of the square
+        topEdgeY = position.y + HEIGHT_RADIUS;
     }
     public float snapToNearest (float angle, float snapTo) {
         return MathUtils.round(angle/snapTo) * snapTo;
