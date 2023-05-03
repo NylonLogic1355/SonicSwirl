@@ -35,6 +35,10 @@ public class Sensor {
         this.position = positionVector;
     }
 
+    public Sensor() {
+        this.position = new Vector2();
+    }
+
     /**Attempts to find the nearest top of the surface relative to the sensor's position.
      * If no surface is found, the method will check one tile downwards for a non-empty height (and therefore a non-empty Tile).
      * Conversely, if a tile that is full in that position (has a height of 16) is found, the method will check one tile upwards for a possible top of the surface.

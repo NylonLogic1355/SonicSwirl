@@ -25,16 +25,16 @@ import com.badlogic.gdx.math.Vector2;
  */
 public abstract class Entity {
     protected Vector2 position;
-    protected float leftEdgeX, rightEdgeX, bottomEdgeY, topEdgeY, centreY,centreX;
+    protected float leftEdgeX, rightEdgeX, bottomEdgeY, topEdgeY;
 
-    protected float width,height;
+    protected final float WIDTH_RADIUS, HEIGHT_RADIUS;
 
     //TODO reconsider usage of local variables as well as sprite.getx/y
     Sprite sprite;
-    Entity(int width, int height) {
+    Entity(float widthRadius, float heightRadius) {
         sprite = new Sprite();
         position = new Vector2(); //Initialise Vector with zero co-ordinates to prevent NullPointerExceptions
-        this.width = width; this.height = height;
+        this.WIDTH_RADIUS = widthRadius; this.HEIGHT_RADIUS = heightRadius;
     }
 
     public void enforceBoundaries()
@@ -48,12 +48,10 @@ public abstract class Entity {
 
     public void calculateSensorPositions()
     {
-        leftEdgeX = position.x;
-        bottomEdgeY = position.y;
-        rightEdgeX = position.x + (width - 1); // xPos + (srcWidth - 1) - using srcWidth places it one pixel right of the square
-        topEdgeY = position.y + (height - 1);
-        centreX = position.x + ((width + 1) / 2);
-        centreY = position.y + ((height + 1) / 2);
+        leftEdgeX = position.x - WIDTH_RADIUS;
+        bottomEdgeY = position.y - HEIGHT_RADIUS;
+        rightEdgeX = position.x + WIDTH_RADIUS; // xPos + (srcWidth - 1) - using srcWidth places it one pixel right of the square
+        topEdgeY = position.y + HEIGHT_RADIUS;
     }
     public float snapToNearest (float angle, float snapTo) {
         return MathUtils.round(angle/snapTo) * snapTo;

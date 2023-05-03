@@ -18,12 +18,10 @@ package com.sonicgdx.sonicswirl;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Rectangle;
 
 /**
  * This is the class that handles player movement, player collision with the ground as well as player collision
@@ -43,17 +41,18 @@ public final class Player extends Entity {
     private final TextureAtlas atlas;
     private TextureRegion spriteRegion;
     private final Vector2 velocity;
-    Player(int width, int height) {
-        super(width, height);
+    Player(float widthRadius, float heightRadius) {
+        super(widthRadius, heightRadius);
         atlas = new TextureAtlas(Gdx.files.internal("sprites/SonicGDX.atlas"));
         spriteRegion = atlas.findRegion("sonic-idle",0);
         position = new Vector2(50,200); // Sets the player's starting position at (600,200). (The variable was initialised in super constructor)
         //The vector has two components for the x position and y position respectively
         velocity = new Vector2(); //Initialises to zero starting speed
-        sensorA = new Sensor(position.cpy()); //Copies the player's position to the left floor sensor's.
-        sensorB = new Sensor(position.cpy().add((width-1),0)); //Copies the player's position but placed at the sprite's right instead of left.
-        sensorE = new Sensor(position.cpy().add(0,(height + 1) / 2F)); //Copies the player's position but placed at the middle y position instead of the bottom
-        sensorF = new Sensor(position.cpy().add((width - 1),position.y + (height + 1) / 2F)); //Copies the player's position but placed at the middle y position instead of the bottom and at the sprite's right instead of left.
+        sensorA = new Sensor(); //Copies the player's position to the left floor sensor's.
+        sensorB = new Sensor(); //Copies the player's position but placed at the sprite's right instead of left.
+        sensorE = new Sensor(); //Copies the player's position but placed at the middle y position instead of the bottom
+        sensorF = new Sensor(); //Copies the player's position but placed at the middle y position instead of the bottom and at the sprite's right instead of left.
+        calculateSensorPositions();
     }
 
     //TODO Tommy Ettinger's digital extension could be used for faster operations on GWT
@@ -165,7 +164,7 @@ public final class Player extends Entity {
         sprite.setRotation(groundAngle);
 
         //TODO calculate y Position from ground up
-        sprite.setBounds(position.x,position.y, spriteRegion.getRegionWidth(), spriteRegion.getRegionHeight());
+        sprite.setBounds(position.x - ((spriteRegion.getRegionWidth() + 1) / 2F),bottomEdgeY, spriteRegion.getRegionWidth(), spriteRegion.getRegionHeight());
         //Since the xPos is the centre, you can just subtract the difference between the first pixel and the middle pixel to get the sprite co-ordinates.
         //yPos is also the centre, but bottomEdgeY is used instead since sprites don't have constant height and positioning above the ground can be inconsistent.
         sprite.setOriginCenter(); //TODO only set origin when region, also perhaps look into setOriginBasedPosition
@@ -385,8 +384,8 @@ public final class Player extends Entity {
         super.calculateSensorPositions();
         sensorA.setPositionValues(leftEdgeX,bottomEdgeY);
         sensorB.setPositionValues(rightEdgeX,bottomEdgeY);
-        sensorE.setPositionValues(leftEdgeX,centreY);
-        sensorF.setPositionValues(rightEdgeX,centreY);
+        sensorE.setPositionValues(leftEdgeX,position.y);
+        sensorF.setPositionValues(rightEdgeX,position.y);
     }
 
     private void debugMove(float delta) {

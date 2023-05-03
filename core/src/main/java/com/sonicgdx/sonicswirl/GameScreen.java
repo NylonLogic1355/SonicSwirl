@@ -33,7 +33,7 @@ public class GameScreen implements Screen {
     //private final FPSLogger frameLog;
     private final OrthographicCamera camera; private final Vector2 cameraOffset = Vector2.Zero; private final ExtendViewport gameViewport;
 
-    Player player;
+    private final Player player;
 
     private final Texture backgroundTexture;
 
@@ -57,8 +57,7 @@ public class GameScreen implements Screen {
 
         //TODO AssetManager
         whiteSquare = new Texture(Gdx.files.internal("1x1-ffffffff.png")); blackSquare = new Texture(Gdx.files.internal("1x1-000000ff.png"));
-        final int PLAYER_WIDTH = 20, PLAYER_HEIGHT = 40; //FIXME standardise
-        player = new Player(PLAYER_WIDTH,PLAYER_HEIGHT);
+        player = new Player(9,19);
 
         cameraOffset.x = 0; //TODO adjust view when looking up or down
         cameraOffset.y = camera.position.y - player.getYPosition();
@@ -116,9 +115,9 @@ public class GameScreen implements Screen {
         player.sprite.draw(Init.batch);
         // DEBUG - draw white squares at sensor locations on the player
         Init.batch.draw(whiteSquare,player.leftEdgeX,player.bottomEdgeY); Init.batch.draw(whiteSquare,player.rightEdgeX,player.bottomEdgeY);
-        Init.batch.draw(whiteSquare,player.leftEdgeX,player.centreY); Init.batch.draw(whiteSquare,player.rightEdgeX,player.centreY);
+        Init.batch.draw(whiteSquare,player.leftEdgeX,player.getYPosition()); Init.batch.draw(whiteSquare,player.rightEdgeX,player.getYPosition());
         Init.batch.draw(whiteSquare,player.leftEdgeX,player.topEdgeY); Init.batch.draw(whiteSquare,player.rightEdgeX,player.topEdgeY);
-        Init.batch.draw(whiteSquare,player.centreX,player.centreY);
+        Init.batch.draw(whiteSquare,player.getXPosition(),player.getYPosition());
         Init.batch.end();
     }
 
