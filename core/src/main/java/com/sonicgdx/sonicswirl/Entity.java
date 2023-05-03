@@ -27,11 +27,14 @@ public abstract class Entity {
     protected Vector2 position;
     protected float leftEdgeX, rightEdgeX, bottomEdgeY, topEdgeY, centreY,centreX;
 
+    protected float width,height;
+
     //TODO reconsider usage of local variables as well as sprite.getx/y
     Sprite sprite;
     Entity(int width, int height) {
         sprite = new Sprite();
         position = new Vector2(); //Initialise Vector with zero co-ordinates to prevent NullPointerExceptions
+        this.width = width; this.height = height;
     }
 
     public void enforceBoundaries()
@@ -47,10 +50,10 @@ public abstract class Entity {
     {
         leftEdgeX = position.x;
         bottomEdgeY = position.y;
-        rightEdgeX = position.x + (sprite.getWidth() - 1); // xPos + (srcWidth - 1) - using srcWidth places it one pixel right of the square
-        topEdgeY = position.y + (sprite.getHeight() - 1);
-        centreX = position.x + ((sprite.getWidth() + 1) / 2);
-        centreY = position.y + ((sprite.getHeight() + 1) / 2);
+        rightEdgeX = position.x + (width - 1); // xPos + (srcWidth - 1) - using srcWidth places it one pixel right of the square
+        topEdgeY = position.y + (height - 1);
+        centreX = position.x + ((width + 1) / 2);
+        centreY = position.y + ((height + 1) / 2);
     }
     public float snapToNearest (float angle, float snapTo) {
         return MathUtils.round(angle/snapTo) * snapTo;

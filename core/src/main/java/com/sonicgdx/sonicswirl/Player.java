@@ -51,9 +51,9 @@ public final class Player extends Entity {
         //The vector has two components for the x position and y position respectively
         velocity = new Vector2(); //Initialises to zero starting speed
         sensorA = new Sensor(position.cpy()); //Copies the player's position to the left floor sensor's.
-        sensorB = new Sensor(position.cpy().add((sprite.getWidth()-1),0)); //Copies the player's position but placed at the sprite's right instead of left.
-        sensorE = new Sensor(position.cpy().add(0,(sprite.getHeight() + 1) / 2)); //Copies the player's position but placed at the middle y position instead of the bottom
-        sensorF = new Sensor(position.cpy().add((sprite.getWidth() - 1),position.y + (sprite.getHeight() + 1) / 2)); //Copies the player's position but placed at the middle y position instead of the bottom and at the sprite's right instead of left.
+        sensorB = new Sensor(position.cpy().add((width-1),0)); //Copies the player's position but placed at the sprite's right instead of left.
+        sensorE = new Sensor(position.cpy().add(0,(height + 1) / 2F)); //Copies the player's position but placed at the middle y position instead of the bottom
+        sensorF = new Sensor(position.cpy().add((width - 1),position.y + (height + 1) / 2F)); //Copies the player's position but placed at the middle y position instead of the bottom and at the sprite's right instead of left.
     }
 
     //TODO Tommy Ettinger's digital extension could be used for faster operations on GWT
