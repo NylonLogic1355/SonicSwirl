@@ -25,7 +25,7 @@ import com.badlogic.gdx.math.Vector2;
  */
 public abstract class Entity {
     protected Vector2 position;
-    protected float leftEdgeX, rightEdgeX, bottomEdgeY, topEdgeY, centreY;
+    protected float leftEdgeX, rightEdgeX, bottomEdgeY, topEdgeY, centreY,centreX;
 
     //TODO reconsider usage of local variables as well as sprite.getx/y
     Sprite sprite;
@@ -45,10 +45,10 @@ public abstract class Entity {
 
     public void calculateSensorPositions()
     {
-        //FIXME
-        bottomEdgeY = position.y - (sprite.getHeight() - 1);
+        bottomEdgeY = position.y;
         leftEdgeX = position.x;
         rightEdgeX = position.x + (sprite.getWidth() - 1); // xPos + (srcWidth - 1) - using srcWidth places it one pixel right of the square
+        centreX = position.x + ((sprite.getWidth() - 1) / 2);
         centreY = position.y + ((sprite.getHeight() - 1) / 2);
         topEdgeY = position.y + (sprite.getHeight() - 1);
     }
