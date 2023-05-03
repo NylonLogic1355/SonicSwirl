@@ -121,8 +121,7 @@ public enum TileMap {
     }
 
     public static Chunk getChunk(int chunkX, int chunkY) {
-        if (chunkX < map.length) if (chunkY < map[chunkX].length) return map[chunkX][chunkY];
-        return null;
+        return map[chunkX][chunkY];
     }
 
     public static boolean checkEmpty(int chunkX, int chunkY) {
@@ -130,7 +129,7 @@ public enum TileMap {
         else return getChunk(chunkX,chunkY).isEmpty();
     }
 
-    public static Tile getEmpty()
+    public static Tile getEmptyTile()
     {
         return TILE_MAP.EMPTY;
     }

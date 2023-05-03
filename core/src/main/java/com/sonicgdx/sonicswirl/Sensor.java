@@ -51,7 +51,7 @@ public class Sensor {
         */
         //TODO possibly perform check inside player function instead
         if (position.x < 0 || position.y < 0) {
-            tile = TileMap.getEmpty(); distance = -50;
+            tile = TileMap.getEmptyTile(); distance = -50;
             return;
         }
         //TODO prevent catch block in getTile() from being used.
@@ -132,7 +132,7 @@ public class Sensor {
         if (position.x < 0 || position.y < 0) {
             //positive distances aren't accepted and 50 is too far out of the range
             //so this will never trigger a collision if out of bounds
-            tile = TileMap.getEmpty(); distance = 50;
+            tile = TileMap.getEmptyTile(); distance = 50;
             return;
         }
         //TODO prevent catch block in getTile() from being used.
