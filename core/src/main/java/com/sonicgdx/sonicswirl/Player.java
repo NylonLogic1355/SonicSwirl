@@ -165,7 +165,7 @@ public final class Player extends Entity {
         sprite.setRotation(groundAngle);
 
         //TODO calculate y Position from ground up
-        sprite.setBounds(position.x - ((spriteRegion.getRegionWidth() + 1) / 2F),bottomEdgeY, spriteRegion.getRegionWidth(), spriteRegion.getRegionHeight());
+        sprite.setBounds(position.x,position.y, spriteRegion.getRegionWidth(), spriteRegion.getRegionHeight());
         //Since the xPos is the centre, you can just subtract the difference between the first pixel and the middle pixel to get the sprite co-ordinates.
         //yPos is also the centre, but bottomEdgeY is used instead since sprites don't have constant height and positioning above the ground can be inconsistent.
         sprite.setOriginCenter(); //TODO only set origin when region, also perhaps look into setOriginBasedPosition
@@ -383,10 +383,10 @@ public final class Player extends Entity {
     @Override
     public void calculateSensorPositions() {
         super.calculateSensorPositions();
-        sensorA.setPositionValues(leftEdgeX,position.y); //TODO possibly remove these variables
-        sensorB.setPositionValues(rightEdgeX,position.y);
-        //FIXME sensorE.setPositionValues(lSensorX,centreY);
-        //FIXME sensorF.setPositionValues(rSensorX,centreY);
+        sensorA.setPositionValues(leftEdgeX,bottomEdgeY);
+        sensorB.setPositionValues(rightEdgeX,bottomEdgeY);
+        sensorE.setPositionValues(leftEdgeX,centreY);
+        sensorF.setPositionValues(rightEdgeX,centreY);
     }
 
     private void debugMove(float delta) {
