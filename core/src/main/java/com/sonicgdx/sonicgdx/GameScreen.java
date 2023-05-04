@@ -142,7 +142,7 @@ public class GameScreen implements Screen {
             for (int tileY = 0; tileY < TILES_PER_CHUNK; tileY++)
             {
                 //Skips the loop for empty tiles (every value in its array would be zero anyway)
-                if (TileMap.map[chunkX][chunkY].getTileArray()[tileX][tileY].empty) continue;
+                if (TileMap.getTile(chunkX,chunkY,tileX,tileY).empty) continue;
 
                 //Goes through every element in the height array
                 for (int block = 0; block < TILE_LENGTH; block++)
@@ -182,7 +182,7 @@ public class GameScreen implements Screen {
             for (int tileY = 0; tileY < TILES_PER_CHUNK; tileY++)
             {
                 //Skips the loop for empty tiles (every value in its array would be zero anyway)
-                if (TileMap.map[chunkX][chunkY].getTileArray()[tileX][tileY].empty) continue;
+                if (TileMap.getTile(chunkX,chunkY,tileX,tileY).empty) continue;
                 for (int block = 0; block < TILE_LENGTH; block++)
                 {
                     if (block==0) Init.batch.setColor(Color.BLACK);

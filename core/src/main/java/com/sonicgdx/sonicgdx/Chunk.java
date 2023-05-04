@@ -18,20 +18,25 @@ package com.sonicgdx.sonicgdx;
 
 import com.badlogic.gdx.graphics.Texture;
 
+import static com.sonicgdx.sonicgdx.GameScreen.TILES_PER_CHUNK;
+import static com.sonicgdx.sonicgdx.GameScreen.TILE_LENGTH;
+
 public class Chunk {
     private Texture texture;
     private Tile[][] tileArray;
     private boolean empty;
 
     public Chunk(Texture texture, Tile[][] tileArray) {
-        this.texture = texture;
-        this.tileArray = tileArray;
+        if (tileArray.length == TILES_PER_CHUNK) this.tileArray = tileArray;
+        else throw new IllegalArgumentException("heightArray Length is " +  tileArray.length + " instead of " + TILES_PER_CHUNK);
         this.empty = false;
+        this.texture = texture;
     }
 
     public Chunk(Tile[][] tileArray) {
+        if (tileArray.length == TILES_PER_CHUNK) this.tileArray = tileArray;
+        else throw new IllegalArgumentException("heightArray Length is " +  tileArray.length + " instead of " + TILES_PER_CHUNK);
         this.empty = true;
-        this.tileArray = tileArray;
     }
 
     public Texture getTexture() {
