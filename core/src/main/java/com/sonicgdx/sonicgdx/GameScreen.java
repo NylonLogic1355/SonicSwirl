@@ -156,7 +156,7 @@ public class GameScreen implements Screen {
 
                     // Draws a block at the located at the co-ordinates of the tile (+ the array position for the x-axis only)
                     // with width 1 and the height obtained from the array
-                    Init.batch.draw(whiteSquare, block + (tileX* TILE_LENGTH)+(chunkX* CHUNK_LENGTH),(tileY* TILE_LENGTH)+(chunkY* CHUNK_LENGTH),1, TileMap.map[chunkX][chunkY].getTileArray()[tileX][tileY].getHeight(block));
+                    Init.batch.draw(whiteSquare, block + (tileX* TILE_LENGTH)+(chunkX* CHUNK_LENGTH),(tileY* TILE_LENGTH)+(chunkY* CHUNK_LENGTH),1, TileMap.getTile(chunkX,chunkY,tileX,tileY).getHeight(block));
 
                     //TODO reversed search order for flipped tiles. e.g. Collections.reverse() or ArrayUtils.reverse(int[] array)
 
@@ -189,9 +189,9 @@ public class GameScreen implements Screen {
                     else Init.batch.setColor(new Color(0,(1F/TILES_PER_CHUNK) * tileY,block,1));
 
                     int yPosition = (tileY * TILE_LENGTH) + (chunkY * CHUNK_LENGTH) + block;
-                    int blockWidth = TileMap.map[chunkX][chunkY].getTileArray()[tileX][tileY].getWidth(TILE_LENGTH - block - 1);
+                    int blockWidth = TileMap.getTile(chunkX,chunkY,tileX,tileY).getWidth(TILE_LENGTH - block - 1);
 
-                    if (!TileMap.map[chunkX][chunkY].getTileArray()[tileX][tileY].horizontalFlip) {
+                    if (!TileMap.getTile(chunkX,chunkY,tileX,tileY).horizontalFlip) {
                         Init.batch.draw(whiteSquare, (tileX * TILE_LENGTH) + (chunkX * CHUNK_LENGTH) + (TILE_LENGTH - blockWidth), yPosition, blockWidth, 1);
                     } else {
                         Init.batch.draw(whiteSquare, (tileX * TILE_LENGTH) + (chunkX * CHUNK_LENGTH), yPosition, blockWidth, 1);

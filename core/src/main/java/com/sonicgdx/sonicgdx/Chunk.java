@@ -43,10 +43,14 @@ public class Chunk {
         return texture;
     }
 
+    /**
+     * This returns the tileArray, but doesn't perform any validations on it. Discouraged.
+     * @see TileMap#getTile(int chunkX, int chunkY, int tileX, int tileY) instead.
+     * @return the tileArray
+     */
     public Tile[][] getTileArray() {
         return tileArray;
     }
-
     public boolean isEmpty() {
         return empty;
     }
