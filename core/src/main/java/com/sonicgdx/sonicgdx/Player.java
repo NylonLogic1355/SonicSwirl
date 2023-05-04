@@ -28,6 +28,7 @@ import com.badlogic.gdx.math.Vector2;
  * It is final since it is not necessary to extend this class.
  */
 public final class Player extends Entity {
+    private boolean flipX = false, flipY = false;
     private boolean debugMode = false, isGrounded, isJumping;
     private final float ACCELERATION = 168.75F, AIR_ACCELERATION = 337.5F, SLOPE_FACTOR = 7.5F, GRAVITY_FORCE = -787.5F;
     private final int DECELERATION = 1800, MAX_SPEED = 360, JUMP_FORCE = 390;
@@ -158,6 +159,7 @@ public final class Player extends Entity {
         //yPos is also the centre, but bottomEdgeY is used instead since sprites don't have constant height and positioning above the ground can be inconsistent.
         sprite.setOriginCenter(); //TODO only set origin when region, also perhaps look into setOriginBasedPosition
 
+        sprite.flip(flipX,flipY);
         //FIXME possible approach https://www.reddit.com/r/libgdx/comments/i0plt4/comment/fzrlqqt
 
     }
@@ -181,11 +183,13 @@ public final class Player extends Entity {
 
         if (rightPressed && !leftPressed) // if moving right
         {
+            flipX = false;
             if (groundVelocity < 0) groundVelocity += (DECELERATION * delta); // Deceleration acts in the opposite direction to the one in which the player is currently moving.
             else if (groundVelocity < MAX_SPEED) groundVelocity += (ACCELERATION * delta); //Takes 128 frames to accelerate from 0 to 6 - exactly 2 seconds
         }
         else if (leftPressed && !rightPressed) // if moving left
         {
+            flipX = true;
             if (groundVelocity > 0) groundVelocity -= (DECELERATION * delta);
             else if (groundVelocity > -MAX_SPEED) groundVelocity -= ACCELERATION * delta;
         }
@@ -307,10 +311,12 @@ public final class Player extends Entity {
         //Air acceleration
         if (Gdx.input.isKeyPressed(Input.Keys.D) || (Gdx.input.isKeyPressed(Input.Keys.RIGHT))) // if moving right
         {
+            flipX = false;
             if (velocity.x < MAX_SPEED) velocity.x += AIR_ACCELERATION * delta; // accelerates right at twice the speed compared to on ground (no friction)
         }
         else if (Gdx.input.isKeyPressed(Input.Keys.A) || (Gdx.input.isKeyPressed(Input.Keys.LEFT))) // if moving left
         {
+            flipX = true;
             if (velocity.x > -MAX_SPEED) velocity.x -= AIR_ACCELERATION * delta; // accelerates left at twice the speed compared to on ground (no friction)
         }
         //Air drag
