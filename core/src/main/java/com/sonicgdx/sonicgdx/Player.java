@@ -194,7 +194,7 @@ public final class Player extends Entity {
             else if (groundVelocity > -MAX_SPEED) groundVelocity -= ACCELERATION * delta;
         }
         else groundVelocity -= Math.min(Math.abs(groundVelocity), ACCELERATION * delta) * Math.signum(groundVelocity); // friction if not pressing any directions
-        // Decelerates until the absolute value of groundSpeed is lower than the ACCELERATION value (which doubles as the friction value) and then stops
+        // Decelerates until the ground speed is lower than the acceleration value (which doubles as the friction value) and then stops
 
         velocity.set(groundVelocity * MathUtils.cosDeg(groundAngle), groundVelocity * MathUtils.sinDeg(groundAngle));
 

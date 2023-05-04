@@ -46,8 +46,9 @@ public abstract class Entity {
         // "Invisible walls" - prevent objects from going beyond borders to simplify calculations. TODO stop collision errors when going outside index bounds
         position.x = Math.max(position.x,0);
 
-        //commented out as negative y values are currently not broken
-        //position.y = Math.max(position.y,0);
+        //Respawns the player at the starting position if they fall off the terrain
+        //TODO replace with death animation and retry screen before respawning
+        if (position.y <= -100) position.set(50,200);
     }
 
     public void calculateCornerPositions()
