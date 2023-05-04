@@ -1,4 +1,4 @@
-package com.sonicgdx.sonicswirl.teavm;
+package com.sonicgdx.sonicgdx.teavm;
 
 import com.github.xpenatan.gdx.backends.teavm.TeaBuildConfiguration;
 import com.github.xpenatan.gdx.backends.teavm.TeaBuilder;
@@ -19,10 +19,10 @@ public class TeaVMBuilder {
         teaBuildConfiguration.obfuscate = true;
 
         // Register any extra classpath assets here:
-        // teaBuildConfiguration.additionalAssetsClasspathFiles.add("com/sonicgdx/sonicswirl/asset.extension");
+        // teaBuildConfiguration.additionalAssetsClasspathFiles.add("com/sonicgdx/sonicgdx/asset.extension");
 
         // Register any classes or packages that require reflection here:
-        // TeaReflectionSupplier.addReflectionClass("com.sonicgdx.sonicswirl.reflect");
+        // TeaReflectionSupplier.addReflectionClass("com.sonicgdx.sonicgdx.reflect");
 
         TeaVMTool tool = TeaBuilder.config(teaBuildConfiguration);
         tool.setMainClass(TeaVMLauncher.class.getName());

@@ -1,4 +1,4 @@
-package com.sonicgdx.sonicswirl.android;
+package com.sonicgdx.sonicgdx.android;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -6,7 +6,7 @@ import android.os.Bundle;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.badlogic.gdx.backends.android.AndroidAudio;
-import com.sonicgdx.sonicswirl.Init;
+import com.sonicgdx.sonicgdx.Init;
 
 import barsoosayque.libgdxoboe.OboeAudio;
 

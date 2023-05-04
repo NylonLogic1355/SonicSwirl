@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.sonicgdx.sonicswirl;
+package com.sonicgdx.sonicgdx;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.sonicgdx.sonicswirl;
+package com.sonicgdx.sonicgdx;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
@@ -47,12 +47,9 @@ public class GameScreen implements Screen {
         //TODO implement class with reference to https://gamedev.stackexchange.com/a/133593
         //FIXME possibly reduce viewport resolution to reduce pixels being missing at lower resolutions or change viewport type
 
-        camera = new OrthographicCamera(); // 3D camera which projects into 2D.
+        camera = new OrthographicCamera(); // 3D camera which projects into 2D so that the view is flat
         gameViewport = new ExtendViewport(1280,720,camera);
-        //TODO Update comments
         camera.setToOrtho(false,1280,720); // Even if the device has a scaled resolution, the in game view will still be 1280x720
-        //So for example, one screen won't be in the bottom left corner in 1080p
-        //but would take up the entire view
 
         spriteAtlas = new TextureAtlas(Gdx.files.internal("sprites/SonicGDX.atlas"));
 
@@ -106,11 +103,10 @@ public class GameScreen implements Screen {
             //Iterates through every chunk on the y-axis
             for (int chunkY = 0; chunkY<TileMap.map[chunkX].length; chunkY++)
             {
-                //TODO draw tile width batch
                 //Draw the chunk's texture unless the debug drawing mode has been toggled
                 if (drawMode == 1) drawChunkHeightArray(chunkX,chunkY);
                 else if (drawMode == 2) drawChunkWidthArray(chunkX,chunkY);
-                else drawChunkTextureBatch(chunkX,chunkY);
+                else drawChunkTexture(chunkX,chunkY);
             }
         }
         player.sprite.draw(Init.batch);
@@ -127,7 +123,7 @@ public class GameScreen implements Screen {
      * @param chunkX the chunk number on the x-axis - not the same as its co-ordinate
      * @param chunkY the chunk number on the y-axis - not the same as its co-ordinate
      */
-    public void drawChunkTextureBatch(int chunkX, int chunkY) {
+    public void drawChunkTexture(int chunkX, int chunkY) {
         //If the chunk isn't empty, draw its texture at the chunk's location
         if (!TileMap.map[chunkX][chunkY].isEmpty()) Init.batch.draw(TileMap.map[chunkX][chunkY].getTexture(), (chunkX* CHUNK_LENGTH),(chunkY* CHUNK_LENGTH), CHUNK_LENGTH, CHUNK_LENGTH);
     }
@@ -210,6 +206,39 @@ public class GameScreen implements Screen {
 
     }
 
+
+    /**
+     * Draws each Tile using a gradient - for debugging purposes only
+     * @param chunkX the chunk number on the x-axis - not the same as its co-ordinate
+     * @param chunkY the chunk number on the y-axis - not the same as its co-ordinate
+     * @deprecated Superseded by drawChunkHeightArray as ShapeRenderer uses its own mesh compared to the SpriteBatch and therefore conflicts in the rendering method making it cumbersome to use.
+     */
+    @Deprecated
+    public void drawChunkHeightShapeRenderer(int chunkX, int chunkY) {
+
+        /*//TODO Foreach loop?
+        for (int tileX = 0; tileX < TILES_PER_CHUNK; tileX++)
+        {
+            for (int tileY = 0; tileY < TILES_PER_CHUNK; tileY++)
+            {
+                if (TileMap.map[chunkX][chunkY][tileX][tileY].empty){
+                    continue;
+                }
+                for (int block = 0; block < TILE_SIZE; block++)
+                {
+
+                    if (block==0) shapeRenderer.setColor(new Color(0,0,0,1));
+                    else shapeRenderer.setColor(new Color((1F/TILES_PER_CHUNK) * tileY,0,block,1));
+                    shapeRenderer.rect( block + (tileX*TILE_SIZE)+(chunkX*CHUNK_SIZE),(tileY*TILE_SIZE)+(chunkY*CHUNK_SIZE),1,TileMap.map[chunkX][chunkY][tileX][tileY].getHeight(block));
+
+                    //TODO reversed search order for flipped tiles. e.g. Collections.reverse() or ArrayUtils.reverse(int[] array)
+
+                }
+            }
+        }*/
+    }
+
+
     public static TextureRegion getTextureRegion(String regionName) {
         return spriteAtlas.findRegion(regionName);
     }
@@ -250,37 +279,6 @@ public class GameScreen implements Screen {
     public void hide() {
         //TODO Auto-generated method stub
 
-    }
-
-    /**
-     * Draws each Tile using a gradient - for debugging purposes only
-     * @param chunkX the chunk number on the x-axis - not the same as its co-ordinate
-     * @param chunkY the chunk number on the y-axis - not the same as its co-ordinate
-     * @deprecated Superseded by drawChunkBatch as ShapeRenderer uses its own mesh compared to the SpriteBatch and therefore conflicts in the rendering method making it cumbersome to use.
-     */
-    @Deprecated
-    public void drawChunkHeightShapeRenderer(int chunkX, int chunkY) {
-
-        /*//TODO Foreach loop?
-        for (int tileX = 0; tileX < TILES_PER_CHUNK; tileX++)
-        {
-            for (int tileY = 0; tileY < TILES_PER_CHUNK; tileY++)
-            {
-                if (TileMap.map[chunkX][chunkY][tileX][tileY].empty){
-                    continue;
-                }
-                for (int block = 0; block < TILE_SIZE; block++)
-                {
-
-                    if (block==0) shapeRenderer.setColor(new Color(0,0,0,1));
-                    else shapeRenderer.setColor(new Color((1F/TILES_PER_CHUNK) * tileY,0,block,1));
-                    shapeRenderer.rect( block + (tileX*TILE_SIZE)+(chunkX*CHUNK_SIZE),(tileY*TILE_SIZE)+(chunkY*CHUNK_SIZE),1,TileMap.map[chunkX][chunkY][tileX][tileY].getHeight(block));
-
-                    //TODO reversed search order for flipped tiles. e.g. Collections.reverse() or ArrayUtils.reverse(int[] array)
-
-                }
-            }
-        }*/
     }
 
 }

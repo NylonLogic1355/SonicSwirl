@@ -14,11 +14,10 @@
  * limitations under the License.
  */
 
-package com.sonicgdx.sonicswirl;
+package com.sonicgdx.sonicgdx;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;

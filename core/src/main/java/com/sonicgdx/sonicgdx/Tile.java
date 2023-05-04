@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.sonicgdx.sonicswirl;
+package com.sonicgdx.sonicgdx;
 
-import static com.sonicgdx.sonicswirl.GameScreen.TILE_LENGTH;
+import static com.sonicgdx.sonicgdx.GameScreen.TILE_LENGTH;
 
 public class Tile {
 

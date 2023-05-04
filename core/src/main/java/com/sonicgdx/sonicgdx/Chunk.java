@@ -14,11 +14,9 @@
  * limitations under the License.
  */
 
-package com.sonicgdx.sonicswirl;
+package com.sonicgdx.sonicgdx;
 
 import com.badlogic.gdx.graphics.Texture;
-
-import java.util.Collections;
 
 public class Chunk {
     private Texture texture;

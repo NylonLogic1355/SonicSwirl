@@ -1,9 +1,9 @@
-package com.sonicgdx.sonicswirl.teavm;
+package com.sonicgdx.sonicgdx.teavm;
 
 import com.github.xpenatan.gdx.backends.teavm.TeaApplicationConfiguration;
 import com.github.xpenatan.gdx.backends.web.WebApplication;
 import com.github.xpenatan.gdx.backends.web.WebApplicationConfiguration;
-import com.sonicgdx.sonicswirl.Init;
+import com.sonicgdx.sonicgdx.Init;
 
 /**
  * Launches the TeaVM/HTML application.
