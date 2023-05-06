@@ -174,7 +174,7 @@ public final class Player extends Entity {
         //"Move Left" action
         boolean leftPressed = Gdx.input.isKeyPressed(Input.Keys.A) || (Gdx.input.isKeyPressed(Input.Keys.LEFT));
         //"Jump" action
-        boolean jumpPressed = Gdx.input.isKeyJustPressed(Input.Keys.SPACE);
+        boolean jumpJustPressed = Gdx.input.isKeyJustPressed(Input.Keys.SPACE);
 
         if (groundVelocity != 0) groundVelocity -= delta * SLOPE_FACTOR * MathUtils.sinDeg(groundAngle); //TODO this only happens when the player is not in ceiling mode.
 
@@ -198,7 +198,7 @@ public final class Player extends Entity {
 
         velocity.set(groundVelocity * MathUtils.cosDeg(groundAngle), groundVelocity * MathUtils.sinDeg(groundAngle));
 
-        if (jumpPressed) jump(delta); //TODO placement different from original, may cause bugs.
+        if (jumpJustPressed) jump(delta); //TODO placement different from original, may cause bugs.
 
 
         //FIXME player momentum functions oddly when landing after jumping downwards from a steep slope
@@ -305,16 +305,26 @@ public final class Player extends Entity {
     }
 
     public void airMove(float delta) {
+        //These booleans are true if any of the inputs which cause their respective action are pressed
+        //or held down in the current frame
+
+        //"Move Right" action
+        boolean rightPressed = Gdx.input.isKeyPressed(Input.Keys.D) || (Gdx.input.isKeyPressed(Input.Keys.RIGHT));
+        //"Move Left" action
+        boolean leftPressed = Gdx.input.isKeyPressed(Input.Keys.A) || (Gdx.input.isKeyPressed(Input.Keys.LEFT));
+        //"Jump" action
+        boolean jumpPressed = Gdx.input.isKeyPressed(Input.Keys.SPACE);
+
         //Reduce the height jumped by capping the Y Speed if player releases the jump button (Space) early.
-        if (!Gdx.input.isKeyPressed(Input.Keys.SPACE) && velocity.y > 4 && isJumping) velocity.y = 4;
+        if (!jumpPressed && velocity.y > 4 && isJumping) velocity.y = 4;
 
         //Air acceleration
-        if (Gdx.input.isKeyPressed(Input.Keys.D) || (Gdx.input.isKeyPressed(Input.Keys.RIGHT))) // if moving right
+        if (rightPressed && !leftPressed) // if moving right
         {
             flipX = false;
             if (velocity.x < MAX_SPEED) velocity.x += AIR_ACCELERATION * delta; // accelerates right at twice the speed compared to on ground (no friction)
         }
-        else if (Gdx.input.isKeyPressed(Input.Keys.A) || (Gdx.input.isKeyPressed(Input.Keys.LEFT))) // if moving left
+        else if (leftPressed && !rightPressed) // if moving left
         {
             flipX = true;
             if (velocity.x > -MAX_SPEED) velocity.x -= AIR_ACCELERATION * delta; // accelerates left at twice the speed compared to on ground (no friction)
