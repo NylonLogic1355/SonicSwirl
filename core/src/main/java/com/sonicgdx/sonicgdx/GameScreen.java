@@ -54,7 +54,7 @@ public class GameScreen implements Screen {
         spriteAtlas = new TextureAtlas(Gdx.files.internal("sprites/SonicGDX.atlas"));
 
         //TODO AssetManager
-        whiteSquare = new Texture(Gdx.files.internal("1x1-ffffffff.png")); blackSquare = new Texture(Gdx.files.internal("1x1-000000ff.png"));
+        whiteSquare = new Texture(Gdx.files.internal("sprites/1x1-ffffffff.png")); blackSquare = new Texture(Gdx.files.internal("sprites/1x1-000000ff.png"));
         player = new Player(9,19);
 
         cameraOffset.x = 0; //TODO adjust view when looking up or down
