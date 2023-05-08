@@ -17,7 +17,9 @@
 package com.sonicgdx.sonicgdx;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Audio;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
@@ -39,6 +41,7 @@ public final class Player extends Entity {
     private final Sensor sensorA, sensorB, sensorE,sensorF;
     private TextureRegion spriteRegion;
     private final Vector2 velocity;
+    private final Sound jumpSound;
     Player(float widthRadius, float heightRadius) {
         super(widthRadius, heightRadius);
         spriteRegion = GameScreen.getTextureRegion("sonic-idle",0);
@@ -50,6 +53,8 @@ public final class Player extends Entity {
         sensorE = new Sensor(); //Copies the player's position but placed at the middle y position instead of the bottom
         sensorF = new Sensor(); //Copies the player's position but placed at the middle y position instead of the bottom and at the sprite's right instead of left.
         calculateSensorPositions();
+
+        jumpSound = Gdx.audio.newSound(Gdx.files.internal("sounds/jump.wav"));
     }
 
     //TODO Tommy Ettinger's digital extension could be used for faster operations on GWT
@@ -302,6 +307,8 @@ public final class Player extends Entity {
         velocity.y += JUMP_FORCE * MathUtils.cosDeg(groundAngle);
         isGrounded = false; isJumping = true;
         //TODO if time is available, jump buffering and coyote time
+
+        jumpSound.play();
     }
 
     public void airMove(float delta) {

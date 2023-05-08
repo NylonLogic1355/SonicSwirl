@@ -19,6 +19,7 @@ package com.sonicgdx.sonicgdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -39,6 +40,8 @@ public class GameScreen implements Screen {
     private final Texture backgroundTexture;
     private int drawMode = 0;
     public static final int TILE_LENGTH = 16, CHUNK_LENGTH = 96, TILES_PER_CHUNK = CHUNK_LENGTH / TILE_LENGTH;
+
+    private Music backgroundMusic;
 
     public GameScreen(final Init Init) {
 
@@ -62,6 +65,11 @@ public class GameScreen implements Screen {
 
         //frameLog = new FPSLogger();
         backgroundTexture = new Texture(Gdx.files.internal("sprites/aiz_background.jpg"));
+
+        Music backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("sounds/aiz_loop.wav"));
+        backgroundMusic.setVolume(0.3f);
+        backgroundMusic.setLooping(true);
+        backgroundMusic.play();
 
     }
 

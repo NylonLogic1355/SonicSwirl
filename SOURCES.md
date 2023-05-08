@@ -161,3 +161,7 @@ https://cloudconvert.com/png-to-icns
 https://github.com/tommyettinger/gdx-liftoff/blob/master/Guide.md
 https://stackoverflow.com/questions/3103490/html-title-image
 https://stackoverflow.com/a/1353634
+
+## Audio
+https://www.sounds-resource.com/genesis_32x_scd/sonic1/sound/2626/
+https://www.youtube.com/watch?v=-Xyn7mfJYFM
