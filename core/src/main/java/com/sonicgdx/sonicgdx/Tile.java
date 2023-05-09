@@ -16,7 +16,7 @@
 
 package com.sonicgdx.sonicgdx;
 
-import static com.sonicgdx.sonicgdx.GameScreen.TILE_LENGTH;
+import static com.sonicgdx.sonicgdx.TileMap.TILE_LENGTH;
 
 public class Tile {
 

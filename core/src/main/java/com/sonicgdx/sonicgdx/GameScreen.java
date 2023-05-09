@@ -28,6 +28,10 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import static com.sonicgdx.sonicgdx.TileMap.TILES_PER_CHUNK;
+import static com.sonicgdx.sonicgdx.TileMap.TILE_LENGTH;
+import static com.sonicgdx.sonicgdx.TileMap.CHUNK_LENGTH;
+
 
 public class GameScreen implements Screen {
 
@@ -39,7 +43,6 @@ public class GameScreen implements Screen {
     public static TextureAtlas spriteAtlas;
     private final Texture backgroundTexture;
     private int drawMode = 0;
-    public static final int TILE_LENGTH = 16, CHUNK_LENGTH = 96, TILES_PER_CHUNK = CHUNK_LENGTH / TILE_LENGTH;
 
     private Music backgroundMusic;
 
@@ -194,7 +197,7 @@ public class GameScreen implements Screen {
                 for (int block = 0; block < TILE_LENGTH; block++)
                 {
                     if (block==0) Init.batch.setColor(Color.BLACK);
-                    else Init.batch.setColor(new Color(0,(1F/TILES_PER_CHUNK) * tileY,block,1));
+                    else Init.batch.setColor(new Color(0,(1F/ TILES_PER_CHUNK) * tileY,block,1));
 
                     int yPosition = (tileY * TILE_LENGTH) + (chunkY * CHUNK_LENGTH) + block;
                     int blockWidth = TileMap.getTile(chunkX,chunkY,tileX,tileY).getWidth(TILE_LENGTH - block - 1);
