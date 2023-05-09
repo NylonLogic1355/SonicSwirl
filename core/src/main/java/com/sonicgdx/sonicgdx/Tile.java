@@ -29,9 +29,9 @@ public class Tile {
         this.empty = false;
 
         if (heightArray.length == TILE_LENGTH) this.heightArray = heightArray;
-        else throw new RuntimeException("heightArray Length = " + heightArray.length);
+        else throw new IllegalArgumentException("heightArray Length is " +  heightArray.length + " instead of " + TILE_LENGTH);
         if (widthArray.length == TILE_LENGTH) this.widthArray = widthArray;
-        else throw new RuntimeException("widthArray Length = " + widthArray.length);
+        else throw new IllegalArgumentException("heightArray Length is " +  widthArray.length + " instead of " + TILE_LENGTH);
 
         this.angle = angle;
         this.horizontalFlip = flippedHorizontally;

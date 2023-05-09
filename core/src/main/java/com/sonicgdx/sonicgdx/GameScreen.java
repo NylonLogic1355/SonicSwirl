@@ -19,6 +19,7 @@ package com.sonicgdx.sonicgdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -40,6 +41,8 @@ public class GameScreen implements Screen {
     private int drawMode = 0;
     public static final int TILE_LENGTH = 16, CHUNK_LENGTH = 96, TILES_PER_CHUNK = CHUNK_LENGTH / TILE_LENGTH;
 
+    private Music backgroundMusic;
+
     public GameScreen(final Init Init) {
 
         this.Init = Init;
@@ -54,7 +57,7 @@ public class GameScreen implements Screen {
         spriteAtlas = new TextureAtlas(Gdx.files.internal("sprites/SonicGDX.atlas"));
 
         //TODO AssetManager
-        whiteSquare = new Texture(Gdx.files.internal("1x1-ffffffff.png")); blackSquare = new Texture(Gdx.files.internal("1x1-000000ff.png"));
+        whiteSquare = new Texture(Gdx.files.internal("sprites/1x1-ffffffff.png")); blackSquare = new Texture(Gdx.files.internal("sprites/1x1-000000ff.png"));
         player = new Player(9,19);
 
         cameraOffset.x = 0; //TODO adjust view when looking up or down
@@ -62,6 +65,11 @@ public class GameScreen implements Screen {
 
         //frameLog = new FPSLogger();
         backgroundTexture = new Texture(Gdx.files.internal("sprites/aiz_background.jpg"));
+
+        Music backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("sounds/aiz_loop.wav"));
+        backgroundMusic.setVolume(0.3f);
+        backgroundMusic.setLooping(true);
+        backgroundMusic.play();
 
     }
 
@@ -142,7 +150,7 @@ public class GameScreen implements Screen {
             for (int tileY = 0; tileY < TILES_PER_CHUNK; tileY++)
             {
                 //Skips the loop for empty tiles (every value in its array would be zero anyway)
-                if (TileMap.map[chunkX][chunkY].getTileArray()[tileX][tileY].empty) continue;
+                if (TileMap.getTile(chunkX,chunkY,tileX,tileY).empty) continue;
 
                 //Goes through every element in the height array
                 for (int block = 0; block < TILE_LENGTH; block++)
@@ -156,7 +164,7 @@ public class GameScreen implements Screen {
 
                     // Draws a block at the located at the co-ordinates of the tile (+ the array position for the x-axis only)
                     // with width 1 and the height obtained from the array
-                    Init.batch.draw(whiteSquare, block + (tileX* TILE_LENGTH)+(chunkX* CHUNK_LENGTH),(tileY* TILE_LENGTH)+(chunkY* CHUNK_LENGTH),1, TileMap.map[chunkX][chunkY].getTileArray()[tileX][tileY].getHeight(block));
+                    Init.batch.draw(whiteSquare, block + (tileX* TILE_LENGTH)+(chunkX* CHUNK_LENGTH),(tileY* TILE_LENGTH)+(chunkY* CHUNK_LENGTH),1, TileMap.getTile(chunkX,chunkY,tileX,tileY).getHeight(block));
 
                     //TODO reversed search order for flipped tiles. e.g. Collections.reverse() or ArrayUtils.reverse(int[] array)
 
@@ -182,16 +190,16 @@ public class GameScreen implements Screen {
             for (int tileY = 0; tileY < TILES_PER_CHUNK; tileY++)
             {
                 //Skips the loop for empty tiles (every value in its array would be zero anyway)
-                if (TileMap.map[chunkX][chunkY].getTileArray()[tileX][tileY].empty) continue;
+                if (TileMap.getTile(chunkX,chunkY,tileX,tileY).empty) continue;
                 for (int block = 0; block < TILE_LENGTH; block++)
                 {
                     if (block==0) Init.batch.setColor(Color.BLACK);
                     else Init.batch.setColor(new Color(0,(1F/TILES_PER_CHUNK) * tileY,block,1));
 
                     int yPosition = (tileY * TILE_LENGTH) + (chunkY * CHUNK_LENGTH) + block;
-                    int blockWidth = TileMap.map[chunkX][chunkY].getTileArray()[tileX][tileY].getWidth(TILE_LENGTH - block - 1);
+                    int blockWidth = TileMap.getTile(chunkX,chunkY,tileX,tileY).getWidth(TILE_LENGTH - block - 1);
 
-                    if (!TileMap.map[chunkX][chunkY].getTileArray()[tileX][tileY].horizontalFlip) {
+                    if (!TileMap.getTile(chunkX,chunkY,tileX,tileY).horizontalFlip) {
                         Init.batch.draw(whiteSquare, (tileX * TILE_LENGTH) + (chunkX * CHUNK_LENGTH) + (TILE_LENGTH - blockWidth), yPosition, blockWidth, 1);
                     } else {
                         Init.batch.draw(whiteSquare, (tileX * TILE_LENGTH) + (chunkX * CHUNK_LENGTH), yPosition, blockWidth, 1);

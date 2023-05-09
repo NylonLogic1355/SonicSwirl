@@ -17,7 +17,9 @@
 package com.sonicgdx.sonicgdx;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Audio;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
@@ -28,6 +30,7 @@ import com.badlogic.gdx.math.Vector2;
  * It is final since it is not necessary to extend this class.
  */
 public final class Player extends Entity {
+    private boolean flipX = false, flipY = false;
     private boolean debugMode = false, isGrounded, isJumping;
     private final float ACCELERATION = 168.75F, AIR_ACCELERATION = 337.5F, SLOPE_FACTOR = 7.5F, GRAVITY_FORCE = -787.5F;
     private final int DECELERATION = 1800, MAX_SPEED = 360, JUMP_FORCE = 390;
@@ -38,6 +41,7 @@ public final class Player extends Entity {
     private final Sensor sensorA, sensorB, sensorE,sensorF;
     private TextureRegion spriteRegion;
     private final Vector2 velocity;
+    private final Sound jumpSound;
     Player(float widthRadius, float heightRadius) {
         super(widthRadius, heightRadius);
         spriteRegion = GameScreen.getTextureRegion("sonic-idle",0);
@@ -49,6 +53,8 @@ public final class Player extends Entity {
         sensorE = new Sensor(); //Copies the player's position but placed at the middle y position instead of the bottom
         sensorF = new Sensor(); //Copies the player's position but placed at the middle y position instead of the bottom and at the sprite's right instead of left.
         calculateSensorPositions();
+
+        jumpSound = Gdx.audio.newSound(Gdx.files.internal("sounds/jump.wav"));
     }
 
     //TODO Tommy Ettinger's digital extension could be used for faster operations on GWT
@@ -158,6 +164,7 @@ public final class Player extends Entity {
         //yPos is also the centre, but bottomEdgeY is used instead since sprites don't have constant height and positioning above the ground can be inconsistent.
         sprite.setOriginCenter(); //TODO only set origin when region, also perhaps look into setOriginBasedPosition
 
+        sprite.flip(flipX,flipY);
         //FIXME possible approach https://www.reddit.com/r/libgdx/comments/i0plt4/comment/fzrlqqt
 
     }
@@ -172,7 +179,7 @@ public final class Player extends Entity {
         //"Move Left" action
         boolean leftPressed = Gdx.input.isKeyPressed(Input.Keys.A) || (Gdx.input.isKeyPressed(Input.Keys.LEFT));
         //"Jump" action
-        boolean jumpPressed = Gdx.input.isKeyJustPressed(Input.Keys.SPACE);
+        boolean jumpJustPressed = Gdx.input.isKeyJustPressed(Input.Keys.SPACE);
 
         if (groundVelocity != 0) groundVelocity -= delta * SLOPE_FACTOR * MathUtils.sinDeg(groundAngle); //TODO this only happens when the player is not in ceiling mode.
 
@@ -181,20 +188,22 @@ public final class Player extends Entity {
 
         if (rightPressed && !leftPressed) // if moving right
         {
+            flipX = false;
             if (groundVelocity < 0) groundVelocity += (DECELERATION * delta); // Deceleration acts in the opposite direction to the one in which the player is currently moving.
             else if (groundVelocity < MAX_SPEED) groundVelocity += (ACCELERATION * delta); //Takes 128 frames to accelerate from 0 to 6 - exactly 2 seconds
         }
         else if (leftPressed && !rightPressed) // if moving left
         {
+            flipX = true;
             if (groundVelocity > 0) groundVelocity -= (DECELERATION * delta);
             else if (groundVelocity > -MAX_SPEED) groundVelocity -= ACCELERATION * delta;
         }
         else groundVelocity -= Math.min(Math.abs(groundVelocity), ACCELERATION * delta) * Math.signum(groundVelocity); // friction if not pressing any directions
-        // Decelerates until the absolute value of groundSpeed is lower than the ACCELERATION value (which doubles as the friction value) and then stops
+        // Decelerates until the ground speed is lower than the acceleration value (which doubles as the friction value) and then stops
 
         velocity.set(groundVelocity * MathUtils.cosDeg(groundAngle), groundVelocity * MathUtils.sinDeg(groundAngle));
 
-        if (jumpPressed) jump(delta); //TODO placement different from original, may cause bugs.
+        if (jumpJustPressed) jump(delta); //TODO placement different from original, may cause bugs.
 
 
         //FIXME player momentum functions oddly when landing after jumping downwards from a steep slope
@@ -298,19 +307,33 @@ public final class Player extends Entity {
         velocity.y += JUMP_FORCE * MathUtils.cosDeg(groundAngle);
         isGrounded = false; isJumping = true;
         //TODO if time is available, jump buffering and coyote time
+
+        jumpSound.play();
     }
 
     public void airMove(float delta) {
+        //These booleans are true if any of the inputs which cause their respective action are pressed
+        //or held down in the current frame
+
+        //"Move Right" action
+        boolean rightPressed = Gdx.input.isKeyPressed(Input.Keys.D) || (Gdx.input.isKeyPressed(Input.Keys.RIGHT));
+        //"Move Left" action
+        boolean leftPressed = Gdx.input.isKeyPressed(Input.Keys.A) || (Gdx.input.isKeyPressed(Input.Keys.LEFT));
+        //"Jump" action
+        boolean jumpPressed = Gdx.input.isKeyPressed(Input.Keys.SPACE);
+
         //Reduce the height jumped by capping the Y Speed if player releases the jump button (Space) early.
-        if (!Gdx.input.isKeyPressed(Input.Keys.SPACE) && velocity.y > 4 && isJumping) velocity.y = 4;
+        if (!jumpPressed && velocity.y > 4 && isJumping) velocity.y = 4;
 
         //Air acceleration
-        if (Gdx.input.isKeyPressed(Input.Keys.D) || (Gdx.input.isKeyPressed(Input.Keys.RIGHT))) // if moving right
+        if (rightPressed && !leftPressed) // if moving right
         {
+            flipX = false;
             if (velocity.x < MAX_SPEED) velocity.x += AIR_ACCELERATION * delta; // accelerates right at twice the speed compared to on ground (no friction)
         }
-        else if (Gdx.input.isKeyPressed(Input.Keys.A) || (Gdx.input.isKeyPressed(Input.Keys.LEFT))) // if moving left
+        else if (leftPressed && !rightPressed) // if moving left
         {
+            flipX = true;
             if (velocity.x > -MAX_SPEED) velocity.x -= AIR_ACCELERATION * delta; // accelerates left at twice the speed compared to on ground (no friction)
         }
         //Air drag
