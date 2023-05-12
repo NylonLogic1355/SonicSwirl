@@ -66,7 +66,7 @@ public class GameScreen implements Screen {
         //frameLog = new FPSLogger();
         backgroundTexture = new Texture(Gdx.files.internal("sprites/aiz_background.jpg"));
 
-        Music backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("sounds/aiz_loop.wav"));
+        Music backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("sounds/aiz1_mania.ogg"));
         backgroundMusic.setVolume(0.3f);
         backgroundMusic.setLooping(true);
         backgroundMusic.play();
