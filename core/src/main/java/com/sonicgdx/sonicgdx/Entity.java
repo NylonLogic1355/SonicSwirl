@@ -61,44 +61,4 @@ public abstract class Entity {
     public float snapToNearest (float angle, float snapTo) {
         return MathUtils.round(angle/snapTo) * snapTo;
     }
-
-
-    /*
-    @Deprecated
-    public int regression(int chunkX, int chunkY, int tileX, int tileY, int grid)
-    {
-        //TODO possibly use for more accuracy?
-
-        byte height;
-
-        //INCREMENT Tile
-        if (tileY < 7)
-        {
-            tileY = tileY + 1;
-        }
-        else
-        {
-            chunkY +=1;
-            tileY = 0;
-        }
-
-
-        height = TileMap.map.getHeight(chunkX,chunkY,tileX,tileY,grid);
-
-        //CHECK height depending on conditions
-        if (height == 0) {
-            return 0;
-        }
-        else if (height < 16) {
-            return 1;
-        }
-        else {
-            return MathUtils.clamp(1 + regression(chunkX, chunkY, tileX, tileY, grid),0,2);
-        }
-
-
-    }
-    */
-
-
 }
