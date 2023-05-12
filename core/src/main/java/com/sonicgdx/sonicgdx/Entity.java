@@ -18,6 +18,7 @@ package com.sonicgdx.sonicgdx;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 /**
@@ -25,16 +26,15 @@ import com.badlogic.gdx.math.Vector2;
  */
 public abstract class Entity {
     protected Vector2 position;
-    protected float leftEdgeX, rightEdgeX, bottomEdgeY, topEdgeY;
-
-    protected final float WIDTH_RADIUS, HEIGHT_RADIUS;
+    protected float leftEdgeX, rightEdgeX, bottomEdgeY, topEdgeY, centreX, centreY;
+    protected final Rectangle rectHitbox;
 
     //TODO reconsider usage of local variables as well as sprite.getx/y
     Sprite sprite;
-    Entity(float widthRadius, float heightRadius) {
+    Entity(int width, int height) {
         sprite = new Sprite();
         position = new Vector2(); //Initialise Vector with zero co-ordinates to prevent NullPointerExceptions
-        this.WIDTH_RADIUS = widthRadius; this.HEIGHT_RADIUS = heightRadius;
+        rectHitbox = new Rectangle(0,0,width,height);
     }
 
     /**
@@ -53,10 +53,12 @@ public abstract class Entity {
 
     public void calculateCornerPositions()
     {
-        leftEdgeX = position.x - WIDTH_RADIUS;
-        bottomEdgeY = position.y - HEIGHT_RADIUS;
-        rightEdgeX = position.x + WIDTH_RADIUS; // xPos + (srcWidth - 1) - using srcWidth places it one pixel right of the square
-        topEdgeY = position.y + HEIGHT_RADIUS;
+        leftEdgeX = rectHitbox.getX();
+        rightEdgeX = leftEdgeX + rectHitbox.getWidth() - 1; // xPos + (srcWidth - 1) - using srcWidth places it one pixel right of the square
+        bottomEdgeY = rectHitbox.getY();
+        topEdgeY = bottomEdgeY + rectHitbox.getHeight() - 1;
+        centreX = (leftEdgeX + rightEdgeX) / 2F;
+        centreY = (bottomEdgeY + topEdgeY) / 2F;
     }
     public float snapToNearest (float angle, float snapTo) {
         return MathUtils.round(angle/snapTo) * snapTo;

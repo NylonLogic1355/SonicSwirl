@@ -61,7 +61,7 @@ public class GameScreen implements Screen {
 
         //TODO AssetManager
         whiteSquare = new Texture(Gdx.files.internal("sprites/1x1-ffffffff.png")); blackSquare = new Texture(Gdx.files.internal("sprites/1x1-000000ff.png"));
-        player = new Player(9,19);
+        player = new Player(19,39);
 
         cameraOffset.x = 0; //TODO adjust view when looking up or down
         cameraOffset.y = camera.position.y - player.getYPosition();
@@ -123,9 +123,9 @@ public class GameScreen implements Screen {
         player.sprite.draw(Init.batch);
         // DEBUG - draw 1x1 white squares at the player's sensor locations
         Init.batch.draw(whiteSquare,player.leftEdgeX,player.bottomEdgeY); Init.batch.draw(whiteSquare,player.rightEdgeX,player.bottomEdgeY);
-        Init.batch.draw(whiteSquare,player.leftEdgeX,player.getYPosition()); Init.batch.draw(whiteSquare,player.rightEdgeX,player.getYPosition());
+        Init.batch.draw(whiteSquare,player.leftEdgeX,player.centreY); Init.batch.draw(whiteSquare,player.rightEdgeX,player.centreY);
         Init.batch.draw(whiteSquare,player.leftEdgeX,player.topEdgeY); Init.batch.draw(whiteSquare,player.rightEdgeX,player.topEdgeY);
-        Init.batch.draw(whiteSquare,player.getXPosition(),player.getYPosition());
+        Init.batch.draw(whiteSquare,player.centreX,player.centreY);
         Init.batch.end();
     }
 

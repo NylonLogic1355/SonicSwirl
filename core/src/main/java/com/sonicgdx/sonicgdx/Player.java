@@ -22,6 +22,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 /**
@@ -40,12 +41,13 @@ public final class Player extends Entity {
     private TextureRegion spriteRegion;
     private final Vector2 velocity;
     private final Sound jumpSound;
-    Player(float widthRadius, float heightRadius) {
-        super(widthRadius, heightRadius);
+    Player(int width, int height) {
+        super(width,height);
         spriteRegion = GameScreen.getTextureRegion("sonic-idle",0);
         position = new Vector2(50,200); // Sets the player's starting position at (50,200). (The variable was initialised in super constructor)
         //The vector has two components for the x position and y position respectively
         velocity = new Vector2(); //Initialises to zero starting speed
+        rectHitbox.setPosition(position);
         sensorA = new Sensor(); //Copies the player's position to the left floor sensor's.
         sensorB = new Sensor(); //Copies the player's position but placed at the sprite's right instead of left.
         sensorE = new Sensor(); //Copies the player's position but placed at the middle y position instead of the bottom
@@ -144,6 +146,8 @@ public final class Player extends Entity {
         }
 
         enforceBoundaries();
+
+        rectHitbox.setPosition(position);
 
         calculateSensorPositions();
 
@@ -399,8 +403,8 @@ public final class Player extends Entity {
         super.calculateCornerPositions();
         sensorA.setPositionValues(leftEdgeX,bottomEdgeY);
         sensorB.setPositionValues(rightEdgeX,bottomEdgeY);
-        sensorE.setPositionValues(leftEdgeX,position.y);
-        sensorF.setPositionValues(rightEdgeX,position.y);
+        sensorE.setPositionValues(leftEdgeX,centreY);
+        sensorF.setPositionValues(rightEdgeX,centreY);
     }
 
     private void debugMove(float delta) {
