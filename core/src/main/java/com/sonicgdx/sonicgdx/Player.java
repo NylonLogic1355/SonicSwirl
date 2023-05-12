@@ -17,7 +17,6 @@
 package com.sonicgdx.sonicgdx;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Audio;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -50,6 +49,8 @@ public final class Player extends Entity {
         sensorB = new Sensor(); //Copies the player's position but placed at the sprite's right instead of left.
         sensorE = new Sensor(); //Copies the player's position but placed at the middle y position instead of the bottom
         sensorF = new Sensor(); //Copies the player's position but placed at the middle y position instead of the bottom and at the sprite's right instead of left.
+
+        //Sets the sensor positions to their respective corners on the hitbox
         calculateSensorPositions();
 
         jumpSound = Gdx.audio.newSound(Gdx.files.internal("sounds/jump.wav"));
@@ -89,7 +90,7 @@ public final class Player extends Entity {
                 setAirSensors();
 
                 //if (sensorE.getActive()) sensorE.wallProcess();
-                if (sensorF.getActive()) sensorF.wallProcess();
+                if (sensorF.isActive()) sensorF.wallProcess();
 
                 //since positive distances would mean the player is outside the detected tile, they are not accepted
                 if (sensorF.getDistance() < 0) {
@@ -111,7 +112,7 @@ public final class Player extends Entity {
 
             }
 
-            if (sensorA.getActive() && sensorB.getActive()) {
+            if (sensorA.isActive() && sensorB.isActive()) {
 
                 Sensor winningSensor = floorSensors();
 
@@ -157,9 +158,11 @@ public final class Player extends Entity {
         sprite.setRotation(groundAngle);
 
         //TODO calculate y Position from ground up
+
+        /* With position being modelled as the centre of the player's hitbox, the sprite's bottom-left corner is set so that the hitbox
+        is located at its centre on the x-axis but not on the y-axis so that it is never above the ground. */
         sprite.setBounds(position.x - ((spriteRegion.getRegionWidth() + 1) / 2F),bottomEdgeY, spriteRegion.getRegionWidth(), spriteRegion.getRegionHeight());
-        //Since the xPos is the centre, you can just subtract the difference between the first pixel and the middle pixel to get the sprite co-ordinates.
-        //yPos is also the centre, but bottomEdgeY is used instead since sprites don't have constant height and positioning above the ground can be inconsistent.
+
         sprite.setOriginCenter(); //TODO only set origin when region, also perhaps look into setOriginBasedPosition
 
         sprite.flip(flipX,flipY);
@@ -255,7 +258,7 @@ public final class Player extends Entity {
         An example of a use case is the peak of a ramp which sends the player directly upwards when they run off it.
         */
         if (groundAngle == 360) {
-            groundAngle = snapToNearest(groundAngle,90);
+            groundAngle = snapToNearestX(groundAngle,90);
         }
 
         //Otherwise, sets the player's ground angle to that of the tile found by the sensor.
@@ -403,6 +406,11 @@ public final class Player extends Entity {
         sensorF.setPositionValues(rightEdgeX,position.y);
     }
 
+    /**
+     * For debug purposes, allows the player to move up, down left or right as well as diagonally
+     * at a constant speed regardless of whether they are supposed to collide with any other objects.
+     * @param delta
+     */
     private void debugMove(float delta) {
         final int DEBUG_SPEED = 90;
         if (Gdx.input.isKeyPressed(Input.Keys.D)) position.x += (DEBUG_SPEED * delta);

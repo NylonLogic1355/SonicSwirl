@@ -225,7 +225,7 @@ public class Sensor {
     public Tile getTile() {
         return tile;
     }
-    public boolean getActive() {
+    public boolean isActive() {
         return isActive;
     }
     public void setActive(boolean active) {

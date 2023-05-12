@@ -51,14 +51,17 @@ public abstract class Entity {
         if (position.y <= -100) position.set(50,200);
     }
 
+    /**
+     * With the assumption that position refers to the centre of the object's hitbox, the corner locations of the hitbox are calculated.
+     */
     public void calculateCornerPositions()
     {
         leftEdgeX = position.x - WIDTH_RADIUS;
         bottomEdgeY = position.y - HEIGHT_RADIUS;
-        rightEdgeX = position.x + WIDTH_RADIUS; // xPos + (srcWidth - 1) - using srcWidth places it one pixel right of the square
+        rightEdgeX = position.x + WIDTH_RADIUS;
         topEdgeY = position.y + HEIGHT_RADIUS;
     }
-    public float snapToNearest (float angle, float snapTo) {
-        return MathUtils.round(angle/snapTo) * snapTo;
+    public float snapToNearestX(float angle, float x) {
+        return MathUtils.round(angle/x) * x;
     }
 }
