@@ -32,11 +32,9 @@ import com.badlogic.gdx.math.Vector2;
 public final class Player extends Entity {
     private boolean flipX = false, flipY = false;
     private boolean debugMode = false, isGrounded, isJumping;
-    private final float ACCELERATION = 168.75F, AIR_ACCELERATION = 337.5F, SLOPE_FACTOR = 7.5F, GRAVITY_FORCE = -787.5F;
-    private final int DECELERATION = 1800, MAX_SPEED = 360, JUMP_FORCE = 390;
-    // An FPS of 60 was used to obtain the adjusted values
-    // Original: ACCELERATION = 0.046875F, DECELERATION = 0.5F, DEBUG_SPEED = 1.5F, MAX_SPEED = 6, SLOPE_FACTOR = 0.125, AIR_ACCELERATION = 0.09375F, GRAVITY_FORCE = 0.21875F;
-    // Original values were designed to occur 60 times every second so by multiplying it by 60 you get the amount of pixels moved per second.
+
+    // Sonic's original speed constants were designed to occur 60 times every second so by multiplying it by 60 you get the amount of pixels moved per second.
+    private final int MAX_SPEED = 360;
     private float groundVelocity = 0, groundAngle = 0;
     private final Sensor sensorA, sensorB, sensorE,sensorF;
     private TextureRegion spriteRegion;
@@ -181,11 +179,14 @@ public final class Player extends Entity {
         //"Jump" action
         boolean jumpJustPressed = Gdx.input.isKeyJustPressed(Input.Keys.SPACE);
 
+        float SLOPE_FACTOR = 7.5F;
         if (groundVelocity != 0) groundVelocity -= delta * SLOPE_FACTOR * MathUtils.sinDeg(groundAngle); //TODO this only happens when the player is not in ceiling mode.
 
         //Moving right and moving left are mutually exclusive - if both are true, the outcome
         //is the same as if both are false
 
+        float ACCELERATION = 168.75F;
+        int DECELERATION = 1800;
         if (rightPressed && !leftPressed) // if moving right
         {
             flipX = false;
@@ -303,6 +304,7 @@ public final class Player extends Entity {
      */
     public void jump(float delta) {
         //FIXME bug when jumping while moving downhill on a slope
+        int JUMP_FORCE = 390;
         velocity.x -= JUMP_FORCE * MathUtils.sinDeg(groundAngle);
         velocity.y += JUMP_FORCE * MathUtils.cosDeg(groundAngle);
         isGrounded = false; isJumping = true;
@@ -326,6 +328,7 @@ public final class Player extends Entity {
         if (!jumpPressed && velocity.y > 4 && isJumping) velocity.y = 4;
 
         //Air acceleration
+        float AIR_ACCELERATION = 337.5F;
         if (rightPressed && !leftPressed) // if moving right
         {
             flipX = false;
@@ -347,6 +350,7 @@ public final class Player extends Entity {
         position.y += velocity.y * delta;
 
         //Gravity - a force pushing the player down when they are in the air
+        float GRAVITY_FORCE = -787.5F;
         velocity.y += GRAVITY_FORCE * delta;
     }
 
