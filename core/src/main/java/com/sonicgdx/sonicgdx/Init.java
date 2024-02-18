@@ -25,7 +25,11 @@ public class Init extends Game {
 	public GameScreen gameScreen;
 	//private MenuScreen menuScreen;
 
-	public void create() {
+    /**
+     * Implements method from the ApplicationListener interface.
+     */
+	@Override
+    public void create() {
         batch = new SpriteBatch(); // sprite batch provides multiple sprites to draw to the GPU to improve OpenGl performance https://gamedev.stackexchange.com/questions/32910/what-is-the-technical-defInition-of-sprite-batching
         //This is shared between screens to reduce memory usage and OpenGL calls
 
@@ -38,14 +42,18 @@ public class Init extends Game {
 		this.setScreen(menuScreen);*/
 	}
 
-	public void render() {
+	@Override
+    public void render() {
         super.render(); // Calls the render method in the game class
 	}
 
-	public void dispose() {
+	@Override
+    public void dispose() {
 		batch.dispose();
         gameScreen.dispose();
-		//menuScreen.dispose();
+        //menuScreen.dispose();
+
+        super.dispose();
 	}
 
 }
