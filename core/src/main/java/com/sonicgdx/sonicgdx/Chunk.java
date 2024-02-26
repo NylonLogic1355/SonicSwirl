@@ -23,8 +23,8 @@ import static com.sonicgdx.sonicgdx.GameScreen.TILE_LENGTH;
 
 public class Chunk {
     private Texture texture;
-    private Tile[][] tileArray;
-    private boolean empty;
+    private final Tile[][] tileArray;
+    private final boolean empty;
 
     public Chunk(Texture texture, Tile[][] tileArray) {
         if (tileArray.length == TILES_PER_CHUNK) this.tileArray = tileArray;
