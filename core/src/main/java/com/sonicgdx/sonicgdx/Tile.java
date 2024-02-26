@@ -18,6 +18,10 @@ package com.sonicgdx.sonicgdx;
 
 import static com.sonicgdx.sonicgdx.GameScreen.TILE_LENGTH;
 
+/**
+ * Taking how classes are not value-types into account, tiles are implemented as effectively immutable.
+ * While fields are not explicitly final, any methods that mutate them should be considered unsafe.
+ */
 public class Tile {
 
     boolean horizontalFlip, verticalFlip, empty;
@@ -48,7 +52,7 @@ public class Tile {
 
     public int getHeight(int block)
     {
-        if (empty || block < 0 || block > TILE_LENGTH - 1) return 0;
+        if (empty || block < 0 || TILE_LENGTH - 1 < block) return 0;
         else {
             return heightArray[block];
         }
@@ -56,7 +60,7 @@ public class Tile {
     }
     public int getWidth(int block)
     {
-        if (empty || block < 0 || block > TILE_LENGTH - 1) return 0;
+        if (empty || block < 0 || TILE_LENGTH - 1 < block ) return 0;
         else {
             return widthArray[block];
         }
