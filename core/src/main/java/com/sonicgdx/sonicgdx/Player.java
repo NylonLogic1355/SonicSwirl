@@ -29,7 +29,7 @@ import com.badlogic.gdx.math.Vector2;
  * with other objects.
  * It is final since it is not necessary to extend this class.
  */
-public final class Player extends Entity {
+public class Player extends Entity {
     private boolean flipX = false, flipY = false;
     private boolean debugMode = false, isGrounded, isJumping;
     private final float ACCELERATION = 168.75F, AIR_ACCELERATION = 337.5F, SLOPE_FACTOR = 7.5F, GRAVITY_FORCE = -787.5F;
