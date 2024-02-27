@@ -58,10 +58,23 @@ public abstract class Entity {
         rightEdgeX = position.x + WIDTH_RADIUS; // xPos + (srcWidth - 1) - using srcWidth places it one pixel right of the square
         topEdgeY = position.y + HEIGHT_RADIUS;
     }
-    public float snapToNearest (float angle, float snapTo) {
+
+    /**
+     * Utility method to round angle to nearest x degrees, where x is the value of snapTo (usually 90).
+     * @param angle angle which is going to be rounded
+     * @param snapTo angle is rounded to a multiple of this value
+     * @return The multiple of snapTo that is closest to angle.
+     */
+    public static float snapToNearest (float angle, float snapTo) {
         return MathUtils.round(angle/snapTo) * snapTo;
     }
 
+    public float getXPosition() {
+        return position.x;
+    }
+    public float getYPosition() {
+        return position.y;
+    }
 
     /*
     @Deprecated
