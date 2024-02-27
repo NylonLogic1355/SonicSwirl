@@ -31,7 +31,7 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 
 public class GameScreen implements Screen {
 
-    private final Init Init;
+    private final Game Game;
     private final Texture whiteSquare, blackSquare;
     //private final FPSLogger frameLog;
     private final OrthographicCamera camera; private final Vector2 cameraOffset = Vector2.Zero; private final ExtendViewport gameViewport;
@@ -43,9 +43,9 @@ public class GameScreen implements Screen {
 
     private Music backgroundMusic;
 
-    public GameScreen(final Init Init) {
+    public GameScreen(final Game Game) {
 
-        this.Init = Init;
+        this.Game = Game;
 
         //TODO implement class with reference to https://gamedev.stackexchange.com/a/133593
         //FIXME possibly reduce viewport resolution to reduce pixels being missing at lower resolutions or change viewport type
@@ -96,13 +96,13 @@ public class GameScreen implements Screen {
 
         //tells the SpriteBatch to render in the coordinate system specified by the camera
         //viewport.apply();
-        Init.batch.setProjectionMatrix(camera.combined);
-        Init.batch.begin();
+        Game.batch.setProjectionMatrix(camera.combined);
+        Game.batch.begin();
         //Disabling and enabling blending gives a performance boost
         //and transparency is not needed for the background image
-        Init.batch.disableBlending();
-        Init.batch.draw(backgroundTexture,camera.position.x - (camera.viewportWidth / 2),camera.position.y - (camera.viewportHeight / 2));
-        Init.batch.enableBlending();
+        Game.batch.disableBlending();
+        Game.batch.draw(backgroundTexture,camera.position.x - (camera.viewportWidth / 2),camera.position.y - (camera.viewportHeight / 2));
+        Game.batch.enableBlending();
         //TODO render gradually as player progresses
 
         //Iterates through every chunk on the x-axis
@@ -117,13 +117,13 @@ public class GameScreen implements Screen {
                 else drawChunkTexture(chunkX,chunkY);
             }
         }
-        player.sprite.draw(Init.batch);
+        player.sprite.draw(Game.batch);
         // DEBUG - draw 1x1 white squares at the player's sensor locations
-        Init.batch.draw(whiteSquare,player.leftEdgeX,player.bottomEdgeY); Init.batch.draw(whiteSquare,player.rightEdgeX,player.bottomEdgeY);
-        Init.batch.draw(whiteSquare,player.leftEdgeX,player.getYPosition()); Init.batch.draw(whiteSquare,player.rightEdgeX,player.getYPosition());
-        Init.batch.draw(whiteSquare,player.leftEdgeX,player.topEdgeY); Init.batch.draw(whiteSquare,player.rightEdgeX,player.topEdgeY);
-        Init.batch.draw(whiteSquare,player.getXPosition(),player.getYPosition());
-        Init.batch.end();
+        Game.batch.draw(whiteSquare,player.leftEdgeX,player.bottomEdgeY); Game.batch.draw(whiteSquare,player.rightEdgeX,player.bottomEdgeY);
+        Game.batch.draw(whiteSquare,player.leftEdgeX,player.getYPosition()); Game.batch.draw(whiteSquare,player.rightEdgeX,player.getYPosition());
+        Game.batch.draw(whiteSquare,player.leftEdgeX,player.topEdgeY); Game.batch.draw(whiteSquare,player.rightEdgeX,player.topEdgeY);
+        Game.batch.draw(whiteSquare,player.getXPosition(),player.getYPosition());
+        Game.batch.end();
     }
 
     /**
@@ -133,7 +133,7 @@ public class GameScreen implements Screen {
      */
     public void drawChunkTexture(int chunkX, int chunkY) {
         //If the chunk isn't empty, draw its texture at the chunk's location
-        if (!TileMap.map[chunkX][chunkY].isEmpty()) Init.batch.draw(TileMap.map[chunkX][chunkY].getTexture(), (chunkX* CHUNK_LENGTH),(chunkY* CHUNK_LENGTH), CHUNK_LENGTH, CHUNK_LENGTH);
+        if (!TileMap.map[chunkX][chunkY].isEmpty()) Game.batch.draw(TileMap.map[chunkX][chunkY].getTexture(), (chunkX* CHUNK_LENGTH),(chunkY* CHUNK_LENGTH), CHUNK_LENGTH, CHUNK_LENGTH);
     }
 
     /**
@@ -157,21 +157,21 @@ public class GameScreen implements Screen {
                 {
                     //At the starting x of each tile, sets the colour to black
                     //to make it easy to see where each tile starts from
-                    if (block==0) Init.batch.setColor(Color.BLACK);
+                    if (block==0) Game.batch.setColor(Color.BLACK);
                     //Otherwise, format the tile's colours with a red gradient for each tile's y position
                     //and a blue gradient for each element in the array
-                    else Init.batch.setColor(new Color((1F/ TILES_PER_CHUNK) * tileY,0,block,1));
+                    else Game.batch.setColor(new Color((1F/ TILES_PER_CHUNK) * tileY,0,block,1));
 
                     // Draws a block at the located at the co-ordinates of the tile (+ the array position for the x-axis only)
                     // with width 1 and the height obtained from the array
-                    Init.batch.draw(whiteSquare, block + (tileX* TILE_LENGTH)+(chunkX* CHUNK_LENGTH),(tileY* TILE_LENGTH)+(chunkY* CHUNK_LENGTH),1, TileMap.getTile(chunkX,chunkY,tileX,tileY).getHeight(block));
+                    Game.batch.draw(whiteSquare, block + (tileX* TILE_LENGTH)+(chunkX* CHUNK_LENGTH),(tileY* TILE_LENGTH)+(chunkY* CHUNK_LENGTH),1, TileMap.getTile(chunkX,chunkY,tileX,tileY).getHeight(block));
 
                     //TODO reversed search order for flipped tiles. e.g. Collections.reverse() or ArrayUtils.reverse(int[] array)
 
                 }
             }
         }
-        Init.batch.setColor(Color.WHITE); //Resets batch colour
+        Game.batch.setColor(Color.WHITE); //Resets batch colour
 
     }
 
@@ -193,16 +193,16 @@ public class GameScreen implements Screen {
                 if (TileMap.getTile(chunkX,chunkY,tileX,tileY).empty) continue;
                 for (int block = 0; block < TILE_LENGTH; block++)
                 {
-                    if (block==0) Init.batch.setColor(Color.BLACK);
-                    else Init.batch.setColor(new Color(0,(1F/TILES_PER_CHUNK) * tileY,block,1));
+                    if (block==0) Game.batch.setColor(Color.BLACK);
+                    else Game.batch.setColor(new Color(0,(1F/TILES_PER_CHUNK) * tileY,block,1));
 
                     int yPosition = (tileY * TILE_LENGTH) + (chunkY * CHUNK_LENGTH) + block;
                     int blockWidth = TileMap.getTile(chunkX,chunkY,tileX,tileY).getWidth(TILE_LENGTH - block - 1);
 
                     if (!TileMap.getTile(chunkX,chunkY,tileX,tileY).horizontalFlip) {
-                        Init.batch.draw(whiteSquare, (tileX * TILE_LENGTH) + (chunkX * CHUNK_LENGTH) + (TILE_LENGTH - blockWidth), yPosition, blockWidth, 1);
+                        Game.batch.draw(whiteSquare, (tileX * TILE_LENGTH) + (chunkX * CHUNK_LENGTH) + (TILE_LENGTH - blockWidth), yPosition, blockWidth, 1);
                     } else {
-                        Init.batch.draw(whiteSquare, (tileX * TILE_LENGTH) + (chunkX * CHUNK_LENGTH), yPosition, blockWidth, 1);
+                        Game.batch.draw(whiteSquare, (tileX * TILE_LENGTH) + (chunkX * CHUNK_LENGTH), yPosition, blockWidth, 1);
                     }
 
                     //TODO reversed search order for flipped tiles. e.g. Collections.reverse() or ArrayUtils.reverse(int[] array)
@@ -210,7 +210,7 @@ public class GameScreen implements Screen {
                 }
             }
         }
-        Init.batch.setColor(Color.WHITE); //Resets batch colour
+        Game.batch.setColor(Color.WHITE); //Resets batch colour
 
     }
 

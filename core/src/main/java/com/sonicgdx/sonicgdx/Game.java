@@ -16,12 +16,11 @@
 
 package com.sonicgdx.sonicgdx;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 
-public class Init extends Game {
+public class Game extends com.badlogic.gdx.Game {
     public SpriteBatch batch;
 	public Screen gameScreen;
 	//private Screen menuScreen;
