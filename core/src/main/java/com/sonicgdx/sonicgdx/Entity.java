@@ -69,10 +69,17 @@ public abstract class Entity {
         return MathUtils.round(angle/snapTo) * snapTo;
     }
 
-    public float getXPosition() {
+    /**
+     * @return the X component of the position vecotr
+     */
+    public float getXPos() {
         return position.x;
     }
-    public float getYPosition() {
+
+    /**
+     * @return the Y component of the position vector
+     */
+    public float getYPos() {
         return position.y;
     }
 

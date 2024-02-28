@@ -61,7 +61,7 @@ public class GameScreen implements Screen {
         player = new Player(9,19);
 
         cameraOffset.x = 0; //TODO adjust view when looking up or down
-        cameraOffset.y = camera.position.y - player.getYPosition();
+        cameraOffset.y = camera.position.y - player.getYPos();
 
         //frameLog = new FPSLogger();
         backgroundTexture = new Texture(Gdx.files.internal("sprites/aiz_background.jpg"));
@@ -90,7 +90,7 @@ public class GameScreen implements Screen {
         player.update(delta);
 
         //Updates the camera position to where the player is but keeps the offset
-        camera.position.set(player.getXPosition() + cameraOffset.x,player.getYPosition() + cameraOffset.y,camera.position.z); camera.update();
+        camera.position.set(player.getXPos() + cameraOffset.x,player.getYPos() + cameraOffset.y,camera.position.z); camera.update();
         //recompute the orthographical projection matrix
         //so that the change is responded to in the user's view
 
@@ -120,9 +120,9 @@ public class GameScreen implements Screen {
         player.sprite.draw(Game.batch);
         // DEBUG - draw 1x1 white squares at the player's sensor locations
         Game.batch.draw(whiteSquare,player.leftEdgeX,player.bottomEdgeY); Game.batch.draw(whiteSquare,player.rightEdgeX,player.bottomEdgeY);
-        Game.batch.draw(whiteSquare,player.leftEdgeX,player.getYPosition()); Game.batch.draw(whiteSquare,player.rightEdgeX,player.getYPosition());
+        Game.batch.draw(whiteSquare,player.leftEdgeX,player.getYPos()); Game.batch.draw(whiteSquare,player.rightEdgeX,player.getYPos());
         Game.batch.draw(whiteSquare,player.leftEdgeX,player.topEdgeY); Game.batch.draw(whiteSquare,player.rightEdgeX,player.topEdgeY);
-        Game.batch.draw(whiteSquare,player.getXPosition(),player.getYPosition());
+        Game.batch.draw(whiteSquare,player.getXPos(),player.getYPos());
         Game.batch.end();
     }
 
