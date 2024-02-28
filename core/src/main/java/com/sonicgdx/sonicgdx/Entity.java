@@ -37,6 +37,11 @@ public abstract class Entity {
         this.WIDTH_RADIUS = widthRadius; this.HEIGHT_RADIUS = heightRadius;
     }
 
+    /**
+     * @param delta time since last frame. Used to make physics similar to how they would be at 60FPS
+     * even with higher, lower or varying frame rates.
+     * @see GameScreen#render(float)
+     */
     public abstract void update(float delta);
 
     /**

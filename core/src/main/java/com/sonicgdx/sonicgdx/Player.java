@@ -60,11 +60,6 @@ public class Player extends Entity {
     //TODO Tommy Ettinger's digital extension could be used for faster operations on GWT
 
 
-    /**
-     * @param delta time since last frame. Used to make physics similar to how they would be at 60FPS
-     * even with higher, lower or varying frame rates.
-     * @see GameScreen#render(float)
-     */
     @Override
     public void update(float delta)
     {
