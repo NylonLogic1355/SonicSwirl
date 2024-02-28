@@ -37,6 +37,8 @@ public abstract class Entity {
         this.WIDTH_RADIUS = widthRadius; this.HEIGHT_RADIUS = heightRadius;
     }
 
+    public abstract void update(float delta);
+
     /**
      * Ensures the player doesn't go into negative co-ordinates as calculations may not
      * take that into account

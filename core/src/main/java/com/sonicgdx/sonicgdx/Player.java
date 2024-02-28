@@ -65,6 +65,7 @@ public class Player extends Entity {
      * even with higher, lower or varying frame rates.
      * @see GameScreen#render(float)
      */
+    @Override
     public void update(float delta)
     {
         //TODO Would be better to implement an InputProcessor. This makes more sense as an interrupt rather than constant polling.
