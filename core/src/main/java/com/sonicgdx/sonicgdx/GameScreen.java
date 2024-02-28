@@ -39,7 +39,6 @@ public class GameScreen implements Screen {
     public static TextureAtlas spriteAtlas;
     private final Texture backgroundTexture;
     private int drawMode = 0;
-    public static final int TILE_LENGTH = 16, CHUNK_LENGTH = 96, TILES_PER_CHUNK = CHUNK_LENGTH / TILE_LENGTH;
 
     private Music backgroundMusic;
 
@@ -133,7 +132,7 @@ public class GameScreen implements Screen {
      */
     public void drawChunkTexture(int chunkX, int chunkY) {
         //If the chunk isn't empty, draw its texture at the chunk's location
-        if (!TileMap.map[chunkX][chunkY].isEmpty()) Game.batch.draw(TileMap.map[chunkX][chunkY].getTexture(), (chunkX* CHUNK_LENGTH),(chunkY* CHUNK_LENGTH), CHUNK_LENGTH, CHUNK_LENGTH);
+        if (!TileMap.map[chunkX][chunkY].isEmpty()) Game.batch.draw(TileMap.map[chunkX][chunkY].getTexture(), (chunkX* TileMap.CHUNK_LENGTH),(chunkY* TileMap.CHUNK_LENGTH), TileMap.CHUNK_LENGTH, TileMap.CHUNK_LENGTH);
     }
 
     /**
@@ -145,26 +144,26 @@ public class GameScreen implements Screen {
      */
     public void drawChunkHeightArray(int chunkX, int chunkY) {
         //Iterates through every tile in the chunk
-        for (int tileX = 0; tileX < TILES_PER_CHUNK; tileX++)
+        for (int tileX = 0; tileX < TileMap.TILES_PER_CHUNK; tileX++)
         {
-            for (int tileY = 0; tileY < TILES_PER_CHUNK; tileY++)
+            for (int tileY = 0; tileY < TileMap.TILES_PER_CHUNK; tileY++)
             {
                 //Skips the loop for empty tiles (every value in its array would be zero anyway)
                 if (TileMap.getTile(chunkX,chunkY,tileX,tileY).empty) continue;
 
                 //Goes through every element in the height array
-                for (int block = 0; block < TILE_LENGTH; block++)
+                for (int block = 0; block < TileMap.TILE_LENGTH; block++)
                 {
                     //At the starting x of each tile, sets the colour to black
                     //to make it easy to see where each tile starts from
                     if (block==0) Game.batch.setColor(Color.BLACK);
                     //Otherwise, format the tile's colours with a red gradient for each tile's y position
                     //and a blue gradient for each element in the array
-                    else Game.batch.setColor(new Color((1F/ TILES_PER_CHUNK) * tileY,0,block,1));
+                    else Game.batch.setColor(new Color((1F/ TileMap.TILES_PER_CHUNK) * tileY,0,block,1));
 
                     // Draws a block at the located at the co-ordinates of the tile (+ the array position for the x-axis only)
                     // with width 1 and the height obtained from the array
-                    Game.batch.draw(whiteSquare, block + (tileX* TILE_LENGTH)+(chunkX* CHUNK_LENGTH),(tileY* TILE_LENGTH)+(chunkY* CHUNK_LENGTH),1, TileMap.getTile(chunkX,chunkY,tileX,tileY).getHeight(block));
+                    Game.batch.draw(whiteSquare, block + (tileX* TileMap.TILE_LENGTH)+(chunkX* TileMap.CHUNK_LENGTH),(tileY* TileMap.TILE_LENGTH)+(chunkY* TileMap.CHUNK_LENGTH),1, TileMap.getTile(chunkX,chunkY,tileX,tileY).getHeight(block));
 
                     //TODO reversed search order for flipped tiles. e.g. Collections.reverse() or ArrayUtils.reverse(int[] array)
 
@@ -185,24 +184,24 @@ public class GameScreen implements Screen {
     public void drawChunkWidthArray(int chunkX, int chunkY) {
 
         //Iterates through every tile in the chunk
-        for (int tileX = 0; tileX < TILES_PER_CHUNK; tileX++)
+        for (int tileX = 0; tileX < TileMap.TILES_PER_CHUNK; tileX++)
         {
-            for (int tileY = 0; tileY < TILES_PER_CHUNK; tileY++)
+            for (int tileY = 0; tileY < TileMap.TILES_PER_CHUNK; tileY++)
             {
                 //Skips the loop for empty tiles (every value in its array would be zero anyway)
                 if (TileMap.getTile(chunkX,chunkY,tileX,tileY).empty) continue;
-                for (int block = 0; block < TILE_LENGTH; block++)
+                for (int block = 0; block < TileMap.TILE_LENGTH; block++)
                 {
                     if (block==0) Game.batch.setColor(Color.BLACK);
-                    else Game.batch.setColor(new Color(0,(1F/TILES_PER_CHUNK) * tileY,block,1));
+                    else Game.batch.setColor(new Color(0,(1F/ TileMap.TILES_PER_CHUNK) * tileY,block,1));
 
-                    int yPosition = (tileY * TILE_LENGTH) + (chunkY * CHUNK_LENGTH) + block;
-                    int blockWidth = TileMap.getTile(chunkX,chunkY,tileX,tileY).getWidth(TILE_LENGTH - block - 1);
+                    int yPosition = (tileY * TileMap.TILE_LENGTH) + (chunkY * TileMap.CHUNK_LENGTH) + block;
+                    int blockWidth = TileMap.getTile(chunkX,chunkY,tileX,tileY).getWidth(TileMap.TILE_LENGTH - block - 1);
 
                     if (!TileMap.getTile(chunkX,chunkY,tileX,tileY).horizontalFlip) {
-                        Game.batch.draw(whiteSquare, (tileX * TILE_LENGTH) + (chunkX * CHUNK_LENGTH) + (TILE_LENGTH - blockWidth), yPosition, blockWidth, 1);
+                        Game.batch.draw(whiteSquare, (tileX * TileMap.TILE_LENGTH) + (chunkX * TileMap.CHUNK_LENGTH) + (TileMap.TILE_LENGTH - blockWidth), yPosition, blockWidth, 1);
                     } else {
-                        Game.batch.draw(whiteSquare, (tileX * TILE_LENGTH) + (chunkX * CHUNK_LENGTH), yPosition, blockWidth, 1);
+                        Game.batch.draw(whiteSquare, (tileX * TileMap.TILE_LENGTH) + (chunkX * TileMap.CHUNK_LENGTH), yPosition, blockWidth, 1);
                     }
 
                     //TODO reversed search order for flipped tiles. e.g. Collections.reverse() or ArrayUtils.reverse(int[] array)

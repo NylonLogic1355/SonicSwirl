@@ -16,7 +16,7 @@
 
 package com.sonicgdx.sonicgdx;
 
-import static com.sonicgdx.sonicgdx.GameScreen.TILE_LENGTH;
+import static com.sonicgdx.sonicgdx.TileMap.TILE_LENGTH;
 
 /**
  * Taking how classes are not value-types into account, tiles are implemented as effectively immutable.
