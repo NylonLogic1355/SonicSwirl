@@ -256,6 +256,11 @@ public class GameScreen implements Screen {
 
     @Override
     public void dispose () {
+        //TODO game objects should have their own dispose method which would be called from here
+
+        backgroundTexture.dispose();
+        spriteAtlas.dispose();
+
         whiteSquare.dispose();
         blackSquare.dispose();
     }
