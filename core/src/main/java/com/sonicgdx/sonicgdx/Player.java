@@ -94,7 +94,6 @@ public class Player extends Entity {
                     //testing only one sensor at this point to see if the basic collision works
                     wallCollision(sensorF);
                 }
-
             }
 
             else {
@@ -104,9 +103,7 @@ public class Player extends Entity {
                 sensorB.setActive(true);
 
                 //Updates player position
-                position.x += velocity.x * delta;
-                position.y += velocity.y * delta;
-
+                position.mulAdd(velocity,delta);
             }
 
             if (sensorA.getActive() && sensorB.getActive()) {
@@ -339,8 +336,7 @@ public class Player extends Entity {
         }
 
         //Updates player position
-        position.x += velocity.x * delta;
-        position.y += velocity.y * delta;
+        position.mulAdd(velocity,delta);
 
         //Gravity - a force pushing the player down when they are in the air
         velocity.y += GRAVITY_FORCE * delta;
