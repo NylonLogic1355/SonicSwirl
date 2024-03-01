@@ -4,4 +4,10 @@ eclipse.project.name = appName + '-core'
 dependencies {
   api "com.badlogicgames.gdx-controllers:gdx-controllers-core:$gdxControllersVersion"
   api "com.badlogicgames.gdx:gdx:$gdxVersion"
+
+  testImplementation "org.junit.jupiter:junit-jupiter:5.8.1"
+}
+
+test {
+  useJUnitPlatform()
 }
