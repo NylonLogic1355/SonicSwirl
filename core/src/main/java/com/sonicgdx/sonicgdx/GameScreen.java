@@ -82,6 +82,8 @@ public class GameScreen implements Screen {
 
         //Toggle between one of three draw modes: texture drawing, height array drawing and width array drawing
         if (Gdx.input.isKeyJustPressed(Input.Keys.Y)) {
+
+            //TODO make these values constants (either public static final or in an enum) for clarity
             drawMode += 1;
             if (drawMode == 3) drawMode = 0;
         }
