@@ -24,7 +24,7 @@ import static com.sonicgdx.sonicgdx.TileMap.TILE_LENGTH;
  */
 public class Tile {
 
-    boolean horizontalFlip, verticalFlip, empty;
+    boolean flippedHorizontally, flippedVertically, empty;
     int[] heightArray, widthArray;
     int solidity;
     // 0 = solid from top, 1 = solid from bottom, 2 = solid from left, 3 = solid from right, 4 = solid from all sides
@@ -38,8 +38,8 @@ public class Tile {
         else throw new IllegalArgumentException("heightArray Length is " +  widthArray.length + " instead of " + TILE_LENGTH);
 
         this.angle = angle;
-        this.horizontalFlip = flippedHorizontally;
-        this.verticalFlip = flippedVertically;
+        this.flippedHorizontally = flippedHorizontally;
+        this.flippedVertically = flippedVertically;
         this.solidity = solidity;
     }
     Tile()

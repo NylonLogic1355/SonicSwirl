@@ -200,7 +200,7 @@ public class GameScreen implements Screen {
                     int yPosition = (tileY * TileMap.TILE_LENGTH) + (chunkY * TileMap.CHUNK_LENGTH) + block;
                     int blockWidth = TileMap.getTile(chunkX,chunkY,tileX,tileY).getWidth(TileMap.TILE_LENGTH - block - 1);
 
-                    if (!TileMap.getTile(chunkX,chunkY,tileX,tileY).horizontalFlip) {
+                    if (!TileMap.getTile(chunkX,chunkY,tileX,tileY).flippedHorizontally) {
                         Game.batch.draw(whiteSquare, (tileX * TileMap.TILE_LENGTH) + (chunkX * TileMap.CHUNK_LENGTH) + (TileMap.TILE_LENGTH - blockWidth), yPosition, blockWidth, 1);
                     } else {
                         Game.batch.draw(whiteSquare, (tileX * TileMap.TILE_LENGTH) + (chunkX * TileMap.CHUNK_LENGTH), yPosition, blockWidth, 1);
