@@ -14,29 +14,18 @@
  * limitations under the License.
  */
 
-package com.sonicgdx.sonicgdx;
+package com.sonicgdx;
 
-import com.badlogic.gdx.utils.reflect.ClassReflection;
-import com.badlogic.gdx.utils.reflect.Field;
-import com.sonicgdx.TileMap;
+import com.sonicgdx.Player;
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
+class PlayerTest {
 
-class TileMapTest {
+    private final Player player = new Player(10,10);
+
     @Test
-    void checkArrayLengths()
-    {
-        System.out.println(Arrays.toString(ClassReflection.getFields(TileMap.class)));
-
-        for (Field field:ClassReflection.getDeclaredFields(TileMap.class)) {
-            field.setAccessible(true);
-            System.out.println(field.getName());
-            /*if (field.getType() == byte[])
-            {
-
-            }*/
-        }
+    void slopeTest() {
+        final float delta60 = 0.01666667F;
+        player.sprite.setX(0);
     }
-
 }
