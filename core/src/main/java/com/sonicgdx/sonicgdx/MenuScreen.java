@@ -17,13 +17,11 @@
 package com.sonicgdx.sonicgdx;
 
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.Gdx;
 
 public class MenuScreen implements Screen {
     private final Game Game;
 
     public MenuScreen(final Game Game){
-        Gdx.app.setLogLevel(3); //TODO reduce logging level for release builds
         this.Game = Game;
     }
 
@@ -45,7 +43,6 @@ public class MenuScreen implements Screen {
     @Override
     public void show() {
         // TODO Auto-generated method stub
-
     }
 
     @Override
@@ -56,13 +53,11 @@ public class MenuScreen implements Screen {
     @Override
     public void resume() {
         // TODO Auto-generated method stub
-
     }
 
     @Override
     public void hide() {
         // TODO Auto-generated method stub
-
     }
 
     @Override

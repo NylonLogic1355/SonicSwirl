@@ -196,7 +196,7 @@ public class Player extends Entity {
 
         velocity.set(groundVelocity * MathUtils.cosDeg(groundAngle), groundVelocity * MathUtils.sinDeg(groundAngle));
 
-        if (jumpJustPressed) jump(delta); //TODO placement different from original, may cause bugs.
+        if (jumpJustPressed) jump(delta); //FIXME placement different from original, may cause bugs.
 
 
         //FIXME player momentum functions oddly when landing after jumping downwards from a steep slope
