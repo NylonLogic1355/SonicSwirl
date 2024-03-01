@@ -261,8 +261,12 @@ public class GameScreen implements Screen {
         backgroundTexture.dispose();
         spriteAtlas.dispose();
 
+        player.dispose();
+
         whiteSquare.dispose();
         blackSquare.dispose();
+
+
     }
     @Override
     public void resize(int width, int height) {
