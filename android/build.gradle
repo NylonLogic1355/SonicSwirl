@@ -2,54 +2,52 @@ apply plugin: 'com.android.application'
 
 
 android {
-  compileSdkVersion 30
+  namespace "com.sonicgdx"
+  compileSdk 34
   sourceSets {
     main {
       manifest.srcFile 'AndroidManifest.xml'
-      java.srcDirs = ['src/main/java']
-      aidl.srcDirs = ['src/main/java']
-      renderscript.srcDirs = ['src/main/java']
-      res.srcDirs = ['res']
-      assets.srcDirs = ['../assets']
-      jniLibs.srcDirs = ['libs']
+      java.setSrcDirs(['src/main/java'])
+      aidl.setSrcDirs(['src/main/java'])
+      renderscript.setSrcDirs(['src/main/java'])
+      res.setSrcDirs(['res'])
+      assets.setSrcDirs(['../assets'])
+      jniLibs.setSrcDirs(['libs'])
     }
   }
   packagingOptions {
-    // Preventing from license violations (more or less):
-    pickFirst 'META-INF/LICENSE.txt'
-    pickFirst 'META-INF/LICENSE'
-    pickFirst 'META-INF/license.txt'
-    pickFirst 'META-INF/LGPL2.1'
-    pickFirst 'META-INF/NOTICE.txt'
-    pickFirst 'META-INF/NOTICE'
-    pickFirst 'META-INF/notice.txt'
-    // Excluding unnecessary meta-data:
-    exclude 'META-INF/robovm/ios/robovm.xml'
-    exclude 'META-INF/DEPENDENCIES.txt'
-    exclude 'META-INF/DEPENDENCIES'
-    exclude 'META-INF/dependencies.txt'
+		resources {
+			excludes += ['META-INF/robovm/ios/robovm.xml', 'META-INF/DEPENDENCIES.txt', 'META-INF/DEPENDENCIES',
+                   'META-INF/dependencies.txt', '**/*.gwt.xml']
+			pickFirsts += ['META-INF/LICENSE.txt', 'META-INF/LICENSE', 'META-INF/license.txt', 'META-INF/LGPL2.1',
+                     'META-INF/NOTICE.txt', 'META-INF/NOTICE', 'META-INF/notice.txt']
+		}
   }
   defaultConfig {
-    applicationId 'com.sonicgdx.sonicgdx'
+    applicationId 'com.sonicgdx'
     minSdkVersion 19
-    targetSdkVersion 30
+    targetSdkVersion 34
     versionCode 1
     versionName "1.0"
     multiDexEnabled true
   }
   compileOptions {
-    sourceCompatibility "1.8"
-    targetCompatibility "1.8"
+    sourceCompatibility "11"
+    targetCompatibility "11"
     coreLibraryDesugaringEnabled true
   }
-
   buildTypes {
     release {
-      minifyEnabled false
+      minifyEnabled true
       proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
     }
   }
 
+  java {
+    toolchain {
+      languageVersion = JavaLanguageVersion.of(11)
+    }
+  }
 }
 
 repositories {
@@ -60,11 +58,10 @@ repositories {
 configurations { natives }
 
 dependencies {
-  coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'
+  coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.4'
   implementation "com.badlogicgames.gdx-controllers:gdx-controllers-android:$gdxControllersVersion"
   implementation "com.badlogicgames.gdx:gdx-backend-android:$gdxVersion"
   implementation "com.github.tommyettinger:libgdxoboe:$libgdxOboeVersion"
-  implementation "de.tomgrill.gdxdialogs:gdx-dialogs-android:$dialogsVersion"
   implementation project(':core')
 
   natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-arm64-v8a"
@@ -77,14 +74,14 @@ dependencies {
 // Called every time gradle gets executed, takes the native dependencies of
 // the natives configuration, and extracts them to the proper libs/ folders
 // so they get packed with the APK.
-task copyAndroidNatives() {
+tasks.register('copyAndroidNatives') {
   doFirst {
     file("libs/armeabi-v7a/").mkdirs()
     file("libs/arm64-v8a/").mkdirs()
     file("libs/x86_64/").mkdirs()
     file("libs/x86/").mkdirs()
 
-    configurations.getByName("natives").copy().files.each { jar ->
+    configurations.natives.copy().files.each { jar ->
       def outputDir = null
       if(jar.name.endsWith("natives-armeabi-v7a.jar")) outputDir = file("libs/armeabi-v7a")
       if(jar.name.endsWith("natives-arm64-v8a.jar")) outputDir = file("libs/arm64-v8a")
@@ -100,11 +97,12 @@ task copyAndroidNatives() {
     }
   }
 }
+
 tasks.matching { it.name.contains("merge") && it.name.contains("JniLibFolders") }.configureEach { packageTask ->
   packageTask.dependsOn 'copyAndroidNatives'
 }
 
-task run(type: Exec) {
+tasks.register('run', Exec) {
   def path
   def localProperties = project.file("../local.properties")
   if (localProperties.exists()) {
@@ -123,7 +121,7 @@ task run(type: Exec) {
   }
 
   def adb = path + "/platform-tools/adb"
-  commandLine "$adb", 'shell', 'am', 'start', '-n', 'com.sonicgdx.sonicgdx/com.sonicgdx.sonicgdx.android.AndroidLauncher'
+  commandLine "$adb", 'shell', 'am', 'start', '-n', 'com.sonicgdx/com.sonicgdx.android.AndroidLauncher'
 }
 
 eclipse.project.name = appName + "-android"
