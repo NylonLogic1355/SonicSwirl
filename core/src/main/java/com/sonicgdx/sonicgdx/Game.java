@@ -16,6 +16,7 @@
 
 package com.sonicgdx.sonicgdx;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -31,7 +32,7 @@ public class Game extends com.badlogic.gdx.Game {
      */
 	@Override
     public void create() {
-        Gdx.app.setLogLevel(3); //TODO reduce logging level for release builds
+        Gdx.app.setLogLevel(Application.LOG_DEBUG); //TODO reduce logging level for release builds
 
         batch = new SpriteBatch(); // sprite batch provides multiple sprites to draw to the GPU to improve OpenGl performance https://gamedev.stackexchange.com/questions/32910/what-is-the-technical-defInition-of-sprite-batching
         //This is shared between screens to reduce memory usage and OpenGL calls
@@ -40,7 +41,7 @@ public class Game extends com.badlogic.gdx.Game {
         this.setScreen(gameScreen);
 
 
-        /*FIXME uncomment when implementing the menu screen
+        /*TODO uncomment when implementing the menu screen
 		menuScreen = new MenuScreen(this);
 		this.setScreen(menuScreen);*/
 	}
