@@ -401,4 +401,9 @@ public class Player extends Entity {
         if (Gdx.input.isKeyJustPressed(Input.Keys.E)) groundAngle += 45;
         //Gdx.app.debug("deltaTime",String.valueOf(delta));
     }
+
+    @Override
+    public void dispose() {
+        jumpSound.dispose();
+    }
 }
