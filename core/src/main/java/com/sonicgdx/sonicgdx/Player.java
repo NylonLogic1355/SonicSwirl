@@ -29,7 +29,7 @@ import com.badlogic.gdx.math.Vector2;
  * with other objects.
  * It is final since it is not necessary to extend this class.
  */
-public final class Player extends Entity {
+public class Player extends Entity {
     private boolean flipX = false, flipY = false;
     private boolean debugMode = false, isGrounded, isJumping;
     private final float ACCELERATION = 168.75F, AIR_ACCELERATION = 337.5F, SLOPE_FACTOR = 7.5F, GRAVITY_FORCE = -787.5F;
@@ -60,11 +60,7 @@ public final class Player extends Entity {
     //TODO Tommy Ettinger's digital extension could be used for faster operations on GWT
 
 
-    /**
-     * @param delta time since last frame. Used to make physics similar to how they would be at 60FPS
-     * even with higher, lower or varying frame rates.
-     * @see GameScreen#render(float)
-     */
+    @Override
     public void update(float delta)
     {
         //TODO Would be better to implement an InputProcessor. This makes more sense as an interrupt rather than constant polling.
@@ -98,7 +94,6 @@ public final class Player extends Entity {
                     //testing only one sensor at this point to see if the basic collision works
                     wallCollision(sensorF);
                 }
-
             }
 
             else {
@@ -108,9 +103,7 @@ public final class Player extends Entity {
                 sensorB.setActive(true);
 
                 //Updates player position
-                position.x += velocity.x * delta;
-                position.y += velocity.y * delta;
-
+                position.mulAdd(velocity,delta);
             }
 
             if (sensorA.getActive() && sensorB.getActive()) {
@@ -203,7 +196,7 @@ public final class Player extends Entity {
 
         velocity.set(groundVelocity * MathUtils.cosDeg(groundAngle), groundVelocity * MathUtils.sinDeg(groundAngle));
 
-        if (jumpJustPressed) jump(delta); //TODO placement different from original, may cause bugs.
+        if (jumpJustPressed) jump(delta); //FIXME placement different from original, may cause bugs.
 
 
         //FIXME player momentum functions oddly when landing after jumping downwards from a steep slope
@@ -343,8 +336,7 @@ public final class Player extends Entity {
         }
 
         //Updates player position
-        position.x += velocity.x * delta;
-        position.y += velocity.y * delta;
+        position.mulAdd(velocity,delta);
 
         //Gravity - a force pushing the player down when they are in the air
         velocity.y += GRAVITY_FORCE * delta;
@@ -410,10 +402,9 @@ public final class Player extends Entity {
         //Gdx.app.debug("deltaTime",String.valueOf(delta));
     }
 
-    public float getXPosition() {
-        return position.x;
-    }
-    public float getYPosition() {
-        return position.y;
+    @Override
+    public void dispose() {
+        jumpSound.dispose();
+        super.dispose();
     }
 }

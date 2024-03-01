@@ -38,6 +38,13 @@ public abstract class Entity {
     }
 
     /**
+     * @param delta time since last frame. Used to make physics similar to how they would be at 60FPS
+     * even with higher, lower or varying frame rates.
+     * @see GameScreen#render(float)
+     */
+    public abstract void update(float delta);
+
+    /**
      * Ensures the player doesn't go into negative co-ordinates as calculations may not
      * take that into account
      */
@@ -58,10 +65,30 @@ public abstract class Entity {
         rightEdgeX = position.x + WIDTH_RADIUS; // xPos + (srcWidth - 1) - using srcWidth places it one pixel right of the square
         topEdgeY = position.y + HEIGHT_RADIUS;
     }
-    public float snapToNearest (float angle, float snapTo) {
+
+    /**
+     * Utility method to round angle to nearest x degrees, where x is the value of snapTo (usually 90).
+     * @param angle angle which is going to be rounded
+     * @param snapTo angle is rounded to a multiple of this value
+     * @return The multiple of snapTo that is closest to angle.
+     */
+    public static float snapToNearest (float angle, float snapTo) {
         return MathUtils.round(angle/snapTo) * snapTo;
     }
 
+    /**
+     * @return the X component of the position vecotr
+     */
+    public float getXPos() {
+        return position.x;
+    }
+
+    /**
+     * @return the Y component of the position vector
+     */
+    public float getYPos() {
+        return position.y;
+    }
 
     /*
     @Deprecated
@@ -99,6 +126,10 @@ public abstract class Entity {
 
     }
     */
+
+    public void dispose() {
+
+    }
 
 
 }

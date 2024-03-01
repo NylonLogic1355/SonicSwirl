@@ -16,11 +16,15 @@
 
 package com.sonicgdx.sonicgdx;
 
-import static com.sonicgdx.sonicgdx.GameScreen.TILE_LENGTH;
+import static com.sonicgdx.sonicgdx.TileMap.TILE_LENGTH;
 
+/**
+ * Taking how classes are not value-types into account, tiles are implemented as effectively immutable.
+ * While fields are not explicitly final, any methods that mutate them should be considered unsafe.
+ */
 public class Tile {
 
-    boolean horizontalFlip, verticalFlip, empty;
+    boolean flippedHorizontally, flippedVertically, empty;
     int[] heightArray, widthArray;
     int solidity;
     // 0 = solid from top, 1 = solid from bottom, 2 = solid from left, 3 = solid from right, 4 = solid from all sides
@@ -34,8 +38,8 @@ public class Tile {
         else throw new IllegalArgumentException("heightArray Length is " +  widthArray.length + " instead of " + TILE_LENGTH);
 
         this.angle = angle;
-        this.horizontalFlip = flippedHorizontally;
-        this.verticalFlip = flippedVertically;
+        this.flippedHorizontally = flippedHorizontally;
+        this.flippedVertically = flippedVertically;
         this.solidity = solidity;
     }
     Tile()
@@ -48,7 +52,7 @@ public class Tile {
 
     public int getHeight(int block)
     {
-        if (empty || block < 0 || block > TILE_LENGTH - 1) return 0;
+        if (empty || block < 0 || TILE_LENGTH - 1 < block) return 0;
         else {
             return heightArray[block];
         }
@@ -56,7 +60,7 @@ public class Tile {
     }
     public int getWidth(int block)
     {
-        if (empty || block < 0 || block > TILE_LENGTH - 1) return 0;
+        if (empty || block < 0 || TILE_LENGTH - 1 < block ) return 0;
         else {
             return widthArray[block];
         }

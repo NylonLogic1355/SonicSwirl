@@ -16,16 +16,24 @@
 
 package com.sonicgdx.sonicgdx;
 
-import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Application;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 
-public class Init extends Game {
+public class Game extends com.badlogic.gdx.Game {
     public SpriteBatch batch;
-	public GameScreen gameScreen;
-	//private MenuScreen menuScreen;
+	public Screen gameScreen;
+	//private Screen menuScreen;
 
-	public void create() {
+    /**
+     * Implements method from the ApplicationListener interface.
+     */
+	@Override
+    public void create() {
+        Gdx.app.setLogLevel(Application.LOG_DEBUG); //TODO reduce logging level for release builds
+
         batch = new SpriteBatch(); // sprite batch provides multiple sprites to draw to the GPU to improve OpenGl performance https://gamedev.stackexchange.com/questions/32910/what-is-the-technical-defInition-of-sprite-batching
         //This is shared between screens to reduce memory usage and OpenGL calls
 
@@ -33,19 +41,23 @@ public class Init extends Game {
         this.setScreen(gameScreen);
 
 
-        /*FIXME uncomment when implementing the menu screen
+        /*TODO uncomment when implementing the menu screen
 		menuScreen = new MenuScreen(this);
 		this.setScreen(menuScreen);*/
 	}
 
-	public void render() {
+	@Override
+    public void render() {
         super.render(); // Calls the render method in the game class
 	}
 
-	public void dispose() {
+	@Override
+    public void dispose() {
 		batch.dispose();
         gameScreen.dispose();
-		//menuScreen.dispose();
+        //menuScreen.dispose();
+
+        super.dispose();
 	}
 
 }

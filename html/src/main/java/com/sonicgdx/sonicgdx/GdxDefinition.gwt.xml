@@ -5,7 +5,7 @@
   <inherits name="com.badlogic.gdx.backends.gdx_backends_gwt" />
   <inherits name="com.badlogic.gdx.controllers" />
   <inherits name="com.badlogic.gdx.controllers.controllers-gwt" />
-  <inherits name="com.sonicgdx.sonicgdx.Init" />
+  <inherits name="com.sonicgdx.sonicgdx.Game" />
   <inherits name="de.tomgrill.gdxdialogs.html.gdx_dialogs_html" />
   <inherits name="space.earlygrey.shapedrawer" />
   <entry-point class="com.sonicgdx.sonicgdx.gwt.GwtLauncher" />

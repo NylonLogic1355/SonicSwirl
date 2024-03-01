@@ -17,14 +17,12 @@
 package com.sonicgdx.sonicgdx;
 
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.Gdx;
 
 public class MenuScreen implements Screen {
-    private final Init Init;
+    private final Game Game;
 
-    public MenuScreen(final Init Init){
-        Gdx.app.setLogLevel(3); //TODO reduce logging level for release builds
-        this.Init = Init;
+    public MenuScreen(final Game Game){
+        this.Game = Game;
     }
 
     @Override
@@ -32,7 +30,7 @@ public class MenuScreen implements Screen {
     {
         //TODO implement menu screen and only change screens when the create button is pressed
         //ScreenUtils.clear(Color.BLACK);
-        Init.setScreen(Init.gameScreen);
+        Game.setScreen(Game.gameScreen);
         dispose();
     }
 
@@ -45,7 +43,6 @@ public class MenuScreen implements Screen {
     @Override
     public void show() {
         // TODO Auto-generated method stub
-
     }
 
     @Override
@@ -56,13 +53,11 @@ public class MenuScreen implements Screen {
     @Override
     public void resume() {
         // TODO Auto-generated method stub
-
     }
 
     @Override
     public void hide() {
         // TODO Auto-generated method stub
-
     }
 
     @Override

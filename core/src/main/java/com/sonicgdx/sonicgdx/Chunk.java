@@ -18,13 +18,12 @@ package com.sonicgdx.sonicgdx;
 
 import com.badlogic.gdx.graphics.Texture;
 
-import static com.sonicgdx.sonicgdx.GameScreen.TILES_PER_CHUNK;
-import static com.sonicgdx.sonicgdx.GameScreen.TILE_LENGTH;
+import static com.sonicgdx.sonicgdx.TileMap.TILES_PER_CHUNK;
 
 public class Chunk {
     private Texture texture;
-    private Tile[][] tileArray;
-    private boolean empty;
+    private final Tile[][] tileArray;
+    private final boolean empty;
 
     public Chunk(Texture texture, Tile[][] tileArray) {
         if (tileArray.length == TILES_PER_CHUNK) this.tileArray = tileArray;

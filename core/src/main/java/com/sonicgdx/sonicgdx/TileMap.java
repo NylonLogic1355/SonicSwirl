@@ -18,7 +18,6 @@ package com.sonicgdx.sonicgdx;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import static com.sonicgdx.sonicgdx.GameScreen.TILES_PER_CHUNK;
 
 import java.util.Collections;
 
@@ -30,6 +29,9 @@ public enum TileMap {
     //TODO reconsider usage of TileMap class
 
     public static final Chunk[][] map = TILE_MAP.testLevel;
+    public static final int TILE_LENGTH = 16;
+    public static final int CHUNK_LENGTH = 96;
+    public static final int TILES_PER_CHUNK = CHUNK_LENGTH / TILE_LENGTH;
 
     // Classes are reference types so modifying a value would affect all the tiles that are the same.
     private final int[] zero = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
