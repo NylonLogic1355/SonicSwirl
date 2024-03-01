@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.sonicgdx.sonicgdx;
+package com.sonicgdx;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;

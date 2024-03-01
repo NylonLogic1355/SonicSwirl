@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.sonicgdx.sonicgdx;
+package com.sonicgdx;
 
-import static com.sonicgdx.sonicgdx.TileMap.TILE_LENGTH;
+import static com.sonicgdx.TileMap.TILE_LENGTH;
 
 /**
  * Taking how classes are not value-types into account, tiles are implemented as effectively immutable.

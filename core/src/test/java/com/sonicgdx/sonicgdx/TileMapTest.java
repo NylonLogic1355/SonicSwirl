@@ -18,6 +18,7 @@ package com.sonicgdx.sonicgdx;
 
 import com.badlogic.gdx.utils.reflect.ClassReflection;
 import com.badlogic.gdx.utils.reflect.Field;
+import com.sonicgdx.TileMap;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;

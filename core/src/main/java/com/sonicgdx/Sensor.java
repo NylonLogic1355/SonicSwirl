@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package com.sonicgdx.sonicgdx;
+package com.sonicgdx;
 
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 
-import static com.sonicgdx.sonicgdx.TileMap.CHUNK_LENGTH;
-import static com.sonicgdx.sonicgdx.TileMap.TILE_LENGTH;
-import static com.sonicgdx.sonicgdx.TileMap.TILES_PER_CHUNK;
+import static com.sonicgdx.TileMap.CHUNK_LENGTH;
+import static com.sonicgdx.TileMap.TILE_LENGTH;
+import static com.sonicgdx.TileMap.TILES_PER_CHUNK;
 
 public class Sensor {
     private boolean isActive;

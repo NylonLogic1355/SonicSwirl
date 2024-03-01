@@ -16,6 +16,7 @@
 
 package com.sonicgdx.sonicgdx;
 
+import com.sonicgdx.Player;
 import org.junit.jupiter.api.Test;
 
 class PlayerTest {

@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package com.sonicgdx.sonicgdx;
+package com.sonicgdx;
 
 import com.badlogic.gdx.graphics.Texture;
 
-import static com.sonicgdx.sonicgdx.TileMap.TILES_PER_CHUNK;
+import static com.sonicgdx.TileMap.TILES_PER_CHUNK;
 
 public class Chunk {
     private Texture texture;
