@@ -11,6 +11,7 @@ This project was generated with a template including simple application launcher
 - `android`: Android mobile platform. Needs Android SDK.
 - `html`: Web platform using GWT and WebGL. Supports only Java projects.
 - `teavm`: Experimental web platform using TeaVM and WebGL.
+- `lwjgl2`: Legacy desktop platform using LWJGL2.
 
 ## Gradle
 
@@ -31,7 +32,9 @@ Useful Gradle tasks and flags:
 - `html:dist`: compiles GWT sources. The compiled application can be found at `html/build/dist`: you can use any HTTP server to deploy it.
 - `html:superDev`: compiles GWT sources and runs the application in SuperDev mode. It will be available at [localhost:8080/html](http://localhost:8080/html). Use only during development.
 - `idea`: generates IntelliJ project data.
-- `lwjgl3:jar`: builds application's runnable jar, which can be found at `lwjgl3/build/libs`.
+- `lwjgl2:jar`: builds application's runnable jar, which can be found at `lwjgl2/build/libs`.
+- `lwjgl2:run`: starts the application.
+- `lwjgl3:jar`: builds application's runnable jar, which can be found at `lwjgl3/build/lib`.
 - `lwjgl3:run`: starts the application.
 - `teavm:build`: builds the JavaScript application into the build/dist/webapp folder.
 - `teavm:run`: serves the JavaScript application at http://localhost:8080 via a local Jetty server.

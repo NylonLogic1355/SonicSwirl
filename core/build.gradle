@@ -4,11 +4,4 @@ eclipse.project.name = appName + '-core'
 dependencies {
   api "com.badlogicgames.gdx-controllers:gdx-controllers-core:$gdxControllersVersion"
   api "com.badlogicgames.gdx:gdx:$gdxVersion"
-  api "de.tomgrill.gdxdialogs:gdx-dialogs-core:$dialogsVersion"
-  api "space.earlygrey:shapedrawer:$shapeDrawerVersion"
-  testImplementation "org.junit.jupiter:junit-jupiter:5.8.1"
-}
-
-test {
-  useJUnitPlatform()
 }
