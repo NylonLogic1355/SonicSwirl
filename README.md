@@ -7,6 +7,12 @@
 * [@tommyettinger](https://github.com/tommyettinger) for the gdx-setup tool that was used to generate the project, as well as the adapted UI skin.
 * [@crashinvaders](https://github.com/crashinvaders) for the gdx-texture-packer GUI that was used to easily pack sprites into atlases.
 
+---
+# Notes
+LWJGL2 is broken on some distro-provided Java distributions - see [this](https://github.com/libgdx/gdx-liftoff/issues/150) issue for more details.
+
+---
+# License
 
 Copyright 2023 SonicGDX
 
