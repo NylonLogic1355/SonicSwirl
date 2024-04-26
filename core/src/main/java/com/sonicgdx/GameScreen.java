@@ -134,7 +134,14 @@ public class GameScreen implements Screen {
      */
     public void drawChunkTexture(int chunkX, int chunkY) {
         //If the chunk isn't empty, draw its texture at the chunk's location
-        if (!TileMap.map[chunkX][chunkY].isEmpty()) Game.batch.draw(TileMap.map[chunkX][chunkY].getTexture(), (chunkX* TileMap.CHUNK_LENGTH),(chunkY* TileMap.CHUNK_LENGTH), TileMap.CHUNK_LENGTH, TileMap.CHUNK_LENGTH);
+        if (!TileMap.map[chunkX][chunkY].isEmpty()) {
+            Game.batch.draw(
+                TileMap.map[chunkX][chunkY].getTexture(),
+                (chunkX* TileMap.CHUNK_LENGTH),
+                (chunkY* TileMap.CHUNK_LENGTH),
+                TileMap.CHUNK_LENGTH,
+                TileMap.CHUNK_LENGTH);
+        }
     }
 
     /**
@@ -165,7 +172,12 @@ public class GameScreen implements Screen {
 
                     // Draws a block at the located at the co-ordinates of the tile (+ the array position for the x-axis only)
                     // with width 1 and the height obtained from the array
-                    Game.batch.draw(whiteSquare, block + (tileX* TileMap.TILE_LENGTH)+(chunkX* TileMap.CHUNK_LENGTH),(tileY* TileMap.TILE_LENGTH)+(chunkY* TileMap.CHUNK_LENGTH),1, TileMap.getTile(chunkX,chunkY,tileX,tileY).getHeight(block));
+                    Game.batch.draw(
+                        whiteSquare,
+                        block + (tileX* TileMap.TILE_LENGTH)+(chunkX* TileMap.CHUNK_LENGTH),
+                        (tileY* TileMap.TILE_LENGTH)+(chunkY* TileMap.CHUNK_LENGTH),
+                        1,
+                        TileMap.getTile(chunkX,chunkY,tileX,tileY).getHeight(block));
 
                     //TODO reversed search order for flipped tiles. e.g. Collections.reverse() or ArrayUtils.reverse(int[] array)
 
@@ -201,9 +213,19 @@ public class GameScreen implements Screen {
                     int blockWidth = TileMap.getTile(chunkX,chunkY,tileX,tileY).getWidth(TileMap.TILE_LENGTH - block - 1);
 
                     if (!TileMap.getTile(chunkX,chunkY,tileX,tileY).flippedHorizontally) {
-                        Game.batch.draw(whiteSquare, (tileX * TileMap.TILE_LENGTH) + (chunkX * TileMap.CHUNK_LENGTH) + (TileMap.TILE_LENGTH - blockWidth), yPosition, blockWidth, 1);
+                        Game.batch.draw(
+                            whiteSquare,
+                            (tileX * TileMap.TILE_LENGTH) + (chunkX * TileMap.CHUNK_LENGTH) + (TileMap.TILE_LENGTH - blockWidth),
+                            yPosition,
+                            blockWidth,
+                            1);
                     } else {
-                        Game.batch.draw(whiteSquare, (tileX * TileMap.TILE_LENGTH) + (chunkX * TileMap.CHUNK_LENGTH), yPosition, blockWidth, 1);
+                        Game.batch.draw(
+                            whiteSquare,
+                            (tileX * TileMap.TILE_LENGTH) + (chunkX * TileMap.CHUNK_LENGTH),
+                            yPosition,
+                            blockWidth,
+                            1);
                     }
 
                     //TODO reversed search order for flipped tiles. e.g. Collections.reverse() or ArrayUtils.reverse(int[] array)
