@@ -73,7 +73,7 @@ public class GameScreen implements Screen {
     }
 
     @Override
-    public void render(float delta) {
+    public void render(final float delta) {
         //UNCOMMENT for debugging purposes
         //frameLog.log();
         //delta = 0.016666668f;
@@ -132,7 +132,7 @@ public class GameScreen implements Screen {
      * @param chunkX the chunk number on the x-axis - not the same as its co-ordinate
      * @param chunkY the chunk number on the y-axis - not the same as its co-ordinate
      */
-    public void drawChunkTexture(int chunkX, int chunkY) {
+    public void drawChunkTexture(final int chunkX, final int chunkY) {
         //If the chunk isn't empty, draw its texture at the chunk's location
         if (!TileMap.map[chunkX][chunkY].isEmpty()) {
             Game.batch.draw(
@@ -151,7 +151,7 @@ public class GameScreen implements Screen {
      * @param chunkX the chunk number on the x-axis - not the same as its co-ordinate
      * @param chunkY the chunk number on the y-axis - not the same as its co-ordinate
      */
-    public void drawChunkHeightArray(int chunkX, int chunkY) {
+    public void drawChunkHeightArray(final int chunkX, final int chunkY) {
         //Iterates through every tile in the chunk
         for (int tileX = 0; tileX < TileMap.TILES_PER_CHUNK; tileX++)
         {
@@ -195,7 +195,7 @@ public class GameScreen implements Screen {
      * @param chunkX the chunk number on the x-axis - not the same as its co-ordinate
      * @param chunkY the chunk number on the y-axis - not the same as its co-ordinate
      */
-    public void drawChunkWidthArray(int chunkX, int chunkY) {
+    public void drawChunkWidthArray(final int chunkX, final int chunkY) {
 
         //Iterates through every tile in the chunk
         for (int tileX = 0; tileX < TileMap.TILES_PER_CHUNK; tileX++)
@@ -209,8 +209,8 @@ public class GameScreen implements Screen {
                     if (block==0) Game.batch.setColor(Color.BLACK);
                     else Game.batch.setColor(new Color(0,(1F/ TileMap.TILES_PER_CHUNK) * tileY,block,1));
 
-                    int yPosition = (tileY * TileMap.TILE_LENGTH) + (chunkY * TileMap.CHUNK_LENGTH) + block;
-                    int blockWidth = TileMap.getTile(chunkX,chunkY,tileX,tileY).getWidth(TileMap.TILE_LENGTH - block - 1);
+                    final int yPosition = (tileY * TileMap.TILE_LENGTH) + (chunkY * TileMap.CHUNK_LENGTH) + block;
+                    final int blockWidth = TileMap.getTile(chunkX,chunkY,tileX,tileY).getWidth(TileMap.TILE_LENGTH - block - 1);
 
                     if (!TileMap.getTile(chunkX,chunkY,tileX,tileY).flippedHorizontally) {
                         Game.batch.draw(
@@ -270,11 +270,11 @@ public class GameScreen implements Screen {
     }
 
 
-    public static TextureRegion getTextureRegion(String regionName) {
+    public static TextureRegion getTextureRegion(final String regionName) {
         return spriteAtlas.findRegion(regionName);
     }
 
-    public static TextureRegion getTextureRegion(String regionName, int animationIndex) {
+    public static TextureRegion getTextureRegion(final String regionName, final int animationIndex) {
         return spriteAtlas.findRegion(regionName,animationIndex);
     }
 
@@ -293,7 +293,7 @@ public class GameScreen implements Screen {
 
     }
     @Override
-    public void resize(int width, int height) {
+    public void resize(final int width, final int height) {
         gameViewport.update(width,height);
     }
 
