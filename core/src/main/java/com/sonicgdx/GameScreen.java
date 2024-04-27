@@ -245,7 +245,7 @@ public class GameScreen implements Screen {
      * @deprecated Superseded by drawChunkHeightArray as ShapeRenderer uses its own mesh compared to the SpriteBatch and therefore conflicts in the rendering method making it cumbersome to use.
      */
     @Deprecated
-    public void drawChunkHeightShapeRenderer(int chunkX, int chunkY) {
+    public void drawChunkHeightShapeRenderer(final int chunkX, final int chunkY) {
 
         /*//TODO Foreach loop?
         for (int tileX = 0; tileX < TILES_PER_CHUNK; tileX++)

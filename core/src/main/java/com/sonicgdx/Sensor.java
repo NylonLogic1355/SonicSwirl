@@ -29,10 +29,10 @@ public class Sensor {
     private Tile tile;
     private float distance;
 
-    public Sensor(float xPos, float yPos) {
+    public Sensor(final float xPos, final float yPos) {
         position = new Vector2(xPos,yPos);
     }
-    public Sensor(Vector2 positionVector) {
+    public Sensor(final Vector2 positionVector) {
         this.position = positionVector;
     }
 
@@ -64,13 +64,13 @@ public class Sensor {
         }
         //TODO prevent catch block in getTile() from being used.
 
-        int tileX = Math.floorMod(MathUtils.round(position.x), CHUNK_LENGTH) / TILE_LENGTH;
-        int chunkX = MathUtils.round(position.x) / CHUNK_LENGTH;
+        final int tileX = Math.floorMod(MathUtils.round(position.x), CHUNK_LENGTH) / TILE_LENGTH;
+        final int chunkX = MathUtils.round(position.x) / CHUNK_LENGTH;
 
         int tileY = Math.floorMod(MathUtils.round(position.y), CHUNK_LENGTH) / TILE_LENGTH;
         int chunkY = MathUtils.round(position.y) / CHUNK_LENGTH;
 
-        int block = Math.floorMod(MathUtils.round(position.x), TILE_LENGTH); //Different behaviour for negative numbers compared to using %. For
+        final int block = Math.floorMod(MathUtils.round(position.x), TILE_LENGTH); //Different behaviour for negative numbers compared to using %. For
         // example, -129 % 16 would return -1 which would cause an ArrayIndexOutOfBoundsException. Math.floorMod() would return a positive index in these cases.
 
         // An alternate expression to calculate block: ((chunkX * CHUNK_LENGTH) + (tileX * TILE_LENGTH) - position.x));
@@ -81,7 +81,7 @@ public class Sensor {
 
         if (height == TILE_LENGTH)
         {
-            int tempTileY, tempChunkY;
+            final int tempTileY, tempChunkY;
             // sensor regression, checks one tile above with downwards facing sensors in an attempt to find surface if the height of the array is full
             if (tileY < TILES_PER_CHUNK - 1)
             {
@@ -147,9 +147,9 @@ public class Sensor {
         int chunkX = MathUtils.round(position.x) / CHUNK_LENGTH;
 
         int tileY = Math.floorMod(MathUtils.round(position.y), CHUNK_LENGTH) / TILE_LENGTH;
-        int chunkY = MathUtils.round(position.y) / CHUNK_LENGTH;
+        final int chunkY = MathUtils.round(position.y) / CHUNK_LENGTH;
 
-        int block = Math.floorMod(MathUtils.round(position.y), TILE_LENGTH); //Different behaviour for negative numbers compared to using %. For
+        final int block = Math.floorMod(MathUtils.round(position.y), TILE_LENGTH); //Different behaviour for negative numbers compared to using %. For
         // example, -129 % 16 would return -1 which would cause an ArrayIndexOutOfBoundsException. Math.floorMod() would return a positive index in these cases.
 
         int width = TileMap.getTile(chunkX,chunkY,tileX,tileY).getWidth(block);
@@ -158,7 +158,7 @@ public class Sensor {
         float checkDistance = ((chunkX * CHUNK_LENGTH) + ((tileX + 1) * TILE_LENGTH) - width) - position.x;
 
         if (width == TILE_LENGTH) {
-            int tempTileX, tempChunkX;
+            final int tempTileX, tempChunkX;
             // sensor regression, checks one tile above with downwards facing sensors in an attempt to find surface if the height of the array is full
 
             //for right facing tiles
@@ -204,10 +204,10 @@ public class Sensor {
         //Gdx.app.debug("distance",String.valueOf(distance));
     }
 
-    public void setPositionValues(float x, float y) {
+    public void setPositionValues(final float x, final float y) {
         position.set(x,y);
     }
-    public void setPositionVector(Vector2 positionVector) {
+    public void setPositionVector(final Vector2 positionVector) {
         this.position = positionVector;
     }
     public float getXPosition() {
@@ -228,7 +228,7 @@ public class Sensor {
     public boolean getActive() {
         return isActive;
     }
-    public void setActive(boolean active) {
+    public void setActive(final boolean active) {
         isActive = active;
     }
 

@@ -42,7 +42,7 @@ public class Player extends Entity {
     private TextureRegion spriteRegion;
     private final Vector2 velocity;
     private final Sound jumpSound;
-    Player(float widthRadius, float heightRadius) {
+    Player(final float widthRadius, final float heightRadius) {
         super(widthRadius, heightRadius);
         spriteRegion = GameScreen.getTextureRegion("sonic-idle", 0);
         position = new Vector2(50,200); // Sets the player's starting position at (50,200). (The variable was initialised in super constructor)
@@ -107,7 +107,7 @@ public class Player extends Entity {
 
             if (sensorA.getActive() && sensorB.getActive()) {
 
-                Sensor winningSensor = floorSensors();
+                final Sensor winningSensor = floorSensors();
 
                 if (isGrounded) {
                     //checks that the sensor distance is in a valid range before correcting the player's position
@@ -161,17 +161,17 @@ public class Player extends Entity {
 
     }
 
-    private void groundMove(float delta) {
+    private void groundMove(final float delta) {
 
         //These booleans are true if any of the inputs which cause their respective action are pressed
         //or held down in the current frame
 
         //"Move Right" action
-        boolean rightPressed = Gdx.input.isKeyPressed(Input.Keys.D) || (Gdx.input.isKeyPressed(Input.Keys.RIGHT));
+        final boolean rightPressed = Gdx.input.isKeyPressed(Input.Keys.D) || (Gdx.input.isKeyPressed(Input.Keys.RIGHT));
         //"Move Left" action
-        boolean leftPressed = Gdx.input.isKeyPressed(Input.Keys.A) || (Gdx.input.isKeyPressed(Input.Keys.LEFT));
+        final boolean leftPressed = Gdx.input.isKeyPressed(Input.Keys.A) || (Gdx.input.isKeyPressed(Input.Keys.LEFT));
         //"Jump" action
-        boolean jumpJustPressed = Gdx.input.isKeyJustPressed(Input.Keys.SPACE);
+        final boolean jumpJustPressed = Gdx.input.isKeyJustPressed(Input.Keys.SPACE);
 
         if (groundVelocity != 0) groundVelocity -= delta * SLOPE_FACTOR * MathUtils.sinDeg(groundAngle); //TODO this only happens when the player is not in ceiling mode.
 
@@ -281,7 +281,7 @@ public class Player extends Entity {
      * @param sensor the sensor that has collided with a wall.
      * (Distances have been generated beforehand)
      */
-    public void wallCollision(Sensor sensor) {
+    public void wallCollision(final Sensor sensor) {
         //the distance is the difference between the tile's x position and the sensor's
         //since only a negative distance is accepted, the player will be pushed backwards by this amount
         position.x += sensor.getDistance();
@@ -291,7 +291,7 @@ public class Player extends Entity {
      * @param delta time since last frame. Used to make physics similar to how they would be at 60FPS
      * even with higher, lower or varying frame rates.
      */
-    public void jump(float delta) {
+    public void jump(final float delta) {
         //FIXME bug when jumping while moving downhill on a slope
         velocity.x -= JUMP_FORCE * MathUtils.sinDeg(groundAngle);
         velocity.y += JUMP_FORCE * MathUtils.cosDeg(groundAngle);
@@ -301,7 +301,7 @@ public class Player extends Entity {
         jumpSound.play();
     }
 
-    public void airMove(float delta) {
+    public void airMove(final float delta) {
         //These booleans are true if any of the inputs which cause their respective action are pressed
         //or held down in the current frame
 
@@ -388,7 +388,7 @@ public class Player extends Entity {
         sensorF.setPositionValues(rightEdgeX,position.y);
     }
 
-    private void debugMove(float delta) {
+    private void debugMove(final float delta) {
         final int DEBUG_SPEED = 90;
         if (Gdx.input.isKeyPressed(Input.Keys.D)) position.x += (DEBUG_SPEED * delta);
         if (Gdx.input.isKeyPressed(Input.Keys.A)) position.x -= (DEBUG_SPEED * delta);

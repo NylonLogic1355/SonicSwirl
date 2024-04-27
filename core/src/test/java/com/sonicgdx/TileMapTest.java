@@ -28,7 +28,7 @@ class TileMapTest {
     void checkArrayLengths() {
         System.out.println(Arrays.toString(ClassReflection.getFields(TileMap.class)));
 
-        for (Field field:ClassReflection.getDeclaredFields(TileMap.class)) {
+        for (final Field field:ClassReflection.getDeclaredFields(TileMap.class)) {
             field.setAccessible(true);
             System.out.println(field.getName());
             /*if (field.getType() == byte[])
