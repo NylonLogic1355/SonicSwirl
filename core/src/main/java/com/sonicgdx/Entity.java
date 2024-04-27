@@ -48,8 +48,7 @@ public abstract class Entity {
      * Ensures the player doesn't go into negative co-ordinates as calculations may not
      * take that into account
      */
-    public void enforceBoundaries()
-    {
+    public void enforceBoundaries() {
         // "Invisible walls" - prevent objects from going beyond borders to simplify calculations. TODO stop collision errors when going outside index bounds
         position.x = Math.max(position.x,0);
 
@@ -58,8 +57,7 @@ public abstract class Entity {
         if (position.y <= -100) position.set(50,200);
     }
 
-    public void calculateCornerPositions()
-    {
+    public void calculateCornerPositions() {
         leftEdgeX = position.x - WIDTH_RADIUS;
         bottomEdgeY = position.y - HEIGHT_RADIUS;
         rightEdgeX = position.x + WIDTH_RADIUS; // xPos + (srcWidth - 1) - using srcWidth places it one pixel right of the square
@@ -92,8 +90,7 @@ public abstract class Entity {
 
     /*
     @Deprecated
-    public int regression(int chunkX, int chunkY, int tileX, int tileY, int grid)
-    {
+    public int regression(int chunkX, int chunkY, int tileX, int tileY, int grid) {
         //TODO possibly use for more accuracy?
 
         byte height;

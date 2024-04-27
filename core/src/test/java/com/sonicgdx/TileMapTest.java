@@ -25,8 +25,7 @@ import java.util.Arrays;
 
 class TileMapTest {
     @Test
-    void checkArrayLengths()
-    {
+    void checkArrayLengths() {
         System.out.println(Arrays.toString(ClassReflection.getFields(TileMap.class)));
 
         for (Field field:ClassReflection.getDeclaredFields(TileMap.class)) {

@@ -44,7 +44,7 @@ public class Player extends Entity {
     private final Sound jumpSound;
     Player(float widthRadius, float heightRadius) {
         super(widthRadius, heightRadius);
-        spriteRegion = GameScreen.getTextureRegion("sonic-idle",0);
+        spriteRegion = GameScreen.getTextureRegion("sonic-idle", 0);
         position = new Vector2(50,200); // Sets the player's starting position at (50,200). (The variable was initialised in super constructor)
         //The vector has two components for the x position and y position respectively
         velocity = new Vector2(); //Initialises to zero starting speed
@@ -61,8 +61,7 @@ public class Player extends Entity {
 
 
     @Override
-    public void update(float delta)
-    {
+    public void update(final float delta) {
         //TODO Would be better to implement an InputProcessor. This makes more sense as an interrupt rather than constant polling.
         if (Gdx.input.isKeyJustPressed(Input.Keys.Q))
         {
@@ -212,8 +211,7 @@ public class Player extends Entity {
      * Returns null in the condition that the sensor distances are equal but their respective returnTiles are different -
      * this prevents the groundAngle being changed and the player rotating haphazardly.
      */
-    public Sensor floorSensors()
-    {
+    public Sensor floorSensors() {
         //Checks below and potentially above the positions of both sensors to find the nearest tile if one is present.
         sensorA.floorProcess();
         sensorB.floorProcess();
@@ -231,8 +229,7 @@ public class Player extends Entity {
 
     }
 
-    public void groundCollision(Sensor sensor)
-    {
+    public void groundCollision(final Sensor sensor) {
         /*
         Corrects the player's Y position according to the distance found by the sensor.
         This should place them at the same height as the found tile after the frame is drawn, responding to the collision.
@@ -346,7 +343,7 @@ public class Player extends Entity {
      * Note: The && operator uses short-circuit evaluation (as opposed to &) so will only evaluate the left hand side of the boolean expression is true. This means that
      * if the returned value is null it won't check its distance so won't throw a NullPointerException.
      */
-    public void setAirSensors(){
+    public void setAirSensors() {
         //TODO insert sensorC and sensorD
         if (Math.abs(velocity.x) >= Math.abs(velocity.y)) {
             //In both cases the ground sensors will be checked

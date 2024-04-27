@@ -42,24 +42,21 @@ public class Tile {
         this.flippedVertically = flippedVertically;
         this.solidity = solidity;
     }
-    Tile()
-    {
+    Tile() {
         this.empty = true;
         this.heightArray = null;
         this.widthArray = null;
         this.angle = 0;
     }
 
-    public int getHeight(int block)
-    {
+    public int getHeight(int block) {
         if (empty || block < 0 || TILE_LENGTH - 1 < block) return 0;
         else {
             return heightArray[block];
         }
 
     }
-    public int getWidth(int block)
-    {
+    public int getWidth(int block) {
         if (empty || block < 0 || TILE_LENGTH - 1 < block ) return 0;
         else {
             return widthArray[block];
