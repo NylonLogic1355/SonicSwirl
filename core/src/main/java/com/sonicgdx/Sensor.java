@@ -44,20 +44,12 @@ public class Sensor {
         this.position = new Vector2();
     }
 
-    public static int findSurroundingChunkX (final int positionX) {
-        return MathUtils.round(positionX) / CHUNK_LENGTH;
+    public static int findSurroundingChunkOnAxis(final int axesPosition) {
+        return MathUtils.round(axesPosition) / CHUNK_LENGTH;
     }
 
-    public static int findSurroundingChunkY (final int positionY) {
-        return MathUtils.round(positionY) / CHUNK_LENGTH;
-    }
-
-    public static int findSurroundingTileX (final int positionX) {
-        return Math.floorMod(MathUtils.round(positionX), CHUNK_LENGTH) / TILE_LENGTH;
-    }
-
-    public static int findSurroundingTileY (final int positionY) {
-        return Math.floorMod(MathUtils.round(positionY), CHUNK_LENGTH) / TILE_LENGTH;
+    public static int findSurroundingTileOnAxis(final int axesPosition) {
+        return Math.floorMod(MathUtils.round(axesPosition), CHUNK_LENGTH) / TILE_LENGTH;
     }
 
     /**Attempts to find the nearest top of the surface relative to the sensor's position.
@@ -82,13 +74,13 @@ public class Sensor {
 
         final int positionXInt = MathUtils.round(position.x);
 
-        final int tileX = findSurroundingTileX(positionXInt);
-        final int chunkX = findSurroundingChunkX(positionXInt);
+        final int tileX = findSurroundingTileOnAxis(positionXInt);
+        final int chunkX = findSurroundingChunkOnAxis(positionXInt);
 
         final int positionYInt = MathUtils.round(position.y);
 
-        int tileY = findSurroundingTileY(positionYInt);
-        int chunkY = findSurroundingChunkY(positionYInt);
+        int tileY = findSurroundingTileOnAxis(positionYInt);
+        int chunkY = findSurroundingChunkOnAxis(positionYInt);
 
         final int block = Math.floorMod(positionXInt, TILE_LENGTH); //Different behaviour for negative numbers compared to using %. For
         // example, -129 % 16 would return -1 which would cause an ArrayIndexOutOfBoundsException. Math.floorMod() would return a positive index in these cases.
@@ -165,13 +157,13 @@ public class Sensor {
 
         final int positionXInt = MathUtils.round(position.x);
 
-        int tileX = findSurroundingTileX(positionXInt);
-        int chunkX = findSurroundingChunkX(positionXInt);
+        int tileX = findSurroundingTileOnAxis(positionXInt);
+        int chunkX = findSurroundingChunkOnAxis(positionXInt);
 
         final int positionYInt = MathUtils.round(position.y);
 
-        int tileY = findSurroundingTileY(positionYInt);
-        int chunkY = findSurroundingChunkY(positionYInt);
+        int tileY = findSurroundingTileOnAxis(positionYInt);
+        int chunkY = findSurroundingChunkOnAxis(positionYInt);
 
         final int block = Math.floorMod(positionYInt, TILE_LENGTH); //Different behaviour for negative numbers compared to using %. For
         // example, -129 % 16 would return -1 which would cause an ArrayIndexOutOfBoundsException. Math.floorMod() would return a positive index in these cases.
