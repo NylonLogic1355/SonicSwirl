@@ -44,6 +44,22 @@ public class Sensor {
         this.position = new Vector2();
     }
 
+    public static int findSurroundingChunkX (final int positionX) {
+        return MathUtils.round(positionX) / CHUNK_LENGTH;
+    }
+
+    public static int findSurroundingChunkY (final int positionY) {
+        return MathUtils.round(positionY) / CHUNK_LENGTH;
+    }
+
+    public static int findSurroundingTileX (final int positionX) {
+        return Math.floorMod(MathUtils.round(positionX), CHUNK_LENGTH) / TILE_LENGTH;
+    }
+
+    public static int findSurroundingTileY (final int positionY) {
+        return Math.floorMod(MathUtils.round(positionY), CHUNK_LENGTH) / TILE_LENGTH;
+    }
+
     /**Attempts to find the nearest top of the surface relative to the sensor's position.
      * If no surface is found, the method will check one tile downwards for a non-empty height (and therefore a non-empty Tile).
      * Conversely, if a tile that is full in that position (has a height of 16) is found, the method will check one tile upwards for a possible top of the surface.
@@ -64,13 +80,17 @@ public class Sensor {
         }
         //TODO prevent catch block in getTile() from being used.
 
-        final int tileX = Math.floorMod(MathUtils.round(position.x), CHUNK_LENGTH) / TILE_LENGTH;
-        final int chunkX = MathUtils.round(position.x) / CHUNK_LENGTH;
+        final int positionXInt = MathUtils.round(position.x);
 
-        int tileY = Math.floorMod(MathUtils.round(position.y), CHUNK_LENGTH) / TILE_LENGTH;
-        int chunkY = MathUtils.round(position.y) / CHUNK_LENGTH;
+        final int tileX = findSurroundingTileX(positionXInt);
+        final int chunkX = findSurroundingChunkX(positionXInt);
 
-        final int block = Math.floorMod(MathUtils.round(position.x), TILE_LENGTH); //Different behaviour for negative numbers compared to using %. For
+        final int positionYInt = MathUtils.round(position.y);
+
+        int tileY = findSurroundingTileY(positionYInt);
+        int chunkY = findSurroundingChunkY(positionYInt);
+
+        final int block = Math.floorMod(positionXInt, TILE_LENGTH); //Different behaviour for negative numbers compared to using %. For
         // example, -129 % 16 would return -1 which would cause an ArrayIndexOutOfBoundsException. Math.floorMod() would return a positive index in these cases.
 
         // An alternate expression to calculate block: ((chunkX * CHUNK_LENGTH) + (tileX * TILE_LENGTH) - position.x));
@@ -143,13 +163,17 @@ public class Sensor {
         }
         //TODO prevent catch block in getTile() from being used.
 
-        int tileX = Math.floorMod(MathUtils.round(position.x), CHUNK_LENGTH) / TILE_LENGTH;
-        int chunkX = MathUtils.round(position.x) / CHUNK_LENGTH;
+        final int positionXInt = MathUtils.round(position.x);
 
-        int tileY = Math.floorMod(MathUtils.round(position.y), CHUNK_LENGTH) / TILE_LENGTH;
-        final int chunkY = MathUtils.round(position.y) / CHUNK_LENGTH;
+        int tileX = findSurroundingTileX(positionXInt);
+        int chunkX = findSurroundingChunkX(positionXInt);
 
-        final int block = Math.floorMod(MathUtils.round(position.y), TILE_LENGTH); //Different behaviour for negative numbers compared to using %. For
+        final int positionYInt = MathUtils.round(position.y);
+
+        int tileY = findSurroundingTileY(positionYInt);
+        int chunkY = findSurroundingChunkY(positionYInt);
+
+        final int block = Math.floorMod(positionYInt, TILE_LENGTH); //Different behaviour for negative numbers compared to using %. For
         // example, -129 % 16 would return -1 which would cause an ArrayIndexOutOfBoundsException. Math.floorMod() would return a positive index in these cases.
 
         int width = TileMap.getTile(chunkX,chunkY,tileX,tileY).getWidth(block);
@@ -162,20 +186,17 @@ public class Sensor {
             // sensor regression, checks one tile above with downwards facing sensors in an attempt to find surface if the height of the array is full
 
             //for right facing tiles
-            if (tileX > 0)
-            {
+            if (tileX > 0) {
                 tempChunkX = chunkX;
                 tempTileX = tileX - 1;
             }
-            else
-            {
+            else {
                 tempChunkX = chunkX - 1;
                 tempTileX = TILES_PER_CHUNK - 1;
             }
 
             width = TileMap.getTile(tempChunkX,chunkY,tempTileX,tileY).getHeight(block);
-            if (width > 0)
-            {
+            if (width > 0) {
                 chunkX = tempChunkX;
                 tileX = tempTileX;
 
@@ -187,8 +208,7 @@ public class Sensor {
             // sensor extension, checks one tile below with downwards facing sensors in an attempt to find surface
 
             //for right facing tiles
-            if (tileX == TILES_PER_CHUNK - 1)
-            {
+            if (tileX == TILES_PER_CHUNK - 1) {
                 chunkX++;
                 tileY = 0;
             }
