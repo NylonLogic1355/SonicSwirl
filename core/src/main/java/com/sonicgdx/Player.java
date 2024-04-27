@@ -32,13 +32,22 @@ import com.badlogic.gdx.math.Vector2;
 public class Player extends Entity {
     private boolean flipX = false, flipY = false;
     private boolean debugMode = false, isGrounded, isJumping;
-    private final float ACCELERATION = 168.75F, AIR_ACCELERATION = 337.5F, SLOPE_FACTOR = 7.5F, GRAVITY_FORCE = -787.5F;
-    private final int DECELERATION = 1800, MAX_SPEED = 360, JUMP_FORCE = 390;
-    // An FPS of 60 was used to obtain the adjusted values
+
     // Original: ACCELERATION = 0.046875F, DECELERATION = 0.5F, DEBUG_SPEED = 1.5F, MAX_SPEED = 6, SLOPE_FACTOR = 0.125, AIR_ACCELERATION = 0.09375F, GRAVITY_FORCE = 0.21875F;
     // Original values were designed to occur 60 times every second so by multiplying it by 60 you get the amount of pixels moved per second.
+    private final float
+        ACCELERATION = 168.75F,
+        AIR_ACCELERATION = ACCELERATION * 2,
+        FRICTION = ACCELERATION,
+        SLOPE_FACTOR = 7.5F,
+        GRAVITY_FORCE = -787.5F;
+    private final int
+        DECELERATION = 1800,
+        MAX_SPEED = 360,
+        JUMP_FORCE = 390;
+
     private float groundVelocity = 0, groundAngle = 0;
-    private final Sensor sensorA, sensorB, sensorE,sensorF;
+    private final Sensor sensorA, sensorB, sensorE, sensorF;
     private TextureRegion spriteRegion;
     private final Vector2 velocity;
     private final Sound jumpSound;
@@ -190,8 +199,11 @@ public class Player extends Entity {
             if (groundVelocity > 0) groundVelocity -= (DECELERATION * delta);
             else if (groundVelocity > -MAX_SPEED) groundVelocity -= ACCELERATION * delta;
         }
-        else groundVelocity -= Math.min(Math.abs(groundVelocity), ACCELERATION * delta) * Math.signum(groundVelocity); // friction if not pressing any directions
-        // Decelerates until the ground speed is lower than the acceleration value (which doubles as the friction value) and then stops
+        else {
+            // friction if not pressing any directions
+            // Decelerates until the ground speed is lower than the friction value and then stops
+            groundVelocity -= Math.min(Math.abs(groundVelocity), FRICTION * delta) * Math.signum(groundVelocity);
+        }
 
         velocity.set(groundVelocity * MathUtils.cosDeg(groundAngle), groundVelocity * MathUtils.sinDeg(groundAngle));
 
