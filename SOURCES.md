@@ -10,10 +10,6 @@ ShiftSike - https://www.deviantart.com/shiftsike/art/Emerald-Hill-Advanced-66925
 
 Alex13Art - https://www.deviantart.com/alex13art/art/Aqua-Lake-Zone-Sprites-514473527 \
 
-## Dependencies / Gradle
-Fix “[ALSOFT] (EE) Failed to set real-time priority for thread: Operation not permitted” error on running 
-https://github.com/SFML/SFML/issues/1832#issuecomment-1100573813
-
 ## Sprites / TextureAtlas
 https://github.com/crashinvaders/gdx-texture-packer-gui
 https://www.spriters-resource.com/custom_edited/sonicthehedgehogcustoms/sheet/160249/
