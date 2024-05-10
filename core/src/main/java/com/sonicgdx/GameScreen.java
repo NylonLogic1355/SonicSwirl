@@ -44,7 +44,7 @@ public class GameScreen implements Screen {
 
     private int drawMode = 0;
 
-    private Music backgroundMusic;
+    private final Music backgroundMusic;
 
     public GameScreen(final Game Game) {
 
@@ -78,7 +78,7 @@ public class GameScreen implements Screen {
             MathUtils.randomTriangular(0, 1, 1),
             1);
 
-        Music backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("sounds/aiz_loop.wav"));
+        backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("sounds/aiz_loop.wav"));
         backgroundMusic.setVolume(0.3f);
         backgroundMusic.setLooping(true);
         backgroundMusic.play();
