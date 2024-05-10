@@ -25,6 +25,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
@@ -32,12 +33,15 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 public class GameScreen implements Screen {
 
     private final Game Game;
-    private final Texture whiteSquare, blackSquare;
     //private final FPSLogger frameLog;
     private final OrthographicCamera camera; private final Vector2 cameraOffset = Vector2.Zero; private final ExtendViewport gameViewport;
     private final Player player;
+
     public static TextureAtlas spriteAtlas;
+    private final Texture whiteSquare, blackSquare;
     private final Texture backgroundTexture;
+    private final Color backgroundTint;
+
     private int drawMode = 0;
 
     private Music backgroundMusic;
@@ -64,6 +68,15 @@ public class GameScreen implements Screen {
 
         //frameLog = new FPSLogger();
         backgroundTexture = new Texture(Gdx.files.internal("sprites/aiz_background.jpg"));
+
+        //randomly picks a color to tint the background with (to make it less bland over multiple playthroughs)
+        //for development only
+        //selected colors are closer to white (no tint) than black
+        backgroundTint = new Color (
+            MathUtils.randomTriangular(0, 1, 1),
+            MathUtils.randomTriangular(0, 1, 1),
+            MathUtils.randomTriangular(0, 1, 1),
+            1);
 
         Music backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("sounds/aiz_loop.wav"));
         backgroundMusic.setVolume(0.3f);
@@ -102,7 +115,11 @@ public class GameScreen implements Screen {
         //Disabling and enabling blending gives a performance boost
         //and transparency is not needed for the background image
         Game.batch.disableBlending();
+        //tints the backgroundTexture with a random color
+        Game.batch.setColor(backgroundTint);
         Game.batch.draw(backgroundTexture,camera.position.x - (camera.viewportWidth / 2),camera.position.y - (camera.viewportHeight / 2));
+        Game.batch.setColor(Color.WHITE);
+
         Game.batch.enableBlending();
         //TODO render gradually as player progresses
 
