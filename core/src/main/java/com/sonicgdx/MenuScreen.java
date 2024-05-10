@@ -26,7 +26,7 @@ public class MenuScreen implements Screen {
     }
 
     @Override
-    public void render(float delta)
+    public void render(final float delta)
     {
         //TODO implement menu screen and only change screens when the create button is pressed
         //ScreenUtils.clear(Color.BLACK);
@@ -46,7 +46,7 @@ public class MenuScreen implements Screen {
     }
 
     @Override
-    public void resize(int width, int height) {
+    public void resize(final int width, final int height) {
         // TODO Auto-generated method stub
     }
 
