@@ -260,7 +260,7 @@ public class Player extends Entity {
         }
 
         //Otherwise, sets the player's ground angle to that of the tile found by the sensor.
-        else groundAngle = sensor.getTile().angle; //TODO possibly apply this to enemies?
+        else groundAngle = sensor.getTile().getAngle(); //TODO possibly apply this to enemies?
 
         /*
         This block is run when the player lands onto the ground from the air (e.g. after jumping).

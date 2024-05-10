@@ -175,7 +175,7 @@ public class GameScreen implements Screen {
             for (int tileY = 0; tileY < TileMap.TILES_PER_CHUNK; tileY++)
             {
                 //Skips the loop for empty tiles (every value in its array would be zero anyway)
-                if (TileMap.getTile(chunkX,chunkY,tileX,tileY).empty) continue;
+                if (TileMap.getTile(chunkX,chunkY,tileX,tileY).isEmpty()) continue;
 
                 //Goes through every element in the height array
                 for (int block = 0; block < TileMap.TILE_LENGTH; block++)
@@ -220,7 +220,7 @@ public class GameScreen implements Screen {
             for (int tileY = 0; tileY < TileMap.TILES_PER_CHUNK; tileY++)
             {
                 //Skips the loop for empty tiles (every value in its array would be zero anyway)
-                if (TileMap.getTile(chunkX,chunkY,tileX,tileY).empty) continue;
+                if (TileMap.getTile(chunkX,chunkY,tileX,tileY).isEmpty()) continue;
                 for (int block = 0; block < TileMap.TILE_LENGTH; block++)
                 {
                     if (block==0) Game.batch.setColor(Color.BLACK);
@@ -229,7 +229,7 @@ public class GameScreen implements Screen {
                     final int yPosition = (tileY * TileMap.TILE_LENGTH) + (chunkY * TileMap.CHUNK_LENGTH) + block;
                     final int blockWidth = TileMap.getTile(chunkX,chunkY,tileX,tileY).getWidth(TileMap.TILE_LENGTH - block - 1);
 
-                    if (!TileMap.getTile(chunkX,chunkY,tileX,tileY).flippedHorizontally) {
+                    if (!TileMap.getTile(chunkX,chunkY,tileX,tileY).isFlippedHorizontally()) {
                         Game.batch.draw(
                             whiteSquare,
                             (tileX * TileMap.TILE_LENGTH) + (chunkX * TileMap.CHUNK_LENGTH) + (TileMap.TILE_LENGTH - blockWidth),

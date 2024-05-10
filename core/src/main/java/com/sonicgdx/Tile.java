@@ -16,20 +16,33 @@
 
 package com.sonicgdx;
 
+import java.util.Arrays;
+
 import static com.sonicgdx.TileMap.TILE_LENGTH;
 
 /**
- * Taking how classes are not value-types into account, tiles are implemented as effectively immutable.
- * While fields are not explicitly final, any methods that mutate them should be considered unsafe.
+ * An almost-immutable data class which contains the collision data of a tile.
+ * The arrays are not, but they are not exposed (only values of elements of it are)
  */
 public class Tile {
 
-    boolean flippedHorizontally, flippedVertically, empty;
-    int[] heightArray, widthArray;
-    int solidity;
-    // 0 = solid from top, 1 = solid from bottom, 2 = solid from left, 3 = solid from right, 4 = solid from all sides
-    float angle;
-    Tile(int[] heightArray, int[] widthArray, float angle, int solidity, boolean flippedHorizontally, boolean flippedVertically) {
+    private final int[] heightArray, widthArray;
+    private final float angle;
+    private final boolean flippedHorizontally, flippedVertically;
+    /**
+     * 0 = solid from top, 1 = solid from bottom, 2 = solid from left, 3 = solid from right, 4 = solid from all sides
+     */
+    private final int solidity;
+
+    private final boolean empty;
+
+    Tile(final int[] heightArray,
+         final int[] widthArray,
+         final float angle,
+         final int solidity,
+         final boolean flippedHorizontally,
+         final boolean flippedVertically) {
+
         this.empty = false;
 
         if (heightArray.length == TILE_LENGTH) this.heightArray = heightArray;
@@ -44,27 +57,47 @@ public class Tile {
     }
     Tile() {
         this.empty = true;
-        this.heightArray = null;
-        this.widthArray = null;
+        this.heightArray = new int[TILE_LENGTH];
+        Arrays.fill(heightArray, 0);
+        this.widthArray = new int[TILE_LENGTH];
+        Arrays.fill(widthArray, 0);
+        this.flippedHorizontally = false;
+        this.flippedVertically = false;
         this.angle = 0;
+        this.solidity = 0;
     }
 
-    public int getHeight(int block) {
+    public int getHeight(final int block) {
         if (empty || block < 0 || TILE_LENGTH - 1 < block) return 0;
         else {
             return heightArray[block];
         }
 
     }
-    public int getWidth(int block) {
+    public int getWidth(final int block) {
         if (empty || block < 0 || TILE_LENGTH - 1 < block ) return 0;
         else {
             return widthArray[block];
         }
     }
 
+    public int getSolidity() {
+        return solidity;
+    }
+
+    public float getAngle() {
+        return angle;
+    }
+
     public boolean isEmpty() {
         return empty;
     }
 
+    public boolean isFlippedHorizontally() {
+        return flippedHorizontally;
+    }
+
+    public boolean isFlippedVertically() {
+        return flippedVertically;
+    }
 }
