@@ -236,7 +236,7 @@ public class Player extends Entity {
         if(sensorA.getDistance() > sensorB.getDistance()) return sensorA;
         else if (sensorA.getDistance() < sensorB.getDistance()) return sensorB;
         //If sensorB could be returned in this case it would not make a difference - the sensors are essentially the same.
-        else if (sensorA.getTile() == sensorB.getTile()) return sensorA; //FIXME comment out this line first if there are physics bugs.
+        else if (sensorA.getTile().equals(sensorB.getTile())) return sensorA; //FIXME comment out this line first if there are physics bugs.
         else return null;
 
     }

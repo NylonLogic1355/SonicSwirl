@@ -17,6 +17,7 @@
 package com.sonicgdx;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 import static com.sonicgdx.TileMap.TILE_LENGTH;
 
@@ -57,6 +58,7 @@ public class Tile {
     }
     Tile() {
         this.empty = true;
+        //initialize arrays to simulate "empty" tile with no collision
         this.heightArray = new int[TILE_LENGTH];
         Arrays.fill(heightArray, 0);
         this.widthArray = new int[TILE_LENGTH];
@@ -99,5 +101,33 @@ public class Tile {
 
     public boolean isFlippedVertically() {
         return flippedVertically;
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) return true;
+        //note that an object of this class can NOT be equal to an object of a subclass
+        if (o == null || getClass() != o.getClass()) return false;
+        final Tile t = (Tile) o;
+        return Float.compare(angle, t.angle) == 0
+            && flippedHorizontally == t.flippedHorizontally
+            && flippedVertically == t.flippedVertically
+            && solidity == t.solidity
+            && empty == t.empty
+            && Objects.deepEquals(heightArray, t.heightArray)
+            && Objects.deepEquals(widthArray, t.widthArray);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(
+            Arrays.hashCode(heightArray),
+            Arrays.hashCode(widthArray),
+            angle,
+            flippedHorizontally,
+            flippedVertically,
+            solidity,
+            empty
+        );
     }
 }

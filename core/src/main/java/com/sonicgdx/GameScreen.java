@@ -182,7 +182,7 @@ public class GameScreen implements Screen {
                 {
                     //At the starting x of each tile, sets the colour to black
                     //to make it easy to see where each tile starts from
-                    if (block==0) Game.batch.setColor(Color.BLACK);
+                    if (block == 0) Game.batch.setColor(Color.BLACK);
                     //Otherwise, format the tile's colours with a red gradient for each tile's y position
                     //and a blue gradient for each element in the array
                     else Game.batch.setColor((1F/ TileMap.TILES_PER_CHUNK) * tileY,0, block,1);
