@@ -37,13 +37,13 @@ public class Player extends Entity {
 
     // Original: ACCELERATION = 0.046875F, DECELERATION = 0.5F, DEBUG_SPEED = 1.5F, MAX_SPEED = 6, SLOPE_FACTOR = 0.125, AIR_ACCELERATION = 0.09375F, GRAVITY_FORCE = 0.21875F;
     // Original values were designed to occur 60 times every second so by multiplying it by 60 you get the amount of pixels moved per second.
-    private final float
+    private static final float
         ACCELERATION = 168.75F,
         AIR_ACCELERATION = ACCELERATION * 2,
         FRICTION = ACCELERATION,
         SLOPE_FACTOR = 7.5F,
         GRAVITY_FORCE = -787.5F;
-    private final int
+    private static final int
         DECELERATION = 1800,
         MAX_SPEED = 360,
         JUMP_FORCE = 390;
