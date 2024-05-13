@@ -24,12 +24,12 @@ import java.util.Optional;
 
 public enum TileMap {
 
-    TILE_MAP;
+    INSTANCE;
 
     // solid blocks
     //TODO reconsider usage of TileMap class
 
-    public static final Chunk[][] map = TILE_MAP.testLevel;
+    public static final Chunk[][] map = INSTANCE.testLevel;
     public static final int TILE_LENGTH = 16;
     public static final int CHUNK_LENGTH = 96;
     public static final int TILES_PER_CHUNK = CHUNK_LENGTH / TILE_LENGTH;
@@ -132,12 +132,12 @@ public enum TileMap {
         };
 
     public static Tile getTile(final int chunkX, final int chunkY, final int tileX, final int tileY) {
-        if(tileX >= 0 && tileY >= 0 && !checkEmpty(chunkX,chunkY)) {
+        if(0 <= tileX && 0 <= tileY && !checkEmpty(chunkX,chunkY)) {
             if (tileX < map[chunkX][chunkY].getTileArray().length && tileY < map[chunkX][chunkY].getTileArray()[tileX].length)
                 return map[chunkX][chunkY].getTileArray()[tileX][tileY];
-            else return TILE_MAP.EMPTY;
+            else return INSTANCE.EMPTY;
         }
-        else return TILE_MAP.EMPTY;
+        else return INSTANCE.EMPTY;
         //OLD try catch version
         /*try {
             return map[chunkX][chunkY][tileX][tileY];
@@ -145,7 +145,7 @@ public enum TileMap {
         catch (ArrayIndexOutOfBoundsException e){
             //Gdx.app.error("getTile() Error",String.valueOf(e));
             //e.printStackTrace();
-            return TILE_MAP.EMPTY;
+            return INSTANCE.EMPTY;
         }*/
 
 
@@ -163,7 +163,7 @@ public enum TileMap {
 
     public static Tile getEmptyTile()
     {
-        return TILE_MAP.EMPTY;
+        return INSTANCE.EMPTY;
     }
 
     /*@Deprecated
