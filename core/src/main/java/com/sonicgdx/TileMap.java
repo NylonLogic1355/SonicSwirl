@@ -20,6 +20,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 
 import java.util.Collections;
+import java.util.Optional;
 
 public enum TileMap {
 
@@ -111,7 +112,7 @@ public enum TileMap {
             {fChunk},
             {fChunk},
             {fChunk,fChunk},
-            {fChunk},
+            {fChunk,fChunk},
             {eChunk,rvChunk, eChunk, eChunk,eChunk, fChunk},
             {fChunk,eChunk,eChunk, eChunk,eChunk, fChunk},
             {eChunk,sChunk,eChunk,hChunk,fChunk},
@@ -151,14 +152,14 @@ public enum TileMap {
 
     }
 
-    public static Chunk getChunk(int chunkX, int chunkY) {
-        if (chunkX < map.length && chunkX >= 0) if (chunkY < map[chunkX].length && chunkY >= 0) return map[chunkX][chunkY];
-        return null;
+    public static Optional<Chunk> getChunk(int chunkX, int chunkY) {
+        if (chunkX < map.length && chunkX >= 0) if (chunkY < map[chunkX].length && chunkY >= 0) return Optional.of(map[chunkX][chunkY]);
+        return Optional.empty();
     }
 
     public static boolean checkEmpty(int chunkX, int chunkY) {
-        if (getChunk(chunkX,chunkY) == null) return true;
-        else return getChunk(chunkX,chunkY).isEmpty();
+        if (getChunk(chunkX,chunkY).isPresent()) return getChunk(chunkX,chunkY).get().isEmpty();
+        return true;
     }
 
     public static Tile getEmptyTile()

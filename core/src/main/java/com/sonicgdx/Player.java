@@ -24,6 +24,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 
+import java.util.Optional;
+
 /**
  * This is the class that handles player movement, player collision with the ground as well as player collision
  * with other objects.
@@ -116,28 +118,34 @@ public class Player extends Entity {
 
             if (sensorA.getActive() && sensorB.getActive()) {
 
-                final Sensor winningSensor = floorSensors();
+                final Optional<Sensor> winningSensorOptional = floorSensors();
 
-                if (isGrounded) {
-                    //checks that the sensor distance is in a valid range before correcting the player's position
-                    if (winningSensor != null && Math.max(-Math.abs(velocity.x) - 4, -14) < winningSensor.getDistance() && winningSensor.getDistance() < 14) groundCollision(winningSensor); //TODO comment out this line first if there are physics bugs.
-                    else isGrounded = false;
-                }
-                else{
-                    if (Math.abs(velocity.x) >= Math.abs(velocity.y)) {
-                        if (velocity.x > 0) { //going mostly right
-                            if (winningSensor != null && winningSensor.getDistance() >= 0 && velocity.y <= 0) groundCollision(winningSensor);
-                        }
-                        else { //going mostly left
-                            if (winningSensor != null && winningSensor.getDistance() >= 0 && velocity.y <= 0) groundCollision(winningSensor);
-                        }
+                //FIXME check may need to be unhoisted if some code doesn't depend on this being true
+                if (winningSensorOptional.isPresent()) {
+
+                    final Sensor winningSensor = winningSensorOptional.get();
+
+                    if (isGrounded) {
+                        //checks that the sensor distance is in a valid range before correcting the player's position
+                        if (Math.max(-Math.abs(velocity.x) - 4, -14) < winningSensor.getDistance() && winningSensor.getDistance() < 14) groundCollision(winningSensor); //TODO comment out this line first if there are physics bugs.
+                        else isGrounded = false;
                     }
-                    else {
-                        if (velocity.y > 0) { //going mostly up
-
+                    else{
+                        if (Math.abs(velocity.x) >= Math.abs(velocity.y)) {
+                            if (velocity.x > 0) { //going mostly right
+                                if (winningSensor.getDistance() >= 0 && velocity.y <= 0) groundCollision(winningSensor);
+                            }
+                            else { //going mostly left
+                                if (winningSensor.getDistance() >= 0 && velocity.y <= 0) groundCollision(winningSensor);
+                            }
                         }
-                        else { //going mostly down
-                            if (winningSensor != null && winningSensor.getDistance() >= 0 && (sensorA.getDistance() <= -(velocity.y + 8) || sensorB.getDistance() >= -(velocity.y + 8))) groundCollision(winningSensor);
+                        else {
+                            if (velocity.y > 0) { //going mostly up
+
+                            }
+                            else { //going mostly down
+                                if (winningSensor.getDistance() >= 0 && (sensorA.getDistance() <= -(velocity.y + 8) || sensorB.getDistance() >= -(velocity.y + 8))) groundCollision(winningSensor);
+                            }
                         }
                     }
                 }
@@ -219,11 +227,12 @@ public class Player extends Entity {
      * Limits of -16<=x<=16 are not used as those distances are likely too far away from the player to matter.
      * Uses angle for rotation and speed of the player and for player slope physics. TODO
      * Applies unique calculation to find minimum value, from Sonic 2 depending on the player's speed.
-     * @return NULLABLE "Winning Distance" sensor.
-     * Returns null in the condition that the sensor distances are equal but their respective returnTiles are different -
+     * @return "Winning Distance" sensor wrapped in Optional.
+     * <p>
+     * Empty optional when sensor distances are equal but their respective returnTiles are different -
      * this prevents the groundAngle being changed and the player rotating haphazardly.
      */
-    public Sensor floorSensors() {
+    public Optional<Sensor> floorSensors() {
         //Checks below and potentially above the positions of both sensors to find the nearest tile if one is present.
         sensorA.floorProcess();
         sensorB.floorProcess();
@@ -233,11 +242,15 @@ public class Player extends Entity {
         Note that even if it returns a sensor it may not have a valid distance.
         The validation happens outside this method.
         */
-        if(sensorA.getDistance() > sensorB.getDistance()) return sensorA;
-        else if (sensorA.getDistance() < sensorB.getDistance()) return sensorB;
+        if(sensorA.getDistance() > sensorB.getDistance()) return Optional.of(sensorA);
+        else if (sensorA.getDistance() < sensorB.getDistance()) return Optional.of(sensorB);
         //If sensorB could be returned in this case it would not make a difference - the sensors are essentially the same.
-        else if (sensorA.getTile().equals(sensorB.getTile())) return sensorA; //FIXME comment out this line first if there are physics bugs.
-        else return null;
+        else if (sensorA.getTile().equals(sensorB.getTile())) return Optional.of(sensorA); //FIXME comment out this line first if there are physics bugs.
+        /*both sensors have equal distances but are but on different tiles -
+        Choosing one of them can cause issues with the edges between two different tile types, with the player rotating back and forth for a moment.
+        This is the case no matter which is chosen (except the issue occurs with slopes facing opposite sides depending on that).
+        So we cannot choose between them.*/
+        else return Optional.empty();
 
     }
 
