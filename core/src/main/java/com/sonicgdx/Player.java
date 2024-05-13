@@ -331,11 +331,11 @@ public class Player extends Entity {
         //or held down in the current frame
 
         //"Move Right" action
-        boolean rightPressed = Gdx.input.isKeyPressed(Input.Keys.D) || (Gdx.input.isKeyPressed(Input.Keys.RIGHT));
+        final boolean rightPressed = Gdx.input.isKeyPressed(Input.Keys.D) || (Gdx.input.isKeyPressed(Input.Keys.RIGHT));
         //"Move Left" action
-        boolean leftPressed = Gdx.input.isKeyPressed(Input.Keys.A) || (Gdx.input.isKeyPressed(Input.Keys.LEFT));
+        final boolean leftPressed = Gdx.input.isKeyPressed(Input.Keys.A) || (Gdx.input.isKeyPressed(Input.Keys.LEFT));
         //"Jump" action
-        boolean jumpPressed = Gdx.input.isKeyPressed(Input.Keys.SPACE);
+        final boolean jumpPressed = Gdx.input.isKeyPressed(Input.Keys.SPACE);
 
         //Reduce the height jumped by capping the Y Speed if player releases the jump button (Space) early.
         if (!jumpPressed && velocity.y > 4 && isJumping) velocity.y = 4;

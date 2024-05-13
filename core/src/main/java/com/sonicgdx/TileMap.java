@@ -131,8 +131,7 @@ public enum TileMap {
 
         };
 
-    public static Tile getTile(int chunkX, int chunkY, int tileX, int tileY)
-    {
+    public static Tile getTile(final int chunkX, final int chunkY, final int tileX, final int tileY) {
         if(tileX >= 0 && tileY >= 0 && !checkEmpty(chunkX,chunkY)) {
             if (tileX < map[chunkX][chunkY].getTileArray().length && tileY < map[chunkX][chunkY].getTileArray()[tileX].length)
                 return map[chunkX][chunkY].getTileArray()[tileX][tileY];
@@ -152,12 +151,12 @@ public enum TileMap {
 
     }
 
-    public static Optional<Chunk> getChunk(int chunkX, int chunkY) {
+    public static Optional<Chunk> getChunk(final int chunkX, final int chunkY) {
         if (chunkX < map.length && chunkX >= 0) if (chunkY < map[chunkX].length && chunkY >= 0) return Optional.of(map[chunkX][chunkY]);
         return Optional.empty();
     }
 
-    public static boolean checkEmpty(int chunkX, int chunkY) {
+    public static boolean checkEmpty(final int chunkX, final int chunkY) {
         if (getChunk(chunkX,chunkY).isPresent()) return getChunk(chunkX,chunkY).get().isEmpty();
         return true;
     }
