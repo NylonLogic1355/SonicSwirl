@@ -19,10 +19,10 @@ package com.sonicgdx;
 import com.badlogic.gdx.Screen;
 
 public class MenuScreen implements Screen {
-    private final Game Game;
+    private final Game game;
 
     public MenuScreen(final Game Game){
-        this.Game = Game;
+        this.game = Game;
     }
 
     @Override
@@ -30,7 +30,7 @@ public class MenuScreen implements Screen {
     {
         //TODO implement menu screen and only change screens when the create button is pressed
         //ScreenUtils.clear(Color.BLACK);
-        Game.setScreen(Game.gameScreen);
+        game.setScreen(game.gameScreen);
         dispose();
     }
 
