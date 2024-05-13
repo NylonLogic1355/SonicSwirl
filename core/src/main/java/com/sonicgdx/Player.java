@@ -232,7 +232,7 @@ public class Player extends Entity {
      * Empty optional when sensor distances are equal but their respective returnTiles are different -
      * this prevents the groundAngle being changed and the player rotating haphazardly.
      */
-    public Optional<Sensor> floorSensors() {
+    private Optional<Sensor> floorSensors() {
         //Checks below and potentially above the positions of both sensors to find the nearest tile if one is present.
         sensorA.floorProcess();
         sensorB.floorProcess();
@@ -254,7 +254,7 @@ public class Player extends Entity {
 
     }
 
-    public void groundCollision(final Sensor sensor) {
+    private void groundCollision(final Sensor sensor) {
         /*
         Corrects the player's Y position according to the distance found by the sensor.
         This should place them at the same height as the found tile after the frame is drawn, responding to the collision.
@@ -306,7 +306,7 @@ public class Player extends Entity {
      * @param sensor the sensor that has collided with a wall.
      * (Distances have been generated beforehand)
      */
-    public void wallCollision(final Sensor sensor) {
+    private void wallCollision(final Sensor sensor) {
         //the distance is the difference between the tile's x position and the sensor's
         //since only a negative distance is accepted, the player will be pushed backwards by this amount
         position.x += sensor.getDistance();
@@ -316,7 +316,7 @@ public class Player extends Entity {
      * @param delta time since last frame. Used to make physics similar to how they would be at 60FPS
      * even with higher, lower or varying frame rates.
      */
-    public void jump(final float delta) {
+    private void jump(final float delta) {
         //FIXME bug when jumping while moving downhill on a slope
         velocity.x -= JUMP_FORCE * MathUtils.sinDeg(groundAngle);
         velocity.y += JUMP_FORCE * MathUtils.cosDeg(groundAngle);
@@ -326,7 +326,7 @@ public class Player extends Entity {
         jumpSound.play();
     }
 
-    public void airMove(final float delta) {
+    private void airMove(final float delta) {
         //These booleans are true if any of the inputs which cause their respective action are pressed
         //or held down in the current frame
 
@@ -368,7 +368,7 @@ public class Player extends Entity {
      * Note: The && operator uses short-circuit evaluation (as opposed to &) so will only evaluate the left hand side of the boolean expression is true. This means that
      * if the returned value is null it won't check its distance so won't throw a NullPointerException.
      */
-    public void setAirSensors() {
+    private void setAirSensors() {
         //TODO insert sensorC and sensorD
         if (Math.abs(velocity.x) >= Math.abs(velocity.y)) {
             //In both cases the ground sensors will be checked
@@ -405,7 +405,7 @@ public class Player extends Entity {
      * sensorA is positioned in the bottom left corner and sensorB in the bottom right corner.
      * sensorE is positioned at the centre left and sensorF is positioned at the centre right.
      */
-    public void calculateSensorPositions() {
+    private void calculateSensorPositions() {
         super.calculateCornerPositions();
         sensorA.setPositionValues(leftEdgeX,bottomEdgeY);
         sensorB.setPositionValues(rightEdgeX,bottomEdgeY);
