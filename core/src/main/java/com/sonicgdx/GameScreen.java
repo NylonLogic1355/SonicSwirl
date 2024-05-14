@@ -30,6 +30,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 
+import java.util.Optional;
+
 public class GameScreen implements Screen {
 
     private final Game game;
@@ -150,14 +152,18 @@ public class GameScreen implements Screen {
      * @param chunkY the chunk number on the y-axis - not the same as its co-ordinate
      */
     public void drawChunkTexture(final int chunkX, final int chunkY) {
-        //If the chunk isn't empty, draw its texture at the chunk's location
-        if (!TileMap.map[chunkX][chunkY].isEmpty()) {
-            game.batch.draw(
-                TileMap.map[chunkX][chunkY].getTexture(),
-                (chunkX* TileMap.CHUNK_LENGTH),
-                (chunkY* TileMap.CHUNK_LENGTH),
+        final Optional<Chunk> chunkOptional = TileMap.getChunk(chunkX, chunkY);
+
+        //If there is a chunk at this location and it has a texture, draw it.
+        if (chunkOptional.isPresent()) {
+            final Optional<Texture> textureOptional = chunkOptional.get().getTexture();
+
+            textureOptional.ifPresent(texture -> game.batch.draw(
+                texture,
+                (chunkX * TileMap.CHUNK_LENGTH),
+                (chunkY * TileMap.CHUNK_LENGTH),
                 TileMap.CHUNK_LENGTH,
-                TileMap.CHUNK_LENGTH);
+                TileMap.CHUNK_LENGTH));
         }
     }
 

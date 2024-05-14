@@ -152,7 +152,7 @@ public enum TileMap {
     }
 
     public static Optional<Chunk> getChunk(final int chunkX, final int chunkY) {
-        if (chunkX < map.length && chunkX >= 0) if (chunkY < map[chunkX].length && chunkY >= 0) return Optional.of(map[chunkX][chunkY]);
+        if (0 <= chunkX && chunkX < map.length && 0 <= chunkY && chunkY < map[chunkX].length) return Optional.of(map[chunkX][chunkY]);
         return Optional.empty();
     }
 

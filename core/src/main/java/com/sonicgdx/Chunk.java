@@ -18,6 +18,8 @@ package com.sonicgdx;
 
 import com.badlogic.gdx.graphics.Texture;
 
+import java.util.Optional;
+
 import static com.sonicgdx.TileMap.TILES_PER_CHUNK;
 
 public class Chunk {
@@ -25,21 +27,21 @@ public class Chunk {
     private final Tile[][] tileArray;
     private final boolean empty;
 
-    public Chunk(Texture texture, Tile[][] tileArray) {
+    public Chunk(final Texture texture, final Tile[][] tileArray) {
         if (tileArray.length == TILES_PER_CHUNK) this.tileArray = tileArray;
         else throw new IllegalArgumentException("heightArray Length is " +  tileArray.length + " instead of " + TILES_PER_CHUNK);
         this.empty = false;
         this.texture = texture;
     }
 
-    public Chunk(Tile[][] tileArray) {
+    public Chunk(final Tile[][] tileArray) {
         if (tileArray.length == TILES_PER_CHUNK) this.tileArray = tileArray;
         else throw new IllegalArgumentException("heightArray Length is " +  tileArray.length + " instead of " + TILES_PER_CHUNK);
         this.empty = true;
     }
 
-    public Texture getTexture() {
-        return texture;
+    public Optional<Texture> getTexture() {
+        return Optional.ofNullable(texture);
     }
 
     /**
