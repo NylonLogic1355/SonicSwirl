@@ -16,11 +16,11 @@
 
 package com.sonicgdx;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 
 import java.util.Collections;
-import java.util.Optional;
 
 public enum TileMap {
 
@@ -78,23 +78,23 @@ public enum TileMap {
                     {ftile,ftile,ftile,ftile,ftile,stile}});
 
 
-    private final Chunk eChunk = new Chunk(emptyTileArray);
+    private final Chunk emptyChunk = new Chunk(emptyTileArray);
     private final Chunk[][] testMap =
             {
-                    {sChunk,eChunk,eChunk,eChunk},
-                    {fChunk,eChunk,eChunk,eChunk},
-                    {fChunk,eChunk,eChunk,eChunk},
-                    {fChunk,eChunk,eChunk,eChunk},
-                    {eChunk,eChunk,eChunk,eChunk},
-                    {eChunk,fChunk,eChunk,eChunk},
-                    {eChunk,eChunk,eChunk,eChunk},
-                    {fChunk,eChunk,eChunk,eChunk},
-                    {fChunk,eChunk,eChunk,eChunk},
-                    {fChunk,eChunk,eChunk,eChunk},
-                    {fChunk,eChunk,eChunk,eChunk},
-                    {fChunk,fChunk,eChunk,eChunk},
-                    {fChunk,eChunk,eChunk,eChunk},
-                    {rvChunk,eChunk,eChunk,eChunk}
+                    {sChunk, emptyChunk, emptyChunk, emptyChunk},
+                    {fChunk, emptyChunk, emptyChunk, emptyChunk},
+                    {fChunk, emptyChunk, emptyChunk, emptyChunk},
+                    {fChunk, emptyChunk, emptyChunk, emptyChunk},
+                    {emptyChunk, emptyChunk, emptyChunk, emptyChunk},
+                    {emptyChunk,fChunk, emptyChunk, emptyChunk},
+                    {emptyChunk, emptyChunk, emptyChunk, emptyChunk},
+                    {fChunk, emptyChunk, emptyChunk, emptyChunk},
+                    {fChunk, emptyChunk, emptyChunk, emptyChunk},
+                    {fChunk, emptyChunk, emptyChunk, emptyChunk},
+                    {fChunk, emptyChunk, emptyChunk, emptyChunk},
+                    {fChunk,fChunk, emptyChunk, emptyChunk},
+                    {fChunk, emptyChunk, emptyChunk, emptyChunk},
+                    {rvChunk, emptyChunk, emptyChunk, emptyChunk}
 
             };
 
@@ -104,27 +104,27 @@ public enum TileMap {
             {fChunk},
             {fChunk},
             {fChunk},
-            {eChunk},
-            {eChunk,fChunk},
-            {eChunk},
+            {emptyChunk},
+            {emptyChunk,fChunk},
+            {emptyChunk},
             {fChunk},
             {fChunk},
             {fChunk},
             {fChunk},
             {fChunk,fChunk},
             {fChunk,fChunk},
-            {eChunk,rvChunk, eChunk, eChunk,eChunk, fChunk},
-            {fChunk,eChunk,eChunk, eChunk,eChunk, fChunk},
-            {eChunk,sChunk,eChunk,hChunk,fChunk},
-            {eChunk,eChunk,eChunk,hChunk},
-            {eChunk,eChunk,rvChunk},
-            {eChunk,rvChunk},
-            {eChunk,sChunk},
-            {eChunk,eChunk,sChunk},
-            {eChunk},
-            {eChunk},
-            {eChunk},
-            {eChunk},
+            {emptyChunk,rvChunk, emptyChunk, emptyChunk, emptyChunk, fChunk},
+            {fChunk, emptyChunk, emptyChunk, emptyChunk, emptyChunk, fChunk},
+            {emptyChunk,sChunk, emptyChunk,hChunk,fChunk},
+            {emptyChunk, emptyChunk, emptyChunk,hChunk},
+            {emptyChunk, emptyChunk,rvChunk},
+            {emptyChunk,rvChunk},
+            {emptyChunk,sChunk},
+            {emptyChunk, emptyChunk,sChunk},
+            {emptyChunk},
+            {emptyChunk},
+            {emptyChunk},
+            {emptyChunk},
             {hChunk}
 
 
@@ -132,7 +132,7 @@ public enum TileMap {
         };
 
     public static Tile getTile(final int chunkX, final int chunkY, final int tileX, final int tileY) {
-        if(0 <= tileX && 0 <= tileY && !checkEmpty(chunkX,chunkY)) {
+        if(0 <= tileX && 0 <= tileY && !isChunkEmpty(chunkX,chunkY)) {
             if (tileX < map[chunkX][chunkY].getTileArray().length && tileY < map[chunkX][chunkY].getTileArray()[tileX].length)
                 return map[chunkX][chunkY].getTileArray()[tileX][tileY];
             else return INSTANCE.EMPTY;
@@ -151,14 +151,27 @@ public enum TileMap {
 
     }
 
-    public static Optional<Chunk> getChunk(final int chunkX, final int chunkY) {
-        if (0 <= chunkX && chunkX < map.length && 0 <= chunkY && chunkY < map[chunkX].length) return Optional.of(map[chunkX][chunkY]);
-        return Optional.empty();
+    /**
+     * @param chunkX the index used to get a Chunk[] from the TileMap
+     * @param chunkY the index used to get a Chunk from the array given by map[tileX]
+     * @return the respective Chunk in the Chunk array
+     * <p>
+     * An empty chunk if the co-ordinates are out of range for the array.
+     */
+    public static Chunk getChunk(final int chunkX, final int chunkY) {
+        if (chunkX < 0 || chunkX >= map.length || chunkY < 0 || chunkY >= map[chunkX].length) {
+            Gdx.app.debug("Chunk out of map's range",
+                "ChunkX = " + chunkX + ", ChunkY = " + chunkY
+                    + "; max X = " + (map.length - 1) + ", max Y = " + (map[chunkX].length - 1));
+
+            return INSTANCE.emptyChunk;
+        }
+
+        return map[chunkX][chunkY];
     }
 
-    public static boolean checkEmpty(final int chunkX, final int chunkY) {
-        if (getChunk(chunkX,chunkY).isPresent()) return getChunk(chunkX,chunkY).get().isEmpty();
-        return true;
+    public static boolean isChunkEmpty(final int chunkX, final int chunkY) {
+        return getChunk(chunkX,chunkY).isEmpty();
     }
 
     public static Tile getEmptyTile()

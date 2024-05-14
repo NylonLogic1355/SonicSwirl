@@ -152,18 +152,19 @@ public class GameScreen implements Screen {
      * @param chunkY the chunk number on the y-axis - not the same as its co-ordinate
      */
     public void drawChunkTexture(final int chunkX, final int chunkY) {
-        final Optional<Chunk> chunkOptional = TileMap.getChunk(chunkX, chunkY);
+        final Chunk chunk = TileMap.getChunk(chunkX, chunkY);
 
         //If there is a chunk at this location and it has a texture, draw it.
-        if (chunkOptional.isPresent()) {
-            final Optional<Texture> textureOptional = chunkOptional.get().getTexture();
+        if (!chunk.isEmpty()) {
+            final Optional<Texture> texture = chunk.getTexture();
+            assert texture.isPresent();
 
-            textureOptional.ifPresent(texture -> game.batch.draw(
-                texture,
+            game.batch.draw(
+                texture.get(),
                 (chunkX * TileMap.CHUNK_LENGTH),
                 (chunkY * TileMap.CHUNK_LENGTH),
                 TileMap.CHUNK_LENGTH,
-                TileMap.CHUNK_LENGTH));
+                TileMap.CHUNK_LENGTH);
         }
     }
 
