@@ -160,10 +160,6 @@ public enum TileMap {
      */
     public static Chunk getChunk(final int chunkX, final int chunkY) {
         if (chunkX < 0 || chunkX >= map.length || chunkY < 0 || chunkY >= map[chunkX].length) {
-            Gdx.app.debug("Chunk out of map's range",
-                "ChunkX = " + chunkX + ", ChunkY = " + chunkY
-                    + "; max X = " + (map.length - 1) + ", max Y = " + (map[chunkX].length - 1));
-
             return INSTANCE.emptyChunk;
         }
 
