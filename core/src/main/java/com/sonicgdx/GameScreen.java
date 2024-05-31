@@ -120,7 +120,7 @@ public class GameScreen implements Screen {
         //tints the backgroundTexture with a random color
         game.batch.setColor(backgroundTint);
         game.batch.draw(backgroundTexture,camera.position.x - (camera.viewportWidth / 2),camera.position.y - (camera.viewportHeight / 2));
-        //game.batch.setColor(Color.WHITE);
+        game.batch.setColor(Color.WHITE);
 
         game.batch.enableBlending();
         //TODO render gradually as player progresses
