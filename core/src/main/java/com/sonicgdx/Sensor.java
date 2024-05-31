@@ -219,17 +219,11 @@ public class Sensor {
     public void setPositionValues(final float x, final float y) {
         position.set(x,y);
     }
-    public void setPositionVector(final Vector2 positionVector) {
-        this.position = positionVector;
-    }
     public float getXPosition() {
         return position.x;
     }
     public float getYPosition() {
         return position.y;
-    }
-    public Vector2 getPositionVector() {
-        return position;
     }
     public float getDistance() {
         return distance;
