@@ -93,7 +93,7 @@ public class GameScreen implements Screen {
         //frameLog.log();
         //delta = 0.016666668f;
 
-        ScreenUtils.clear(Color.DARK_GRAY); // clears the screen and sets the background to a certain colour
+        ScreenUtils.clear(Color.DARK_GRAY);
 
         //Toggle between one of three draw modes: texture drawing, height array drawing and width array drawing
         if (Gdx.input.isKeyJustPressed(Input.Keys.Y)) {
@@ -107,17 +107,14 @@ public class GameScreen implements Screen {
 
         //Updates the camera position to where the player is but keeps the offset
         camera.position.set(player.getXPos() + cameraOffset.x,player.getYPos() + cameraOffset.y,camera.position.z); camera.update();
-        //recompute the orthographical projection matrix
-        //so that the change is responded to in the user's view
 
-        //tells the SpriteBatch to render in the coordinate system specified by the camera
         //viewport.apply();
         game.batch.setProjectionMatrix(camera.combined);
         game.batch.begin();
-        //Disabling and enabling blending gives a performance boost
-        //and transparency is not needed for the background image
+        /*Disabling blending gives a performance boost
+        and transparency is not needed for the background image */
         game.batch.disableBlending();
-        //tints the backgroundTexture with a random color
+        //tints only the backgroundTexture with a random color
         game.batch.setColor(backgroundTint);
         game.batch.draw(backgroundTexture,camera.position.x - (camera.viewportWidth / 2),camera.position.y - (camera.viewportHeight / 2));
         game.batch.setColor(Color.WHITE);

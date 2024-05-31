@@ -56,8 +56,7 @@ public class Player extends Entity {
     Player(final float widthRadius, final float heightRadius) {
         super(widthRadius, heightRadius);
         spriteRegion = GameScreen.getTextureRegion("sonic-idle", 0);
-        position = new Vector2(50,200); // Sets the player's starting position at (50,200). (The variable was initialised in super constructor)
-        //The vector has two components for the x position and y position respectively
+        position = new Vector2(50,200); // Sets the player's starting position at (50,200).
         velocity = new Vector2(); //Initialises to zero starting speed
         sensorA = new Sensor(); //Copies the player's position to the left floor sensor's.
         sensorB = new Sensor(); //Copies the player's position but placed at the sprite's right instead of left.
@@ -192,8 +191,8 @@ public class Player extends Entity {
 
         if (groundVelocity != 0) groundVelocity -= delta * SLOPE_FACTOR * MathUtils.sinDeg(groundAngle); //TODO this only happens when the player is not in ceiling mode.
 
-        //Moving right and moving left are mutually exclusive - if both are true, the outcome
-        //is the same as if both are false
+        /*Moving right and moving left are mutually exclusive - if both are true, the outcome
+        is the same as if both are false*/
 
         if (rightPressed && !leftPressed) // if moving right
         {
