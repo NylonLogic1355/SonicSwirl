@@ -32,9 +32,6 @@ public class Sensor {
     public Sensor(final float xPos, final float yPos) {
         position = new Vector2(xPos,yPos);
     }
-    public Sensor(final Vector2 positionVector) {
-        this.position = positionVector;
-    }
 
     /**
      * Creates an empty sensor (with the assumption that its position will be updated later)
