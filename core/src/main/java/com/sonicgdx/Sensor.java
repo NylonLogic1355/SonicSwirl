@@ -37,7 +37,6 @@ public class Sensor {
      * Creates an empty sensor (with the assumption that its position will be updated later)
      */
     public Sensor() {
-        //Default position is (0,0)
         this.position = new Vector2();
     }
 

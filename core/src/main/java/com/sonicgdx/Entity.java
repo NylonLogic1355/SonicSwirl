@@ -33,7 +33,7 @@ public abstract class Entity {
     Sprite sprite;
     Entity(float widthRadius, float heightRadius) {
         sprite = new Sprite();
-        position = new Vector2(); //Initialise Vector with zero co-ordinates to prevent NullPointerExceptions
+        position = new Vector2();
         this.WIDTH_RADIUS = widthRadius; this.HEIGHT_RADIUS = heightRadius;
     }
 
@@ -77,14 +77,14 @@ public abstract class Entity {
     /**
      * @return the X component of the position vecotr
      */
-    public float getXPos() {
+    public float getXPosition() {
         return position.x;
     }
 
     /**
      * @return the Y component of the position vector
      */
-    public float getYPos() {
+    public float getYPosition() {
         return position.y;
     }
 
