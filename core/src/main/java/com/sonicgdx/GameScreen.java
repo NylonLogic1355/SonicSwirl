@@ -136,9 +136,15 @@ public class GameScreen implements Screen {
         }
         player.sprite.draw(game.batch);
         // DEBUG - draw 1x1 white squares at the player's sensor locations
-        game.batch.draw(whiteSquare,player.leftEdgeX,player.bottomEdgeY); game.batch.draw(whiteSquare,player.rightEdgeX,player.bottomEdgeY);
-        game.batch.draw(whiteSquare,player.leftEdgeX,player.getYPosition()); game.batch.draw(whiteSquare,player.rightEdgeX,player.getYPosition());
-        game.batch.draw(whiteSquare,player.leftEdgeX,player.topEdgeY); game.batch.draw(whiteSquare,player.rightEdgeX,player.topEdgeY);
+        game.batch.draw(whiteSquare,player.leftEdgeX,player.bottomEdgeY);
+        game.batch.draw(whiteSquare,player.rightEdgeX,player.bottomEdgeY);
+
+        game.batch.draw(whiteSquare,player.leftEdgeX,player.getYPosition());
+        game.batch.draw(whiteSquare,player.rightEdgeX,player.getYPosition());
+
+        game.batch.draw(whiteSquare,player.leftEdgeX,player.topEdgeY);
+        game.batch.draw(whiteSquare,player.rightEdgeX,player.topEdgeY);
+
         game.batch.draw(whiteSquare,player.getXPosition(),player.getYPosition());
         game.batch.end();
     }
