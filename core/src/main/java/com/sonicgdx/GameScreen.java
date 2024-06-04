@@ -160,10 +160,9 @@ public class GameScreen implements Screen {
         //If there is a chunk at this location and it has a texture, draw it.
         if (!chunk.isEmpty()) {
             final Optional<Texture> texture = chunk.getTexture();
-            assert texture.isPresent();
 
             game.batch.draw(
-                texture.get(),
+                texture.orElseThrow(),
                 (chunkX * TileMap.CHUNK_LENGTH),
                 (chunkY * TileMap.CHUNK_LENGTH),
                 TileMap.CHUNK_LENGTH,
