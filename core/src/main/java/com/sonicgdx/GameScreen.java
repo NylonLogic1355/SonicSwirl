@@ -47,6 +47,11 @@ public class GameScreen implements Screen {
     private int drawMode = 0;
 
     private final Music backgroundMusic;
+    private enum DrawMode {
+        NORMAL,
+        WIDTH_ARRAY,
+        HEIGHT_ARRAY
+    }
 
     public GameScreen(final Game game) {
 
@@ -97,10 +102,13 @@ public class GameScreen implements Screen {
 
         //Toggle between one of three draw modes: texture drawing, height array drawing and width array drawing
         if (Gdx.input.isKeyJustPressed(Input.Keys.Y)) {
-
-            //TODO make these values constants (either public static final or in an enum) for clarity
-            drawMode += 1;
-            if (drawMode == 3) drawMode = 0;
+            drawMode = DrawMode.NORMAL;
+        }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.U)) {
+            drawMode = DrawMode.WIDTH_ARRAY;
+        }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.I)) {
+            drawMode = DrawMode.HEIGHT_ARRAY;
         }
 
         player.update(delta);
@@ -123,15 +131,23 @@ public class GameScreen implements Screen {
         //TODO render gradually as player progresses
 
         //Iterates through every chunk on the x-axis
-        for (int chunkX = 0; chunkX<TileMap.map.length; chunkX++)
+        for (int chunkX = 0; chunkX < TileMap.map.length; chunkX++)
         {
             //Iterates through every chunk on the y-axis
-            for (int chunkY = 0; chunkY<TileMap.map[chunkX].length; chunkY++)
+            for (int chunkY = 0; chunkY < TileMap.map[chunkX].length; chunkY++)
             {
-                //Draw the chunk's texture unless the debug drawing mode has been toggled
-                if (drawMode == 1) drawChunkHeightArray(chunkX,chunkY);
-                else if (drawMode == 2) drawChunkWidthArray(chunkX,chunkY);
-                else drawChunkTexture(chunkX,chunkY);
+                //Draws using the respective mode's method
+                switch(drawMode) {
+                    case NORMAL:
+                        drawChunkTexture(chunkX, chunkY);
+                        break;
+                    case HEIGHT_ARRAY:
+                        drawChunkHeightArray(chunkX, chunkY);
+                        break;
+                    case WIDTH_ARRAY:
+                        drawChunkWidthArray(chunkX, chunkY);
+                        break;
+                }
             }
         }
         player.sprite.draw(game.batch);
