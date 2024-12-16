@@ -44,7 +44,7 @@ jobs:
         uses: gradle/actions/setup-gradle@v4
 
       - name: Build
-        run: ./gradlew html:dist
+        run: ./gradlew html:dist --no-daemon
       #- name: Remove SuperDev remnants
         # Remove the reload button in the top left - the 11th line in index.html
         #run: |
