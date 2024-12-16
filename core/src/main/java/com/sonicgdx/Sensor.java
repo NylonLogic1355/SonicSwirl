@@ -29,19 +29,23 @@ public class Sensor {
     private Tile tile;
     private float distance;
 
-    public Sensor(float xPos, float yPos) {
+    public Sensor(final float xPos, final float yPos) {
         position = new Vector2(xPos,yPos);
-    }
-    public Sensor(Vector2 positionVector) {
-        this.position = positionVector;
     }
 
     /**
      * Creates an empty sensor (with the assumption that its position will be updated later)
      */
     public Sensor() {
-        //Default position is (0,0)
         this.position = new Vector2();
+    }
+
+    public static int calcSurroundingChunkOnAxis(final int axisPosition) {
+        return MathUtils.round(axisPosition) / CHUNK_LENGTH;
+    }
+
+    public static int calcSurroundingTileOnAxis(final int axisPosition) {
+        return Math.floorMod(MathUtils.round(axisPosition), CHUNK_LENGTH) / TILE_LENGTH;
     }
 
     /**Attempts to find the nearest top of the surface relative to the sensor's position.
@@ -59,18 +63,23 @@ public class Sensor {
         */
         //TODO possibly perform check inside player function instead
         if (position.x < 0 || position.y < 0) {
-            tile = TileMap.getEmptyTile(); distance = -50;
+            tile = TileMap.getEmptyTile();
+            distance = -50;
             return;
         }
         //TODO prevent catch block in getTile() from being used.
 
-        int tileX = Math.floorMod(MathUtils.round(position.x), CHUNK_LENGTH) / TILE_LENGTH;
-        int chunkX = MathUtils.round(position.x) / CHUNK_LENGTH;
+        final int positionXInt = MathUtils.round(position.x);
 
-        int tileY = Math.floorMod(MathUtils.round(position.y), CHUNK_LENGTH) / TILE_LENGTH;
-        int chunkY = MathUtils.round(position.y) / CHUNK_LENGTH;
+        final int tileX = calcSurroundingTileOnAxis(positionXInt);
+        final int chunkX = calcSurroundingChunkOnAxis(positionXInt);
 
-        int block = Math.floorMod(MathUtils.round(position.x), TILE_LENGTH); //Different behaviour for negative numbers compared to using %. For
+        final int positionYInt = MathUtils.round(position.y);
+
+        int tileY = calcSurroundingTileOnAxis(positionYInt);
+        int chunkY = calcSurroundingChunkOnAxis(positionYInt);
+
+        final int block = Math.floorMod(positionXInt, TILE_LENGTH); //Different behaviour for negative numbers compared to using %. For
         // example, -129 % 16 would return -1 which would cause an ArrayIndexOutOfBoundsException. Math.floorMod() would return a positive index in these cases.
 
         // An alternate expression to calculate block: ((chunkX * CHUNK_LENGTH) + (tileX * TILE_LENGTH) - position.x));
@@ -81,7 +90,7 @@ public class Sensor {
 
         if (height == TILE_LENGTH)
         {
-            int tempTileY, tempChunkY;
+            final int tempTileY, tempChunkY;
             // sensor regression, checks one tile above with downwards facing sensors in an attempt to find surface if the height of the array is full
             if (tileY < TILES_PER_CHUNK - 1)
             {
@@ -117,10 +126,11 @@ public class Sensor {
             height = TileMap.getTile(chunkX,chunkY,tileX,tileY).getHeight(block);
 
             if (height == 0) checkDistance -= TILE_LENGTH;
-            else checkDistance -= (TILE_LENGTH -height);
+            else checkDistance -= (TILE_LENGTH - height);
         }
 
-        tile = TileMap.getTile(chunkX,chunkY,tileX,tileY); distance = checkDistance;
+        tile = TileMap.getTile(chunkX,chunkY,tileX,tileY);
+        distance = checkDistance;
     }
 
     /**
@@ -136,20 +146,25 @@ public class Sensor {
         */
         //TODO possibly perform check inside player function instead
         if (position.x < 0 || position.y < 0) {
-            //positive distances aren't accepted and 50 is too far out of the range
-            //so this will never trigger a collision if out of bounds
-            tile = TileMap.getEmptyTile(); distance = 50;
+            /*positive distances aren't accepted and 50 is too far out of the range
+            so this will never trigger a collision if out of bounds*/
+            tile = TileMap.getEmptyTile();
+            distance = 50;
             return;
         }
         //TODO prevent catch block in getTile() from being used.
 
-        int tileX = Math.floorMod(MathUtils.round(position.x), CHUNK_LENGTH) / TILE_LENGTH;
-        int chunkX = MathUtils.round(position.x) / CHUNK_LENGTH;
+        final int positionXInt = MathUtils.round(position.x);
 
-        int tileY = Math.floorMod(MathUtils.round(position.y), CHUNK_LENGTH) / TILE_LENGTH;
-        int chunkY = MathUtils.round(position.y) / CHUNK_LENGTH;
+        int tileX = calcSurroundingTileOnAxis(positionXInt);
+        int chunkX = calcSurroundingChunkOnAxis(positionXInt);
 
-        int block = Math.floorMod(MathUtils.round(position.y), TILE_LENGTH); //Different behaviour for negative numbers compared to using %. For
+        final int positionYInt = MathUtils.round(position.y);
+
+        int tileY = calcSurroundingTileOnAxis(positionYInt);
+        final int chunkY = calcSurroundingChunkOnAxis(positionYInt);
+
+        final int block = Math.floorMod(positionYInt, TILE_LENGTH); //Different behaviour for negative numbers compared to using %. For
         // example, -129 % 16 would return -1 which would cause an ArrayIndexOutOfBoundsException. Math.floorMod() would return a positive index in these cases.
 
         int width = TileMap.getTile(chunkX,chunkY,tileX,tileY).getWidth(block);
@@ -158,24 +173,21 @@ public class Sensor {
         float checkDistance = ((chunkX * CHUNK_LENGTH) + ((tileX + 1) * TILE_LENGTH) - width) - position.x;
 
         if (width == TILE_LENGTH) {
-            int tempTileX, tempChunkX;
+            final int tempTileX, tempChunkX;
             // sensor regression, checks one tile above with downwards facing sensors in an attempt to find surface if the height of the array is full
 
             //for right facing tiles
-            if (tileX > 0)
-            {
+            if (tileX > 0) {
                 tempChunkX = chunkX;
                 tempTileX = tileX - 1;
             }
-            else
-            {
+            else {
                 tempChunkX = chunkX - 1;
                 tempTileX = TILES_PER_CHUNK - 1;
             }
 
             width = TileMap.getTile(tempChunkX,chunkY,tempTileX,tileY).getHeight(block);
-            if (width > 0)
-            {
+            if (width > 0) {
                 chunkX = tempChunkX;
                 tileX = tempTileX;
 
@@ -187,8 +199,7 @@ public class Sensor {
             // sensor extension, checks one tile below with downwards facing sensors in an attempt to find surface
 
             //for right facing tiles
-            if (tileX == TILES_PER_CHUNK - 1)
-            {
+            if (tileX == TILES_PER_CHUNK - 1) {
                 chunkX++;
                 tileY = 0;
             }
@@ -197,27 +208,59 @@ public class Sensor {
             width = TileMap.getTile(chunkX,chunkY,tileX,tileY).getHeight(block);
 
             if (width == 0) checkDistance += TILE_LENGTH;
-            else checkDistance += (TILE_LENGTH -width);
+            else checkDistance += (TILE_LENGTH - width);
         }
 
-        tile = TileMap.getTile(chunkX,chunkY,tileX,tileY); distance = checkDistance;
+        tile = TileMap.getTile(chunkX,chunkY,tileX,tileY);
+        distance = checkDistance;
         //Gdx.app.debug("distance",String.valueOf(distance));
     }
 
-    public void setPositionValues(float x, float y) {
-        position.set(x,y);
+
+    /*
+    @Deprecated
+    public int regression(int chunkX, int chunkY, int tileX, int tileY, int grid) {
+        //TODO possibly use for more accuracy?
+
+        byte height;
+
+        //INCREMENT Tile
+        if (tileY < 7)
+        {
+            tileY = tileY + 1;
+        }
+        else
+        {
+            chunkY +=1;
+            tileY = 0;
+        }
+
+
+        height = TileMap.map.getHeight(chunkX,chunkY,tileX,tileY,grid);
+
+        //CHECK height depending on conditions
+        if (height == 0) {
+            return 0;
+        }
+        else if (height < 16) {
+            return 1;
+        }
+        else {
+            return MathUtils.clamp(1 + regression(chunkX, chunkY, tileX, tileY, grid),0,2);
+        }
+
+
     }
-    public void setPositionVector(Vector2 positionVector) {
-        this.position = positionVector;
+    */
+
+    public void setPositionValues(final float x, final float y) {
+        position.set(x,y);
     }
     public float getXPosition() {
         return position.x;
     }
     public float getYPosition() {
         return position.y;
-    }
-    public Vector2 getPositionVector() {
-        return position;
     }
     public float getDistance() {
         return distance;
@@ -228,7 +271,7 @@ public class Sensor {
     public boolean getActive() {
         return isActive;
     }
-    public void setActive(boolean active) {
+    public void setActive(final boolean active) {
         isActive = active;
     }
 

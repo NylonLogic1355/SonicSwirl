@@ -12,6 +12,15 @@
 LWJGL2 is broken on some distro-provided Java distributions - see [this](https://github.com/libgdx/gdx-liftoff/issues/150) issue for more details.
 
 ---
+
+You may get this (harmless) message in the console when building and running the LWJGL3 version on Linux:
+>[ALSOFT] (EE) Failed to set real-time priority for thread: Operation not permitted” error on running
+
+[This](
+https://github.com/SFML/SFML/issues/1832#issuecomment-1100573813) is one way to fix it.
+
+
+---
 # License
 
 Copyright 2023 SonicGDX

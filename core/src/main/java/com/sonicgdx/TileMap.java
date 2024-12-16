@@ -16,6 +16,7 @@
 
 package com.sonicgdx;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 
@@ -23,12 +24,12 @@ import java.util.Collections;
 
 public enum TileMap {
 
-    TILE_MAP;
+    INSTANCE;
 
     // solid blocks
     //TODO reconsider usage of TileMap class
 
-    public static final Chunk[][] map = TILE_MAP.testLevel;
+    public static final Chunk[][] map = INSTANCE.testLevel;
     public static final int TILE_LENGTH = 16;
     public static final int CHUNK_LENGTH = 96;
     public static final int TILES_PER_CHUNK = CHUNK_LENGTH / TILE_LENGTH;
@@ -77,23 +78,23 @@ public enum TileMap {
                     {ftile,ftile,ftile,ftile,ftile,stile}});
 
 
-    private final Chunk eChunk = new Chunk(emptyTileArray);
+    private final Chunk emptyChunk = new Chunk(emptyTileArray);
     private final Chunk[][] testMap =
             {
-                    {sChunk,eChunk,eChunk,eChunk},
-                    {fChunk,eChunk,eChunk,eChunk},
-                    {fChunk,eChunk,eChunk,eChunk},
-                    {fChunk,eChunk,eChunk,eChunk},
-                    {eChunk,eChunk,eChunk,eChunk},
-                    {eChunk,fChunk,eChunk,eChunk},
-                    {eChunk,eChunk,eChunk,eChunk},
-                    {fChunk,eChunk,eChunk,eChunk},
-                    {fChunk,eChunk,eChunk,eChunk},
-                    {fChunk,eChunk,eChunk,eChunk},
-                    {fChunk,eChunk,eChunk,eChunk},
-                    {fChunk,fChunk,eChunk,eChunk},
-                    {fChunk,eChunk,eChunk,eChunk},
-                    {rvChunk,eChunk,eChunk,eChunk}
+                    {sChunk, emptyChunk, emptyChunk, emptyChunk},
+                    {fChunk, emptyChunk, emptyChunk, emptyChunk},
+                    {fChunk, emptyChunk, emptyChunk, emptyChunk},
+                    {fChunk, emptyChunk, emptyChunk, emptyChunk},
+                    {emptyChunk, emptyChunk, emptyChunk, emptyChunk},
+                    {emptyChunk,fChunk, emptyChunk, emptyChunk},
+                    {emptyChunk, emptyChunk, emptyChunk, emptyChunk},
+                    {fChunk, emptyChunk, emptyChunk, emptyChunk},
+                    {fChunk, emptyChunk, emptyChunk, emptyChunk},
+                    {fChunk, emptyChunk, emptyChunk, emptyChunk},
+                    {fChunk, emptyChunk, emptyChunk, emptyChunk},
+                    {fChunk,fChunk, emptyChunk, emptyChunk},
+                    {fChunk, emptyChunk, emptyChunk, emptyChunk},
+                    {rvChunk, emptyChunk, emptyChunk, emptyChunk}
 
             };
 
@@ -103,41 +104,40 @@ public enum TileMap {
             {fChunk},
             {fChunk},
             {fChunk},
-            {eChunk},
-            {eChunk,fChunk},
-            {eChunk},
+            {emptyChunk},
+            {emptyChunk,fChunk},
+            {emptyChunk},
             {fChunk},
             {fChunk},
             {fChunk},
             {fChunk},
             {fChunk,fChunk},
-            {fChunk},
-            {eChunk,rvChunk, eChunk, eChunk,eChunk, fChunk},
-            {fChunk,eChunk,eChunk, eChunk,eChunk, fChunk},
-            {eChunk,sChunk,eChunk,hChunk,fChunk},
-            {eChunk,eChunk,eChunk,hChunk},
-            {eChunk,eChunk,rvChunk},
-            {eChunk,rvChunk},
-            {eChunk,sChunk},
-            {eChunk,eChunk,sChunk},
-            {eChunk},
-            {eChunk},
-            {eChunk},
-            {eChunk},
+            {fChunk,fChunk},
+            {emptyChunk,rvChunk, emptyChunk, emptyChunk, emptyChunk, fChunk},
+            {fChunk, emptyChunk, emptyChunk, emptyChunk, emptyChunk, fChunk},
+            {emptyChunk,sChunk, emptyChunk,hChunk,fChunk},
+            {emptyChunk, emptyChunk, emptyChunk,hChunk},
+            {emptyChunk, emptyChunk,rvChunk},
+            {emptyChunk,rvChunk},
+            {emptyChunk,sChunk},
+            {emptyChunk, emptyChunk,sChunk},
+            {emptyChunk},
+            {emptyChunk},
+            {emptyChunk},
+            {emptyChunk},
             {hChunk}
 
 
 
         };
 
-    public static Tile getTile(int chunkX, int chunkY, int tileX, int tileY)
-    {
-        if(tileX >= 0 && tileY >= 0 && !checkEmpty(chunkX,chunkY)) {
+    public static Tile getTile(final int chunkX, final int chunkY, final int tileX, final int tileY) {
+        if(0 <= tileX && 0 <= tileY && !isChunkEmpty(chunkX,chunkY)) {
             if (tileX < map[chunkX][chunkY].getTileArray().length && tileY < map[chunkX][chunkY].getTileArray()[tileX].length)
                 return map[chunkX][chunkY].getTileArray()[tileX][tileY];
-            else return TILE_MAP.EMPTY;
+            else return INSTANCE.EMPTY;
         }
-        else return TILE_MAP.EMPTY;
+        else return INSTANCE.EMPTY;
         //OLD try catch version
         /*try {
             return map[chunkX][chunkY][tileX][tileY];
@@ -145,25 +145,34 @@ public enum TileMap {
         catch (ArrayIndexOutOfBoundsException e){
             //Gdx.app.error("getTile() Error",String.valueOf(e));
             //e.printStackTrace();
-            return TILE_MAP.EMPTY;
+            return INSTANCE.EMPTY;
         }*/
 
 
     }
 
-    public static Chunk getChunk(int chunkX, int chunkY) {
-        if (chunkX < map.length && chunkX >= 0) if (chunkY < map[chunkX].length && chunkY >= 0) return map[chunkX][chunkY];
-        return null;
+    /**
+     * @param chunkX the index used to get a Chunk[] from the TileMap
+     * @param chunkY the index used to get a Chunk from the array given by map[tileX]
+     * @return the respective Chunk in the Chunk array
+     * <p>
+     * An empty chunk if the co-ordinates are out of range for the array.
+     */
+    public static Chunk getChunk(final int chunkX, final int chunkY) {
+        if (chunkX < 0 || chunkX >= map.length || chunkY < 0 || chunkY >= map[chunkX].length) {
+            return INSTANCE.emptyChunk;
+        }
+
+        return map[chunkX][chunkY];
     }
 
-    public static boolean checkEmpty(int chunkX, int chunkY) {
-        if (getChunk(chunkX,chunkY) == null) return true;
-        else return getChunk(chunkX,chunkY).isEmpty();
+    public static boolean isChunkEmpty(final int chunkX, final int chunkY) {
+        return getChunk(chunkX,chunkY).isEmpty();
     }
 
     public static Tile getEmptyTile()
     {
-        return TILE_MAP.EMPTY;
+        return INSTANCE.EMPTY;
     }
 
     /*@Deprecated

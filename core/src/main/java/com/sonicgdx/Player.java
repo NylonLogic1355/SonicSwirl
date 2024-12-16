@@ -24,6 +24,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 
+import java.util.Optional;
+
 /**
  * This is the class that handles player movement, player collision with the ground as well as player collision
  * with other objects.
@@ -32,21 +34,29 @@ import com.badlogic.gdx.math.Vector2;
 public class Player extends Entity {
     private boolean flipX = false, flipY = false;
     private boolean debugMode = false, isGrounded, isJumping;
-    private final float ACCELERATION = 168.75F, AIR_ACCELERATION = 337.5F, SLOPE_FACTOR = 7.5F, GRAVITY_FORCE = -787.5F;
-    private final int DECELERATION = 1800, MAX_SPEED = 360, JUMP_FORCE = 390;
-    // An FPS of 60 was used to obtain the adjusted values
+
     // Original: ACCELERATION = 0.046875F, DECELERATION = 0.5F, DEBUG_SPEED = 1.5F, MAX_SPEED = 6, SLOPE_FACTOR = 0.125, AIR_ACCELERATION = 0.09375F, GRAVITY_FORCE = 0.21875F;
     // Original values were designed to occur 60 times every second so by multiplying it by 60 you get the amount of pixels moved per second.
+    private static final float
+        ACCELERATION = 168.75F,
+        AIR_ACCELERATION = ACCELERATION * 2,
+        FRICTION = ACCELERATION,
+        SLOPE_FACTOR = 7.5F,
+        GRAVITY_FORCE = -787.5F;
+    private static final int
+        DECELERATION = 1800,
+        MAX_SPEED = 360,
+        JUMP_FORCE = 390;
+
     private float groundVelocity = 0, groundAngle = 0;
-    private final Sensor sensorA, sensorB, sensorE,sensorF;
+    private final Sensor sensorA, sensorB, sensorE, sensorF;
     private TextureRegion spriteRegion;
     private final Vector2 velocity;
     private final Sound jumpSound;
-    Player(float widthRadius, float heightRadius) {
+    Player(final float widthRadius, final float heightRadius) {
         super(widthRadius, heightRadius);
-        spriteRegion = GameScreen.getTextureRegion("sonic-idle",0);
-        position = new Vector2(50,200); // Sets the player's starting position at (50,200). (The variable was initialised in super constructor)
-        //The vector has two components for the x position and y position respectively
+        spriteRegion = GameScreen.getTextureRegion("sonic-idle", 0);
+        position = new Vector2(50,200); // Sets the player's starting position at (50,200).
         velocity = new Vector2(); //Initialises to zero starting speed
         sensorA = new Sensor(); //Copies the player's position to the left floor sensor's.
         sensorB = new Sensor(); //Copies the player's position but placed at the sprite's right instead of left.
@@ -61,8 +71,7 @@ public class Player extends Entity {
 
 
     @Override
-    public void update(float delta)
-    {
+    public void update(final float delta) {
         //TODO Would be better to implement an InputProcessor. This makes more sense as an interrupt rather than constant polling.
         if (Gdx.input.isKeyJustPressed(Input.Keys.Q))
         {
@@ -108,28 +117,34 @@ public class Player extends Entity {
 
             if (sensorA.getActive() && sensorB.getActive()) {
 
-                Sensor winningSensor = floorSensors();
+                final Optional<Sensor> winningSensorOptional = floorSensors();
 
-                if (isGrounded) {
-                    //checks that the sensor distance is in a valid range before correcting the player's position
-                    if (winningSensor != null && Math.max(-Math.abs(velocity.x) - 4, -14) < winningSensor.getDistance() && winningSensor.getDistance() < 14) groundCollision(winningSensor); //TODO comment out this line first if there are physics bugs.
-                    else isGrounded = false;
-                }
-                else{
-                    if (Math.abs(velocity.x) >= Math.abs(velocity.y)) {
-                        if (velocity.x > 0) { //going mostly right
-                            if (winningSensor != null && winningSensor.getDistance() >= 0 && velocity.y <= 0) groundCollision(winningSensor);
-                        }
-                        else { //going mostly left
-                            if (winningSensor != null && winningSensor.getDistance() >= 0 && velocity.y <= 0) groundCollision(winningSensor);
-                        }
+                //FIXME check may need to be unhoisted if some code doesn't depend on this being true
+                if (winningSensorOptional.isPresent()) {
+
+                    final Sensor winningSensor = winningSensorOptional.get();
+
+                    if (isGrounded) {
+                        //checks that the sensor distance is in a valid range before correcting the player's position
+                        if (Math.max(-Math.abs(velocity.x) - 4, -14) < winningSensor.getDistance() && winningSensor.getDistance() < 14) groundCollision(winningSensor); //TODO comment out this line first if there are physics bugs.
+                        else isGrounded = false;
                     }
-                    else {
-                        if (velocity.y > 0) { //going mostly up
-
+                    else{
+                        if (Math.abs(velocity.x) >= Math.abs(velocity.y)) {
+                            if (velocity.x > 0) { //going mostly right
+                                if (winningSensor.getDistance() >= 0 && velocity.y <= 0) groundCollision(winningSensor);
+                            }
+                            else { //going mostly left
+                                if (winningSensor.getDistance() >= 0 && velocity.y <= 0) groundCollision(winningSensor);
+                            }
                         }
-                        else { //going mostly down
-                            if (winningSensor != null && winningSensor.getDistance() >= 0 && (sensorA.getDistance() <= -(velocity.y + 8) || sensorB.getDistance() >= -(velocity.y + 8))) groundCollision(winningSensor);
+                        else {
+                            if (velocity.y > 0) { //going mostly up
+
+                            }
+                            else { //going mostly down
+                                if (winningSensor.getDistance() >= 0 && (sensorA.getDistance() <= -(velocity.y + 8) || sensorB.getDistance() >= -(velocity.y + 8))) groundCollision(winningSensor);
+                            }
                         }
                     }
                 }
@@ -162,22 +177,22 @@ public class Player extends Entity {
 
     }
 
-    private void groundMove(float delta) {
+    private void groundMove(final float delta) {
 
         //These booleans are true if any of the inputs which cause their respective action are pressed
         //or held down in the current frame
 
         //"Move Right" action
-        boolean rightPressed = Gdx.input.isKeyPressed(Input.Keys.D) || (Gdx.input.isKeyPressed(Input.Keys.RIGHT));
+        final boolean rightPressed = Gdx.input.isKeyPressed(Input.Keys.D) || (Gdx.input.isKeyPressed(Input.Keys.RIGHT));
         //"Move Left" action
-        boolean leftPressed = Gdx.input.isKeyPressed(Input.Keys.A) || (Gdx.input.isKeyPressed(Input.Keys.LEFT));
+        final boolean leftPressed = Gdx.input.isKeyPressed(Input.Keys.A) || (Gdx.input.isKeyPressed(Input.Keys.LEFT));
         //"Jump" action
-        boolean jumpJustPressed = Gdx.input.isKeyJustPressed(Input.Keys.SPACE);
+        final boolean jumpJustPressed = Gdx.input.isKeyJustPressed(Input.Keys.SPACE);
 
         if (groundVelocity != 0) groundVelocity -= delta * SLOPE_FACTOR * MathUtils.sinDeg(groundAngle); //TODO this only happens when the player is not in ceiling mode.
 
-        //Moving right and moving left are mutually exclusive - if both are true, the outcome
-        //is the same as if both are false
+        /*Moving right and moving left are mutually exclusive - if both are true, the outcome
+        is the same as if both are false*/
 
         if (rightPressed && !leftPressed) // if moving right
         {
@@ -191,8 +206,11 @@ public class Player extends Entity {
             if (groundVelocity > 0) groundVelocity -= (DECELERATION * delta);
             else if (groundVelocity > -MAX_SPEED) groundVelocity -= ACCELERATION * delta;
         }
-        else groundVelocity -= Math.min(Math.abs(groundVelocity), ACCELERATION * delta) * Math.signum(groundVelocity); // friction if not pressing any directions
-        // Decelerates until the ground speed is lower than the acceleration value (which doubles as the friction value) and then stops
+        else {
+            // friction if not pressing any directions
+            // Decelerates until the ground speed is lower than the friction value and then stops
+            groundVelocity -= Math.min(Math.abs(groundVelocity), FRICTION * delta) * Math.signum(groundVelocity);
+        }
 
         velocity.set(groundVelocity * MathUtils.cosDeg(groundAngle), groundVelocity * MathUtils.sinDeg(groundAngle));
 
@@ -208,12 +226,12 @@ public class Player extends Entity {
      * Limits of -16<=x<=16 are not used as those distances are likely too far away from the player to matter.
      * Uses angle for rotation and speed of the player and for player slope physics. TODO
      * Applies unique calculation to find minimum value, from Sonic 2 depending on the player's speed.
-     * @return NULLABLE "Winning Distance" sensor.
-     * Returns null in the condition that the sensor distances are equal but their respective returnTiles are different -
+     * @return "Winning Distance" sensor wrapped in Optional.
+     * <p>
+     * Empty optional when sensor distances are equal but their respective returnTiles are different -
      * this prevents the groundAngle being changed and the player rotating haphazardly.
      */
-    public Sensor floorSensors()
-    {
+    private Optional<Sensor> floorSensors() {
         //Checks below and potentially above the positions of both sensors to find the nearest tile if one is present.
         sensorA.floorProcess();
         sensorB.floorProcess();
@@ -223,16 +241,19 @@ public class Player extends Entity {
         Note that even if it returns a sensor it may not have a valid distance.
         The validation happens outside this method.
         */
-        if(sensorA.getDistance() > sensorB.getDistance()) return sensorA;
-        else if (sensorA.getDistance() < sensorB.getDistance()) return sensorB;
+        if(sensorA.getDistance() > sensorB.getDistance()) return Optional.of(sensorA);
+        else if (sensorA.getDistance() < sensorB.getDistance()) return Optional.of(sensorB);
         //If sensorB could be returned in this case it would not make a difference - the sensors are essentially the same.
-        else if (sensorA.getTile() == sensorB.getTile()) return sensorA; //FIXME comment out this line first if there are physics bugs.
-        else return null;
+        else if (sensorA.getTile().equals(sensorB.getTile())) return Optional.of(sensorA); //FIXME comment out this line first if there are physics bugs.
+        /*both sensors have equal distances but are but on different tiles -
+        Choosing one of them can cause issues with the edges between two different tile types, with the player rotating back and forth for a moment.
+        This is the case no matter which is chosen (except the issue occurs with slopes facing opposite sides depending on that).
+        So we cannot choose between them.*/
+        else return Optional.empty();
 
     }
 
-    public void groundCollision(Sensor sensor)
-    {
+    private void groundCollision(final Sensor sensor) {
         /*
         Corrects the player's Y position according to the distance found by the sensor.
         This should place them at the same height as the found tile after the frame is drawn, responding to the collision.
@@ -251,7 +272,7 @@ public class Player extends Entity {
         }
 
         //Otherwise, sets the player's ground angle to that of the tile found by the sensor.
-        else groundAngle = sensor.getTile().angle; //TODO possibly apply this to enemies?
+        else groundAngle = sensor.getTile().getAngle(); //TODO possibly apply this to enemies?
 
         /*
         This block is run when the player lands onto the ground from the air (e.g. after jumping).
@@ -284,7 +305,7 @@ public class Player extends Entity {
      * @param sensor the sensor that has collided with a wall.
      * (Distances have been generated beforehand)
      */
-    public void wallCollision(Sensor sensor) {
+    private void wallCollision(final Sensor sensor) {
         //the distance is the difference between the tile's x position and the sensor's
         //since only a negative distance is accepted, the player will be pushed backwards by this amount
         position.x += sensor.getDistance();
@@ -294,7 +315,7 @@ public class Player extends Entity {
      * @param delta time since last frame. Used to make physics similar to how they would be at 60FPS
      * even with higher, lower or varying frame rates.
      */
-    public void jump(float delta) {
+    private void jump(final float delta) {
         //FIXME bug when jumping while moving downhill on a slope
         velocity.x -= JUMP_FORCE * MathUtils.sinDeg(groundAngle);
         velocity.y += JUMP_FORCE * MathUtils.cosDeg(groundAngle);
@@ -304,16 +325,16 @@ public class Player extends Entity {
         jumpSound.play();
     }
 
-    public void airMove(float delta) {
+    private void airMove(final float delta) {
         //These booleans are true if any of the inputs which cause their respective action are pressed
         //or held down in the current frame
 
         //"Move Right" action
-        boolean rightPressed = Gdx.input.isKeyPressed(Input.Keys.D) || (Gdx.input.isKeyPressed(Input.Keys.RIGHT));
+        final boolean rightPressed = Gdx.input.isKeyPressed(Input.Keys.D) || (Gdx.input.isKeyPressed(Input.Keys.RIGHT));
         //"Move Left" action
-        boolean leftPressed = Gdx.input.isKeyPressed(Input.Keys.A) || (Gdx.input.isKeyPressed(Input.Keys.LEFT));
+        final boolean leftPressed = Gdx.input.isKeyPressed(Input.Keys.A) || (Gdx.input.isKeyPressed(Input.Keys.LEFT));
         //"Jump" action
-        boolean jumpPressed = Gdx.input.isKeyPressed(Input.Keys.SPACE);
+        final boolean jumpPressed = Gdx.input.isKeyPressed(Input.Keys.SPACE);
 
         //Reduce the height jumped by capping the Y Speed if player releases the jump button (Space) early.
         if (!jumpPressed && velocity.y > 4 && isJumping) velocity.y = 4;
@@ -346,7 +367,7 @@ public class Player extends Entity {
      * Note: The && operator uses short-circuit evaluation (as opposed to &) so will only evaluate the left hand side of the boolean expression is true. This means that
      * if the returned value is null it won't check its distance so won't throw a NullPointerException.
      */
-    public void setAirSensors(){
+    private void setAirSensors() {
         //TODO insert sensorC and sensorD
         if (Math.abs(velocity.x) >= Math.abs(velocity.y)) {
             //In both cases the ground sensors will be checked
@@ -383,7 +404,7 @@ public class Player extends Entity {
      * sensorA is positioned in the bottom left corner and sensorB in the bottom right corner.
      * sensorE is positioned at the centre left and sensorF is positioned at the centre right.
      */
-    public void calculateSensorPositions() {
+    private void calculateSensorPositions() {
         super.calculateCornerPositions();
         sensorA.setPositionValues(leftEdgeX,bottomEdgeY);
         sensorB.setPositionValues(rightEdgeX,bottomEdgeY);
@@ -391,7 +412,7 @@ public class Player extends Entity {
         sensorF.setPositionValues(rightEdgeX,position.y);
     }
 
-    private void debugMove(float delta) {
+    private void debugMove(final float delta) {
         final int DEBUG_SPEED = 90;
         if (Gdx.input.isKeyPressed(Input.Keys.D)) position.x += (DEBUG_SPEED * delta);
         if (Gdx.input.isKeyPressed(Input.Keys.A)) position.x -= (DEBUG_SPEED * delta);
