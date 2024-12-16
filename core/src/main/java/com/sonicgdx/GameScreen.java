@@ -44,13 +44,23 @@ public class GameScreen implements Screen {
     private final Texture backgroundTexture;
     private final Color backgroundTint;
 
-    private int drawMode = 0;
+    private ChunkRenderMode chunkRenderMode = ChunkRenderMode.CHUNK_TEXTURE;
 
     private final Music backgroundMusic;
-    private enum DrawMode {
-        NORMAL,
-        WIDTH_ARRAY,
-        HEIGHT_ARRAY
+
+    /**
+     * The available selections for drawing chunks and their tiles to the screen at their co-ordinates.
+     * <br>
+     * CHUNK_TEXTURE - default mode which just draws each chunk's given texture if it has one.
+     * <br>
+     * TILE_WIDTH_ARRAY - draws a representation of the width arrays of tiles in each chunk.
+     * <br>
+     * TILE_HEIGHT_ARRAY - draws a representation of the height arrays of tiles in each chunk.
+     */
+    private enum ChunkRenderMode {
+        CHUNK_TEXTURE,
+        TILE_WIDTH_ARRAY,
+        TILE_HEIGHT_ARRAY
     }
 
     public GameScreen(final Game game) {
@@ -102,13 +112,13 @@ public class GameScreen implements Screen {
 
         //Toggle between one of three draw modes: texture drawing, height array drawing and width array drawing
         if (Gdx.input.isKeyJustPressed(Input.Keys.Y)) {
-            drawMode = DrawMode.NORMAL;
+            chunkRenderMode = ChunkRenderMode.CHUNK_TEXTURE;
         }
         if (Gdx.input.isKeyJustPressed(Input.Keys.U)) {
-            drawMode = DrawMode.WIDTH_ARRAY;
+            chunkRenderMode = ChunkRenderMode.TILE_WIDTH_ARRAY;
         }
         if (Gdx.input.isKeyJustPressed(Input.Keys.I)) {
-            drawMode = DrawMode.HEIGHT_ARRAY;
+            chunkRenderMode = ChunkRenderMode.TILE_HEIGHT_ARRAY;
         }
 
         player.update(delta);
@@ -137,16 +147,18 @@ public class GameScreen implements Screen {
             for (int chunkY = 0; chunkY < TileMap.map[chunkX].length; chunkY++)
             {
                 //Draws using the respective mode's method
-                switch(drawMode) {
-                    case NORMAL:
+                switch(chunkRenderMode) {
+                    case CHUNK_TEXTURE:
                         drawChunkTexture(chunkX, chunkY);
                         break;
-                    case HEIGHT_ARRAY:
+                    case TILE_HEIGHT_ARRAY:
                         drawChunkHeightArray(chunkX, chunkY);
                         break;
-                    case WIDTH_ARRAY:
+                    case TILE_WIDTH_ARRAY:
                         drawChunkWidthArray(chunkX, chunkY);
                         break;
+                    default:
+                        throw new AssertionError("No case for chunk rendering mode " + chunkRenderMode.name());
                 }
             }
         }
